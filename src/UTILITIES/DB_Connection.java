@@ -1,7 +1,5 @@
 package UTILITIES;
 
-//hdiuw
-
 import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.sql.*;
 
