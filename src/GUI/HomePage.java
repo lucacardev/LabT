@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 public class HomePage extends JPanel{
 
@@ -188,15 +189,14 @@ public class HomePage extends JPanel{
         rightHomePage.add(bookingCalendar, rightGbc);
 
         //Disegno Background
-
         try {
-            leftHomePageBackground = ImageIO.read(new File("C:/Users/cardo/Desktop/LabT/src/GUI/icon/19366.png"));
-
-
-        } catch (Exception ex) {
-            System.out.println("Errore caricamento immagine background home page");
-            ex.printStackTrace();
+            // Carica l'immagine di sfondo dal file specificato
+            leftHomePageBackground = ImageIO.read(new File("src/GUI/icon/19366.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+
 
 
 

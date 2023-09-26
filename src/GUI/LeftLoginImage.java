@@ -52,18 +52,11 @@ public class LeftLoginImage extends JPanel{
         add(footPanel);
 
 
-        try {
+        //Immagine logo
+        ImageIcon logoImage = new ImageIcon("src/GUI/icon/icons8-laboratoriom.gif");
+        JLabel imageLabel = new JLabel(logoImage);
 
-            //Immagine logo
-            BufferedImage logoImage = ImageIO.read(new File("C:/Users/cardo/Dropbox/Desktop/LabT/src/GUI/icon/icon1.png"));
-            JLabel imageLabel = new JLabel(new ImageIcon(logoImage));
-
-            footPanel.add(imageLabel);
-
-        } catch(IOException ex) {
-
-            System.out.println("Errore caricamento immagine");
-        }
+        footPanel.add(imageLabel);
 
 
         //Testo sopra il logo

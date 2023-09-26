@@ -2,8 +2,12 @@ package GUI;
 
 import UTILITIES.Controller;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class MainWindow extends JFrame {
 
@@ -21,6 +25,13 @@ public class MainWindow extends JFrame {
         myController = controller;
 
         setSize(800,512);
+        try {
+            BufferedImage iconImage = ImageIO.read(new File("src/GUI/icon/icons8-laboratorio-64.png"));
+            setIconImage(iconImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        };
+
 
         //Posizionamento finestra centrale
         setLocationRelativeTo(null);

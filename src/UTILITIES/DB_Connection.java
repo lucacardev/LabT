@@ -1,13 +1,10 @@
 package UTILITIES;
 
-//hdiuw
-
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.sql.*;
 
 public class DB_Connection {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/Lab-T";
+    private static final String URL = "jdbc:postgresql://localhost:5432/LaboratorioScientifico";
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "roberta";
 
@@ -68,8 +65,7 @@ public class DB_Connection {
     /*Metodo che ci permette di creare prima una connessione con il database e poi eseguire
     * una query passata come paramentro*/
     public PreparedStatement getPreparedStatement(String query) throws SQLException {
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        return preparedStatement;
+        return connection.prepareStatement(query);
 
     }
 

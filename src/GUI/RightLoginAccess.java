@@ -46,13 +46,22 @@ public class RightLoginAccess extends JPanel {
 
         //Impostazione background
         try {
-            rightLoginBackground = ImageIO.read(new File("C:/Users/cardo/Desktop/LabT/src/GUI/icon/background.png"));
+            rightLoginBackground = ImageIO.read(new File("src/GUI/icon/background.png"));
 
 
         } catch (Exception ex) {
             System.out.println("Errore caricamento immagine background login page");
         }
         ;
+
+        ImageIcon loginImage = new ImageIcon("src/GUI/icon/icons8-utente-uomo-cerchiato.gif");
+        JLabel imageLabel = new JLabel(loginImage);
+
+        // Posiziona l'immagine al centro del pannello
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2; // Occupa due colonne orizzontali
+        add(imageLabel, gbc);
 
 
         //Testo email
@@ -78,27 +87,27 @@ public class RightLoginAccess extends JPanel {
 
         //Posizionamento testo mail
         gbc.gridx = 0;
-        gbc.gridy = 0;
+        gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.LINE_START;
         add(emailText, gbc);
 
 
         //Posizionamento campo mail
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         add(campoEmail, gbc);
 
 
         //Posizionamento testo password
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         add(pwdText, gbc);
 
         //Posizionamento campo password
         campoPassword = new JPasswordField(15);
         campoPassword.setEchoChar('\u2022');
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         add(campoPassword, gbc);
 
         //Risalto colore dei bordi del campo password quando cliccato
@@ -118,7 +127,7 @@ public class RightLoginAccess extends JPanel {
 
         pwdEye = new JButton();
         try {
-            BufferedImage eyeImage = ImageIO.read(new File("C:/Users/cardo/Desktop/LabT/src/GUI/icon/eye (1).png"));
+            BufferedImage eyeImage = ImageIO.read(new File("src/GUI/icon/eye (1).png"));
             pwdEye.setIcon(new ImageIcon(eyeImage));
 
         } catch (Exception ex) {
@@ -141,14 +150,14 @@ public class RightLoginAccess extends JPanel {
         });
 
         pwdEyeGbc.gridx = 1;
-        pwdEyeGbc.gridy = 3;
+        pwdEyeGbc.gridy = 4;
         add(pwdEye, pwdEyeGbc);
 
 
         //Posizionamento password dimenticata
         passwordDimenticata = new LinkMouseOn("Hai dimenticato la password?");
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 6;
 
         //Azione se il testo password dimenticata viene cliccato
         passwordDimenticata.addMouseListener(new MouseAdapter() {
@@ -179,13 +188,13 @@ public class RightLoginAccess extends JPanel {
 
         //Posizionamento bottone di accesso
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 5;
         add(loginButton, gbc);
 
         //Posizionamento registrazione nuovo utente
         regUtente = new LinkMouseOn("Sei Nuovo? Registrati");
         gbc.gridx = 0;
-        gbc.gridy = 6;
+        gbc.gridy = 7;
         add(regUtente, gbc);
 
         //Indirizzamento pagina per la registrazione
