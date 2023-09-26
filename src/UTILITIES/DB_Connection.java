@@ -1,5 +1,7 @@
 package UTILITIES;
 
+//hdiuw
+
 import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.sql.*;
 
@@ -7,7 +9,7 @@ public class DB_Connection {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/Lab-T";
     private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "1234";
+    private static final String PASSWORD = "roberta";
 
     /*I tipi Connection e Statement fanno parte della libreria java.SQL*/
 
