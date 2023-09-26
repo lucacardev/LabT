@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Libreria Batik">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/src/Libreria Batik" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/src/Libreria Batik" recursive="false" />
+  </library>
+</component>
