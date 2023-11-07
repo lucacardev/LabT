@@ -9,14 +9,17 @@ public class Tecnico {
     private String telefono;
     private Laboratorio codl_fk;
     private DTO.Laboratorio Laboratorio;
+    private  Team codTeam_fk;
+    private DTO.Team Team;
 
-    public Tecnico (String matricola,String nome,String cognome,String codfis,String tel,Laboratorio lab) {
+    public Tecnico (String matricola,String nome,String cognome,String codfis,String tel,Laboratorio lab,Team t) {
         this.matricola = matricola;
         this.nome = nome;
         this.cognome = cognome;
         this.codfiscale = codfis;
         this.telefono = tel;
         this.codl_fk = lab;
+        this.codTeam_fk = t;
     }
 
     public String getMatricola() {
@@ -78,5 +81,11 @@ public class Tecnico {
         this.codl_fk = laboratorio;
     }
 
+    public Team getCodTeam () {
+        return this.Team;
+    }
 
+    public void setTeam(Team Team) {
+        this.codTeam_fk = Team;
+    }
 }
