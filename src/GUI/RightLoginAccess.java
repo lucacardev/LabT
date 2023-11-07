@@ -29,6 +29,8 @@ public class RightLoginAccess extends JPanel {
     private LinkMouseOn regUtente;
     private ActionListener loginButtonListener;
 
+    private LinkMouseOn accResponsabile;
+
     Controller myController;
 
     private Utente utenteCorrente;
@@ -149,8 +151,9 @@ public class RightLoginAccess extends JPanel {
             }
         });
 
-        pwdEyeGbc.gridx = 1;
+        pwdEyeGbc.gridx = 2;
         pwdEyeGbc.gridy = 4;
+        pwdEyeGbc.anchor = GridBagConstraints.LINE_END;  // Allinea il pulsante all'inizio della colonna
         add(pwdEye, pwdEyeGbc);
 
 
@@ -212,6 +215,29 @@ public class RightLoginAccess extends JPanel {
 
         //Cambio colore al passaggio del mouse
         regUtente.ActiveLinkMouseOn(regUtente);
+
+        //Posizionamento accesso responsabile
+        accResponsabile = new LinkMouseOn("Sei un responsabile? Clicca qui");
+        gbc.gridx = 0;
+        gbc.gridy = 9;
+        add(accResponsabile, gbc);
+
+        //Indirizzamento pagina per la registrazione
+        accResponsabile.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                ResponsibleAccess responsibleAccess = new ResponsibleAccess(myController);
+
+                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(RightLoginAccess.this);
+
+                mainWindow.addCardPanel(responsibleAccess, "responsableAccess");
+            }
+        });
+
+        //Cambio colore al passaggio del mouse
+        accResponsabile.ActiveLinkMouseOn(accResponsabile);
+
 
         //Verifica credenziali quando il pulsante di accesso viene premuto
         loginButton.addActionListener(new ActionListener() {
