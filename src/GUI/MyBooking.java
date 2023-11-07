@@ -45,15 +45,5 @@ public class MyBooking extends JPanel {
         topPanel.setLayout(new BorderLayout());
         TablePanel tablePanel = new TablePanel(null);
         topPanel.add(tablePanel, BorderLayout.CENTER);
-
-
-
-
-
-
-
-
-
-
     }
 }
