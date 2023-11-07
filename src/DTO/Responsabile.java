@@ -13,6 +13,7 @@ public class Responsabile {
     public Responsabile(String matricola,String nome,String cognome,String codfis,String tel,String email,Sede s) {
         this.matricola = matricola;
         this.nome = nome;
+        this.cognome = cognome;
         this.codfiscale = codfis;
         this.telefono = tel;
         this.email = email;
