@@ -53,7 +53,7 @@ public class LeftLoginImage extends JPanel{
 
 
         //Immagine logo
-        ImageIcon logoImage = new ImageIcon("src/GUI/icon/icons8-laboratoriom.gif");
+        ImageIcon logoImage = new ImageIcon("src/GUI/icon/chemistry-8969_128.gif");
         JLabel imageLabel = new JLabel(logoImage);
 
         footPanel.add(imageLabel);
