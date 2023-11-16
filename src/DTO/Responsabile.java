@@ -7,16 +7,21 @@ public class Responsabile {
     private String codfiscale;
     private String telefono;
     private String email;
+    private char[] pw;
     private Sede codS_fk;
     private DTO.Sede Sede;
 
-    public Responsabile(String matricola,String nome,String cognome,String codfis,String tel,String email,Sede s) {
+    public Responsabile(String matricola,String email,char[] pw) {
         this.matricola = matricola;
+        this.email = email;
+        this.pw = pw;
+    }
+
+    public Responsabile(String nome,String cognome,String codfis,String tel,Sede s){
         this.nome = nome;
         this.cognome = cognome;
         this.codfiscale = codfis;
         this.telefono = tel;
-        this.email = email;
         this.codS_fk = s;
     }
 
@@ -66,6 +71,14 @@ public class Responsabile {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public char[] getPw() {
+        return this.pw;
+    }
+
+    public void setPw(char[] pw) {
+        this.pw = pw;
     }
 
     public Sede getSede() {

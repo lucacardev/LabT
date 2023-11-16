@@ -22,6 +22,8 @@ public class Controller {
 
     private PostazioneDAO postazioneDAO;
 
+    private ResponsabileDAO responsabileDAO;
+
 
 
 
@@ -40,6 +42,7 @@ public class Controller {
         sedeDAO = new SedeDAO(this);
         strumentoDAO = new StrumentoDAO(this);
         prenotazioneDAO = new PrenotazioneDAO(this);
+        responsabileDAO = new ResponsabileDAO(this);
 
 
     }
@@ -154,5 +157,69 @@ public class Controller {
 
     }
     */
+
+    //////////////////////////////METODI RESPONSABILE DAO///////////////////////////////
+
+
+    /*Verifica responsabile presente nel database*/
+
+
+    public boolean verificaResponsabile(Responsabile responsabile) {
+
+        boolean responsabileTrovato;
+
+        responsabileTrovato = responsabileDAO.verificaCredenzialiDAO(responsabile.getMatricola(), responsabile.getPw());
+
+        return responsabileTrovato;
+    }
+
+    public boolean verificaMatricolaResponsabile (String matricola) {
+
+        boolean matricolaTrovata;
+
+        matricolaTrovata = responsabileDAO.verificaMatricolaResponsabile(matricola);
+
+        return matricolaTrovata;
+
+    }
+
+    public String recuperoPasswordResponsabileC(String email) {
+
+        String PasswordC;
+
+        PasswordC = responsabileDAO.recuperaPasswordResponsabile(email);
+
+        return PasswordC;
+
+    }
+
+    public boolean aggiornaPasswordResponsabileC(String email, String nuovaPassword) {
+
+        boolean update;
+
+        update = responsabileDAO.aggiornaPasswordResponsabile(email, nuovaPassword);
+
+        return update;
+
+    }
+
+    public boolean newRespRegister(Responsabile responsabile) {
+
+
+        return responsabileDAO.newResponsableRegister(responsabile.getMatricola(),responsabile.getNome(),responsabile.getCognome(),responsabile.getEmail(),responsabile.getPw());
+
+    }
+
+    public boolean verifyMatricolaResponsabileC (Responsabile responsabile) {
+
+        return responsabileDAO.verificaMatricolaResponsabile(responsabile.getMatricola());
+
+    }
+
+    public String MatricolaRecovery(Responsabile responsabile) {
+
+        return responsabileDAO.matricolaRecovery(responsabile.getPw());
+
+    }
 
 }
