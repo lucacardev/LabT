@@ -26,6 +26,7 @@ public class RightLoginAccess extends JPanel {
     private JButton pwdEye;
     private BufferedImage rightLoginBackground;
 
+
     private LinkMouseOn regUtente;
     private ActionListener loginButtonListener;
 
@@ -54,7 +55,6 @@ public class RightLoginAccess extends JPanel {
         } catch (Exception ex) {
             System.out.println("Errore caricamento immagine background login page");
         }
-        ;
 
         ImageIcon loginImage = new ImageIcon("src/GUI/icon/icons8-utente-uomo-cerchiato.gif");
         JLabel imageLabel = new JLabel(loginImage);
@@ -264,9 +264,6 @@ public class RightLoginAccess extends JPanel {
         }
 
     }
-
-
-
 
     //Visualizzazione messaggio di errore
     public void mostraErrore(int messaggioErrore) {
