@@ -1,5 +1,6 @@
 package GUI;
 
+import DAO.ResponsabileDAO;
 import DTO.Responsabile;
 import UTILITIES.Controller;
 import UTILITIES.EmailSender;
@@ -257,9 +258,9 @@ public class ResponsibleAccess extends JPanel {
         }
 
 
-        int sizeFont = 17;
+        /*int sizeFont = 17;
         int style = 10;
-        String font = "Arial";
+        String font = "Arial";*/
 
         IncreaseFont welcomeText = new IncreaseFont("Benvenuto!");
         Font welcomeFont = welcomeText.getFont();
@@ -373,27 +374,24 @@ public class ResponsibleAccess extends JPanel {
 
         if (this.campoMatricola.getText().isEmpty() || this.campoPassword.getPassword().length == 0) {
 
-            return 1;
+            return 1; //campi vuoti
 
 
         } else if (!this.campoMatricola.getText().isEmpty() && this.campoPassword.getPassword().length > 0) {
 
-
-            responsabileCorrente = new Responsabile(getLoginMatricola(), null, getLoginPassword());
-
+            /*responsabileCorrente = new Responsabile(getLoginMatricola(),null, getLoginPassword());
             String matricolaRecuperata = myController.MatricolaRecovery(responsabileCorrente);
-
             responsabileCorrente = new Responsabile(matricolaRecuperata, getLoginMatricola(), getLoginPassword());
-
-
+            responsabileTrovato[0] = myController.verificaResponsabile(responsabileCorrente);*/
+            responsabileCorrente = new Responsabile(getLoginMatricola(), null, getLoginPassword());
             responsabileTrovato[0] = myController.verificaResponsabile(responsabileCorrente);
 
 
             if (responsabileTrovato[0]) {
 
-                return 3;
+                return 3; //credenziali corrette
             }
-            return 2;
+            return 2; //credenziali errate
         }
         return 0;
     }

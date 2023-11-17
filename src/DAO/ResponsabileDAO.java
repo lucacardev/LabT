@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ResponsabileDAO {
-    private DB_Connection connessioneDB;
+    private static DB_Connection connessioneDB;
     private Statement statement;
     Controller currController;
 
@@ -23,6 +23,8 @@ public class ResponsabileDAO {
     }
 
     //////////////////////////RECUPERO CREDENZIALI///////////////////
+
+
     public boolean verificaCredenzialiDAO(String matricola, char[] password) {
 
         boolean responsabileTrovato = false;
@@ -37,7 +39,9 @@ public class ResponsabileDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
+                if (resultSet.getString("matricola").equals(matricola) && resultSet.getString("pw").equals(String.valueOf(password))) {
                 responsabileTrovato = true;
+                }
             }
 
 
@@ -46,6 +50,31 @@ public class ResponsabileDAO {
         }
 
         return responsabileTrovato;
+
+    }
+
+    public static String [] nomecognomeRecovery(String matricola, char[] password) {
+
+        String[] informazioni = new String[2];
+
+        try {
+            String query = "SELECT nome, cognome FROM responsabile WHERE matricola = ? and pw = ?";
+            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            preparedStatement.setString(1, matricola);
+            preparedStatement.setString(2,String.valueOf(password));
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                informazioni[0] = resultSet.getString("nome");
+                informazioni[1] = resultSet.getString("cognome");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Errore nel recupero nome cognome tramite matricola");
+            e.printStackTrace();
+        }
+
+        return informazioni;
 
     }
 
@@ -100,16 +129,18 @@ public class ResponsabileDAO {
 
 
 
+
+
     /////////////////////////////////RECUPERO PASSWORD////////////////////////////
     //Metodo per recuperare la password dal database in base alla mail
-    public String recuperaPasswordResponsabile(String email) {
+    public String recuperaPasswordResponsabile(String matricola) {
 
         String password = null;
 
         try {
-            String query = "SELECT pw FROM responsabile WHERE email = ?";
+            String query = "SELECT pw FROM responsabile WHERE matricola = ?";
             PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
-            preparedStatement.setString(1, email);
+            preparedStatement.setString(1, matricola);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
