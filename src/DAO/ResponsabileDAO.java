@@ -78,6 +78,27 @@ public class ResponsabileDAO {
 
     }
 
+    public boolean verificaMailResponsabile(String email) {
+
+        boolean emailTrovata = false;
+
+        try {
+            String query = "SELECT * FROM responsabile WHERE email = ?";
+            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                emailTrovata = true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return emailTrovata;
+    }
+
     /////////////////////////////////RECUPERO Matricola////////////////////////////
 
     //Metodo che verifica se la matricola di un responsabile è presente nel database
@@ -127,20 +148,16 @@ public class ResponsabileDAO {
 
     }
 
-
-
-
-
     /////////////////////////////////RECUPERO PASSWORD////////////////////////////
     //Metodo per recuperare la password dal database in base alla mail
-    public String recuperaPasswordResponsabile(String matricola) {
+    public String recuperaPasswordResponsabile(String email) {
 
         String password = null;
 
         try {
-            String query = "SELECT pw FROM responsabile WHERE matricola = ?";
+            String query = "SELECT pw FROM responsabile WHERE email = ?";
             PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
-            preparedStatement.setString(1, matricola);
+            preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {

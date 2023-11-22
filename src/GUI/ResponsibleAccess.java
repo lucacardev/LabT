@@ -182,7 +182,7 @@ public class ResponsibleAccess extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 //Apri finestra d'inserimento email per recupero credenziali
 
-                PasswordRecovery passwordRecoveryPanel = new PasswordRecovery(myController);
+                PasswordRecoveryR passwordRecoveryPanel = new PasswordRecoveryR(myController);
 
                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(ResponsibleAccess.this);
 

@@ -1,5 +1,6 @@
 package GUI;
 
+import DTO.Responsabile;
 import DTO.Utente;
 import UTILITIES.Controller;
 
@@ -196,16 +197,8 @@ public class HomePage extends JPanel{
             e.printStackTrace();
         }
 
-
-
-
-
         add(leftHomePage);
         add(rightHomePage);
 
-
-
     }
-
-
 }

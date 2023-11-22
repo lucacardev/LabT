@@ -173,6 +173,17 @@ public class Controller {
         return responsabileTrovato;
     }
 
+    public boolean verificaMailResponsabile (String email) {
+
+        boolean emailTrovata;
+
+        emailTrovata = responsabileDAO.verificaMailResponsabile(email);
+
+        return emailTrovata;
+
+    }
+
+
     public boolean verificaMatricolaResponsabile (String matricola) {
 
         boolean matricolaTrovata;

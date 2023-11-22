@@ -223,7 +223,7 @@ public class SignInPage extends JPanel {
         //Impostazione sfondo background di sinistra
 
         try {
-            backgroundImageSignin = ImageIO.read(new File("C:/Users/cardo/Desktop/LabT/src/GUI/icon/sign.png"));
+            backgroundImageSignin = ImageIO.read(new File("src/GUI/icon/sign.png"));
 
 
         } catch (Exception ex) {
