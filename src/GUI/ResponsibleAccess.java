@@ -56,7 +56,7 @@ public class ResponsibleAccess extends JPanel {
         //Impostazione sfondo background di destra
 
         try {
-            backgroundRight = ImageIO.read(new File("src/GUI/icon/Immagine78.png"));
+            backgroundRight = ImageIO.read(new File("src/GUI/icon/imm.jpg"));
 
 
         } catch (Exception ex) {
