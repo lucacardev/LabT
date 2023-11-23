@@ -383,7 +383,7 @@ public class ResponsibleAccess extends JPanel {
             String matricolaRecuperata = myController.MatricolaRecovery(responsabileCorrente);
             responsabileCorrente = new Responsabile(matricolaRecuperata, getLoginMatricola(), getLoginPassword());
             responsabileTrovato[0] = myController.verificaResponsabile(responsabileCorrente);*/
-            responsabileCorrente = new Responsabile(getLoginMatricola(), null, getLoginPassword());
+            responsabileCorrente = new Responsabile(getLoginMatricola(), null,null,null,null,null, getLoginPassword(),null);
             responsabileTrovato[0] = myController.verificaResponsabile(responsabileCorrente);
 
 

@@ -24,7 +24,7 @@ public class PasswordRecoveryR extends JPanel {
     private BufferedImage leftRecoveryBackground;
 
     private EmailSender sendEmailVerification;
-    private final TextFieldBorderColor newPassword;
+    private final JPasswordField newPassword;
     private final TextFieldBorderColor repeatNewPassword;
 
     private final BtnLayout confirmPassword;
@@ -115,7 +115,7 @@ public class PasswordRecoveryR extends JPanel {
         newPasswordPanel.add(textNewPassword, NPWgbc);
 
         //Inserimento campo per nuova password
-        newPassword = new TextFieldBorderColor(15);
+        newPassword = new JPasswordField(15);
 
         TextFieldBorderColor.changeTextFieldBorderColor(newPassword);
 
@@ -161,16 +161,16 @@ public class PasswordRecoveryR extends JPanel {
 
                     } else {
 
-                        if(myController.aggiornaPasswordUtenteC(emailResponsabile, getNewPassword())) {
+                        if(myController.aggiornaPasswordResponsabileC(emailResponsabile, getNewPassword())) {
                             JOptionPane.showMessageDialog(null, "Password aggiornata correttamente!");
 
-                            PaginaLogin paginaLogin = new PaginaLogin(myController);
+                            ResponsibleAccess paginaAccesso= new ResponsibleAccess(myController);
 
-                            //Ritorna alla pagina di login dopo aver confermato la nuova password
+                            //Ritorna alla pagina di accesso dopo aver confermato la nuova password
 
                             MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(PasswordRecoveryR.this);
 
-                            mainWindow.addCardPanel(paginaLogin, "login");
+                            mainWindow.addCardPanel(paginaAccesso, "accesso");
 
 
                         }

@@ -11,17 +11,14 @@ public class Responsabile {
     private Sede codS_fk;
     private DTO.Sede Sede;
 
-    public Responsabile(String matricola,String email,char[] pw) {
+    public Responsabile(String matricola,String nome,String cognome,String codfis,String tel,String email,char[] pw,Sede s) {
         this.matricola = matricola;
-        this.email = email;
-        this.pw = pw;
-    }
-
-    public Responsabile(String nome,String cognome,String codfis,String tel,Sede s){
         this.nome = nome;
         this.cognome = cognome;
         this.codfiscale = codfis;
         this.telefono = tel;
+        this.email = email;
+        this.pw = pw;
         this.codS_fk = s;
     }
 
@@ -82,10 +79,10 @@ public class Responsabile {
     }
 
     public Sede getSede() {
-        return this.Sede;
+        return this.codS_fk;
     }
 
-    public void setSede(Sede sede) {
-        this.codS_fk = sede;
+    public void setSede(Sede codS_fk) {
+        this.codS_fk = codS_fk;
     }
 }

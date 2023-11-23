@@ -64,12 +64,8 @@ public class PasswordRecovery extends JPanel{
 
         setLayout(new GridLayout(0,2));
 
-
-
-
         rightPasswordRecovery.setLayout(new GridBagLayout());
         GridBagConstraints gbcRight = new GridBagConstraints();
-
         gbcRight.insets = new Insets(7,7,7,7);
 
         /////////////////////LATO DESTRO/////////////////////////
@@ -86,10 +82,7 @@ public class PasswordRecovery extends JPanel{
         emailTextRecovery.increaseFont(emailTextRecovery, 1);
         gbcRight.anchor = GridBagConstraints.CENTER;
 
-
         rightPasswordRecovery.add(emailTextRecovery, gbcRight);
-
-
 
         //Inserimento campo email per recupero credenziali
 
@@ -101,12 +94,8 @@ public class PasswordRecovery extends JPanel{
         gbcRight.weightx = 0;
         gbcRight.anchor = GridBagConstraints.CENTER;
 
-
-
         TextFieldBorderColor.changeTextFieldBorderColor(emailRecovery);
         rightPasswordRecovery.add(emailRecovery, gbcRight);
-
-
 
         //Inserimento bottone d'invio codice
         sendButtonCode = new BtnLayout("Recupera");
@@ -118,8 +107,7 @@ public class PasswordRecovery extends JPanel{
         gbcRight.anchor = GridBagConstraints.FIRST_LINE_END;
         rightPasswordRecovery.add(sendButtonCode, gbcRight);
 
-        /*Creazione Pannello per impostare la nuova Password (visibile solo dopo aver inserito il
-        codice corretto) */
+        /*Creazione Pannello per impostare la nuova Password (visibile solo dopo aver inserito il codice corretto) */
 
         newPasswordPanel = new JPanel();
 
@@ -170,11 +158,8 @@ public class PasswordRecovery extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
 
-
                 //Se le password coincidono
                 if(passwordComparison()) {
-
-
 
                     //Errore nel caso si voglia inserire una nuova password già usata in passato
                     if(myController.recuperoPasswordUtenteC(emailUtente).equals(getNewPassword())) {
@@ -259,7 +244,6 @@ public class PasswordRecovery extends JPanel{
 
 
 
-
         //Inserimento bottone per tornare indietro
         backButton = new BtnLayout("Indietro");
         gbcRight.gridx = 0;
@@ -291,7 +275,7 @@ public class PasswordRecovery extends JPanel{
 
         //Impostazione background
         try {
-            leftRecoveryBackground = ImageIO.read(new File("C:/Users/cardo/Desktop/LabT/src/GUI/icon/mailbackground.png"));
+            leftRecoveryBackground = ImageIO.read(new File("src/GUI/icon/mailbackground.png"));
 
 
         } catch (Exception ex) {
