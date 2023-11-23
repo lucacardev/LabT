@@ -5,13 +5,12 @@ public class Sede {
     private Integer CodS;
     private String nome;
     private String indirizzo;
-    private String responsabile;
 
-    public Sede (Integer codS,String nome,String indirizzo,String responsabile) {
+
+    public Sede (Integer codS,String nome,String indirizzo) {
         this.CodS = codS;
         this.nome = nome;
         this.indirizzo = indirizzo;
-        this.responsabile = responsabile;
     }
 
 //GETTERS E SETTERS
@@ -45,16 +44,5 @@ public class Sede {
 
         this.indirizzo = indirizzo;
     }
-
-    public String getResponsabile() {
-
-        return this.responsabile;
-    }
-
-    public void setResponsabile(String responsabile) {
-
-        this.responsabile = responsabile;
-    }
-
 
 }
