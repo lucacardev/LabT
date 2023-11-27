@@ -58,10 +58,10 @@ public class PasswordRecoveryR extends JPanel {
 
         rightPasswordRecovery.setLayout(new GridBagLayout());
         GridBagConstraints gbcRight = new GridBagConstraints();
+        rightPasswordRecovery.setBackground(new Color(86, 99, 255, 255));
         gbcRight.insets = new Insets(7,7,7,7);
 
         /////////////////////LATO DESTRO/////////////////////////
-
 
         //Inserimento testo per recupero credenziali
 
