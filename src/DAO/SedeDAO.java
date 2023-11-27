@@ -99,7 +99,6 @@ public class SedeDAO {
             System.out.println("Errore durante il recupero delle sedi dal DB");
             e.printStackTrace();
         }
-
         return sedi;
     }
 }
