@@ -38,7 +38,7 @@ public class SedeDAO {
             if (resultSet.next()) {
                 codSede = resultSet.getInt("cods");
                 nomeSede = resultSet.getString("nome");
-                sede = new Sede(codSede, nomeSede , null, null);
+                sede = new Sede(codSede, nomeSede , null);
             }
 
 
