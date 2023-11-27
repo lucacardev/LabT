@@ -2,14 +2,12 @@ package DAO;
 
 import UTILITIES.*;
 import DTO.Sede;
-import DTO.Laboratorio;
 
 import java.sql.*;
 
 public class SedeDAO {
 
     private DB_Connection connessioneDB;
-    private Statement statement;
     Controller currController;
 
 
