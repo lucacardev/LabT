@@ -92,7 +92,6 @@ public class SedeDAO {
                 int codSede = resultSet.getInt("codS");
                 String nomeSede = resultSet.getString("nome");
                 String indirizzo = resultSet.getString("indirizzo");
-
                 Sede sede = new Sede(codSede, nomeSede, indirizzo);
                 sedi.add(sede);
             }
