@@ -5,6 +5,8 @@ import UTILITIES.Controller;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MyBooking extends JPanel {
 
@@ -13,6 +15,12 @@ public class MyBooking extends JPanel {
 
     private static final JPanel topPanel = new JPanel();
     private static final JPanel footerPanel = new JPanel();
+
+    private static BtnLayout backButton = new BtnLayout("Indietro");
+
+
+
+    GridBagConstraints footerPanelGbc = new GridBagConstraints();
 
     public MyBooking(Controller controller, Utente utente)  {
 
@@ -29,7 +37,6 @@ public class MyBooking extends JPanel {
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.anchor = GridBagConstraints.CENTER;
-        topPanel.setBackground(Color.red);
         add(topPanel, gbc);
 
         gbc.gridx = 0;
@@ -37,13 +44,51 @@ public class MyBooking extends JPanel {
         gbc.weighty = 0.20;
         gbc.weightx = 1;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
-        footerPanel.setBackground(Color.blue);
         add(footerPanel, gbc);
 
         //////////////////////////////////////////TOP PANEL//////////////////////////////////////
 
         topPanel.setLayout(new BorderLayout());
-        TablePanel tablePanel = new TablePanel(null);
+        TablePanel tablePanel = new TablePanel(myController.recuperoMiePrenotazioniC(utenteLoggato));
         topPanel.add(tablePanel, BorderLayout.CENTER);
+
+        //////////////////////////////////////////FOOTER PANEL//////////////////////////////////////
+
+        footerPanel.setLayout(new GridBagLayout());
+        footerPanelGbc.insets = new Insets(5,5,5,5);
+
+
+        //Creazione bottone per tornare indietro
+
+            footerPanelGbc.gridx = 0;
+            footerPanelGbc.gridy = 0;
+            footerPanelGbc.anchor = GridBagConstraints.LINE_START;
+            footerPanelGbc.insets = new Insets(5, 15, 10, 0);
+            footerPanelGbc.weightx = 0.33;
+            footerPanel.add(backButton, footerPanelGbc);
+
+            //Azione quando il pulsante indietro viene premuto
+
+            backButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+
+                    MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(MyBooking.this);
+
+                    mainWindow.showCard("homePage");
+
+
+                }
+            });
+
+
+
+
+
+
+
     }
+
+
+
 }

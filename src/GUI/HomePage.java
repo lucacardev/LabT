@@ -171,16 +171,22 @@ public class HomePage extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                MyBooking myBookingPage = new MyBooking(myController, utenteLoggato);
-
                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(HomePage.this);
 
-                mainWindow.addCardPanel(myBookingPage, "myBookingPage");
+                if(mainWindow.containsCard("myBookingPage")) {
 
+                    mainWindow.showCard("myBookingPage");
+
+                } else {
+
+                    MyBooking myBookingPage = new MyBooking(myController, utenteLoggato);
+                    mainWindow.addCardPanel(myBookingPage, "myBookingPage");
+                }
             }
         });
 
         //Bottone nuova prenotazione
+        /*
         BtnLayout bookingCalendar = new BtnLayout("Calendario prenotazioni");
         bookingCalendar.setFont(new FontUIResource(font, style, sizeFont));
 
@@ -188,7 +194,7 @@ public class HomePage extends JPanel{
         rightGbc.gridy = 3;
         rightGbc.fill = GridBagConstraints.HORIZONTAL;
         rightHomePage.add(bookingCalendar, rightGbc);
-
+        */
         //Disegno Background
         try {
             // Carica l'immagine di sfondo dal file specificato

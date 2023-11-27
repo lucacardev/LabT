@@ -1,10 +1,8 @@
 package GUI;
 
 import DAO.PrenotazioneDAO;
-import DTO.Postazione;
-import DTO.Prenotazione;
-import DTO.Strumento;
-import DTO.Utente;
+import DTO.*;
+import DAO.SedeDAO;
 import UTILITIES.Controller;
 import UTILITIES.EmailSender;
 import com.toedter.calendar.JCalendar;
@@ -28,11 +26,11 @@ import java.util.Date;
 
 public class BookingFrame extends JDialog{
 
-    private  static final JPanel mainPanel = new JPanel();
+    private JPanel mainPanel = new JPanel();
     private static final JLabel dataText = new JLabel("Data: ");
     private static final JLabel oraText = new JLabel("Ora: ");
-    private static final JLabel tempoUtilizzoText = new JLabel("Tempo Utilizzo: ");
-    private static final JLabel codStrumento = new JLabel("Codice Strumento: ");
+    private  static final JLabel tempoUtilizzoText = new JLabel("Tempo Utilizzo: ");
+    private  static final JLabel codStrumento = new JLabel("Codice Strumento: ");
 
     private static final BtnLayout prenotaButton = new BtnLayout("Prenota");
 
@@ -170,8 +168,6 @@ public class BookingFrame extends JDialog{
 
                     }
 
-
-
                     //Creo l'oggetto prenotazione e gli passo i dati inseriti dall'utente
 
                     Prenotazione prenotazioneDTO = new Prenotazione(selectedDate, selectedTime, selectedUtilizationTime, utenteLoggato, strumentoSelezionato);
@@ -189,7 +185,8 @@ public class BookingFrame extends JDialog{
                                 "Ora: " + timeFormat.format(prenotazioneDTO.getOra_prenotazioneS()) + "\n" +
                                 "Tempo di utilizzo: " + timeFormat.format(prenotazioneDTO.getTempo_utilizzoS()) + "\n" +
                                 "Utente: " + prenotazioneDTO.getUsername_fk().getUsername() + "\n" +
-                                "Strumento: " + prenotazioneDTO.getCodStrumento_fk().getCodStrumento();
+                                "Strumento: " + prenotazioneDTO.getCodStrumento_fk().getCodStrumento() + "\n" +
+                                "Sede: " + strumentoSelezionato.getCodSede_fk().getNome();
 
                         JOptionPane.showMessageDialog(null, message, "Conferma Prenotazione", JOptionPane.INFORMATION_MESSAGE);
 
@@ -197,7 +194,11 @@ public class BookingFrame extends JDialog{
                                 "Ora: " + timeFormat.format(prenotazioneDTO.getOra_prenotazioneS()) + "\n" +
                                 "Tempo di utilizzo: " + timeFormat.format(prenotazioneDTO.getTempo_utilizzoS()) + "\n" +
                                 "Utente: " + prenotazioneDTO.getUsername_fk().getUsername() + "\n" +
-                                "Strumento: " + prenotazioneDTO.getCodStrumento_fk().getCodStrumento();
+                                "Strumento: " + prenotazioneDTO.getCodStrumento_fk().getCodStrumento() + "\n" +
+                                "Sede: " + strumentoSelezionato.getCodSede_fk().getNome() + "\n" +
+                                "Indirizzo: " + strumentoSelezionato.getCodSede_fk().getIndirizzo();
+
+
 
                         EmailSender.sendVerificationCode(utenteLoggato.getEmail(), " ", "Riepilogo Prenotazione",
                                 "Prenotazione avvenuta con sucesso: \n" + riepilogoPrenotazione);

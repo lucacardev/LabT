@@ -16,6 +16,8 @@ public class MainWindow extends JFrame {
     private JPanel cardPanel;
     private JPanel passwordRecoveryPanel;
 
+    private MyBooking myBookingPage;
+
     private PaginaLogin paginaLogin;
 
     public MainWindow(Controller controller) {
@@ -63,5 +65,19 @@ public class MainWindow extends JFrame {
         cardPanel.add(classPanel, keyPanel);
         cardLayout.show(cardPanel, keyPanel);
 
+    }
+
+    public void showCard(String keyPanel) {
+        cardLayout.show(cardPanel, keyPanel);
+    }
+
+    public boolean containsCard(String keyPanel) {
+        Component[] components = cardPanel.getComponents();
+        for (Component component : components) {
+            if (component instanceof JPanel && keyPanel.equals(component.getName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

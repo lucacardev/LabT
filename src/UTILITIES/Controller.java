@@ -124,6 +124,20 @@ public class Controller {
 
     }
 
+    public List<Prenotazione> recuperoMiePrenotazioniC(Utente utenteC) {
+
+        return prenotazioneDAO.recuperoMiePrenotazioni(utenteC);
+
+    }
+
+    public List<Prenotazione> recuperoPrenStrumenti(Strumento codStrumento) {
+
+        return prenotazioneDAO.recuperoPrenStrumenti(codStrumento);
+
+    }
+
+
+
     public boolean newUserBookingC(Prenotazione prenotazione) {
         java.util.Date dataPrenotazione = prenotazione.getData_prenotazioneS();
         java.util.Date oraPrenotazione = prenotazione.getOra_prenotazioneS();

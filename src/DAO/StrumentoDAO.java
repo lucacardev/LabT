@@ -3,6 +3,7 @@ package DAO;
 import DTO.Postazione;
 import DTO.Sede;
 import DTO.Strumento;
+import DTO.Utente;
 import UTILITIES.*;
 
 import java.sql.*;
@@ -195,6 +196,47 @@ public class StrumentoDAO {
         }
 
         return allStruments;
+
+    }
+
+    public Strumento recuperoStrumento(Integer codStrumento) {
+
+        Strumento strumentoTrovato = null;
+        SedeDAO sedeDAO = new SedeDAO(currController);
+        PostazioneDAO postazioneDAO = new PostazioneDAO(currController);
+
+        try {
+            String query = "SELECT * FROM strumento WHERE codstrumento = ?";
+            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            preparedStatement.setInt(1, codStrumento);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                Integer codStrumentoRec = resultSet.getInt("codstrumento");
+                String caratteristicheTecnicheRec = resultSet.getString("caratteristiche_tecniche");
+                String descrizioneRec = resultSet.getString("descrizione");
+                Time tempoMaxUsoRec = resultSet.getTime("tempomaxuso");
+                Integer codSede_fk = resultSet.getInt("codsede_fk");
+                String codPostazione_fk = resultSet.getString("codpostazione_fk");
+
+
+                //Recupero della Sede tramite l'attributo codsede_fk dello strumento
+                //Recupero allo stesso modo anche la postazione tramite metodi delle proprie classi DAO
+                Sede sede = sedeDAO.recuperoSede(codSede_fk);
+                Postazione postazione = postazioneDAO.recuperoPostazione(codPostazione_fk);
+
+
+                strumentoTrovato = new Strumento(codStrumentoRec, caratteristicheTecnicheRec, descrizioneRec,
+                                        tempoMaxUsoRec, postazione, sede);
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println("Errore nel recupero dell'utente mediante il suo username");
+            e.printStackTrace();
+        }
+
+        return  strumentoTrovato;
 
     }
 

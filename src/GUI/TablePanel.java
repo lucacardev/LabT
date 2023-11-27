@@ -12,11 +12,14 @@ import java.util.List;
 public class TablePanel extends JPanel {
 
     private JTable tableStrumenti;
-
     private JTable tablePrenotazioni;
+
+    private JTable tablePrenStrumenti;
     private TableModelStrumento tableModelStrumento;
 
     private TableModelMiePrenotazioni tableModelMiePrenotazioni;
+
+    private TableModelPrenStrum tableModelPrenStrum;
 
     private Integer codStrumentoAttuale = null;
 
@@ -45,18 +48,25 @@ public class TablePanel extends JPanel {
 
                             codStrumentoAttuale = selectedStrumento.getCodStrumento();
 
+                            //Con questo metodo passiamo lo strumento selezionato all'oggetto CalendarDialog
+                            newBooking.setStrumSelezCalend(selectedStrumento);
+
                             //Passiamo lo Strumento alla classe BookingFrame quando l'utente prenota uno strumento
                             bookingFrame.setStrumentoAttuale(selectedStrumento);
+
 
 
                             newBooking.setCodStrumentoBookingFrame(codStrumentoAttuale.toString());
                             System.out.println(codStrumentoAttuale.toString());
 
-                            newBooking.bookingButton();
+                            newBooking.bookingButtonAvailability();
+                            newBooking.bookingButtonCalendar();
+
 
 
                     } else {
                         newBooking.removeBookingButton();
+                        newBooking.removeCalendarButton();
                     }
                 }
             }
@@ -75,6 +85,20 @@ public class TablePanel extends JPanel {
         setLayout(new BorderLayout());
         add(new JScrollPane(tablePrenotazioni), BorderLayout.CENTER);
 
+
+    }
+
+    //Creo un nuovo costruttore per il calendario, gli aggiungo il parametro String per differenziarlo
+    //da quello per le prenotazioni dell'utente.
+
+    public TablePanel(List<Prenotazione> listaPrenotazioniStrumento, String calendario) {
+
+       tableModelPrenStrum = new TableModelPrenStrum(listaPrenotazioniStrumento);
+
+       tablePrenStrumenti = new JTable(tableModelPrenStrum);
+
+        setLayout(new BorderLayout());
+        add(new JScrollPane(tablePrenStrumenti), BorderLayout.CENTER);
 
     }
 

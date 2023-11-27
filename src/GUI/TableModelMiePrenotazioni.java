@@ -4,11 +4,13 @@ import DTO.Prenotazione;
 import DTO.Strumento;
 
 import javax.swing.table.AbstractTableModel;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class TableModelMiePrenotazioni extends AbstractTableModel {
 
-    private final String[] columnsName = {"Codice Prenotazione", "Data", "Tempo di utilizzo", "Username", "Codice Strumento"};
+    private final String[] columnsName = {"Codice Prenotazione", "Data", "Ora", "Tempo di utilizzo", "Utente", "Codice Strumento"};
     private List<Prenotazione> listaPrenotazioni;
 
     public TableModelMiePrenotazioni(List<Prenotazione> listaPrenotazioni) {
@@ -27,16 +29,27 @@ public class TableModelMiePrenotazioni extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return 10;
+
+        if(listaPrenotazioni != null) {
+
+            return listaPrenotazioni.size();
+
+        } else {
+
+            return 22;
+
+        }
+
     }
 
     @Override
     public int getColumnCount() {
-        return 5;
+        return 6;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+
         if (listaPrenotazioni != null) {
 
             Prenotazione prenotazione = listaPrenotazioni.get(rowIndex);
@@ -46,22 +59,30 @@ public class TableModelMiePrenotazioni extends AbstractTableModel {
                     return prenotazione.getCod_prenotazione();
 
                 case 1:
-                    return prenotazione.getData_prenotazioneS();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    return sdf.format(prenotazione.getData_prenotazioneS());
 
                 case 2:
-                    return prenotazione.getTempo_utilizzoS();
+                    SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
+                    return sdfTime.format(prenotazione.getOra_prenotazioneS());
 
                 case 3:
-                    return prenotazione.getUsername_fk();
+                    SimpleDateFormat sdfTime3 = new SimpleDateFormat("HH:mm");
+                    return sdfTime3.format(prenotazione.getTempo_utilizzoS());
 
                 case 4:
-                    return prenotazione.getCodStrumento_fk();
+                    return prenotazione.getUsername_fk().getUsername();
+
+                case 5:
+
+                    return prenotazione.getCodStrumento_fk().getCodStrumento();
 
                 default:
                     return null;
             }
 
         } else {
+            System.out.println("La liste delle prenotazioni è vuota");
             return null;
         }
     }
