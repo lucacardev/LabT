@@ -211,9 +211,7 @@ public class Controller {
     public String recuperoPasswordResponsabileC(String email) {
 
         String PasswordC;
-
         PasswordC = responsabileDAO.recuperaPasswordResponsabile(email);
-
         return PasswordC;
 
     }
@@ -221,9 +219,7 @@ public class Controller {
     public boolean aggiornaPasswordResponsabileC(String email, String nuovaPassword) {
 
         boolean update;
-
         update = responsabileDAO.aggiornaPasswordResponsabile(email, nuovaPassword);
-
         return update;
 
     }
@@ -231,13 +227,13 @@ public class Controller {
     public boolean newRespRegister(Responsabile responsabile) {
 
 
-        return responsabileDAO.newResponsableRegister(responsabile.getMatricola(),responsabile.getNome(),responsabile.getCognome(),responsabile.getEmail(),responsabile.getPw());
+        return responsabileDAO.newResponsableRegister(responsabile.getMatricola(),responsabile.getNome(),responsabile.getCognome(),responsabile.getEmail(),responsabile.getPw(),responsabile.getSede());
 
     }
 
-    public boolean verifyMatricolaResponsabileC (Responsabile responsabile) {
+    public boolean verifyMatricolaMailResponsabileC (Responsabile responsabile) {
 
-        return responsabileDAO.verificaMatricolaResponsabile(responsabile.getMatricola());
+        return responsabileDAO.verifyMatricolaMailR(responsabile.getMatricola(),responsabile.getEmail());
 
     }
 

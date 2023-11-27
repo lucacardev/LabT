@@ -1,5 +1,6 @@
 package DAO;
 
+import DTO.Sede;
 import UTILITIES.Controller;
 import UTILITIES.DB_Connection;
 
@@ -195,7 +196,7 @@ public class ResponsabileDAO {
     }
 
     //Metodo per verificare se mail e matricola già utilizzati
-    public boolean verifyMailUsername(String matricola, String email) {
+    public boolean verifyMatricolaMailR(String matricola, String email) {
 
         String matricolaDB;
         String emailDB;
@@ -224,9 +225,9 @@ public class ResponsabileDAO {
 
     //////////////////////INSERT RESPONSABILE/////////////////////7
 
-    public boolean newResponsableRegister(String matricola, String nome, String cognome,String email, char[] password) {
+    public boolean newResponsableRegister(String matricola, String nome, String cognome, String email, char[] password, Sede cods_fk) {
 
-        String query = "INSERT INTO RESPONSABILE (matricola, nome, cognome,email, pw) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO RESPONSABILE (matricola, nome, cognome,email, pw,cods_fk) VALUES (?, ?, ?, ?, ?,?)";
 
         try {
             PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
@@ -235,7 +236,7 @@ public class ResponsabileDAO {
             preparedStatement.setString(3, cognome);
             preparedStatement.setString(4, email);
             preparedStatement.setString(5, String.valueOf(password));
-
+            preparedStatement.setInt(6, cods_fk.getCodS());
 
             int rowsInserted = preparedStatement.executeUpdate();
             return rowsInserted > 0;

@@ -66,17 +66,33 @@ public class HomePageR extends JPanel {
             String cognome = informazioni[1];
 
             // Testo di benvenuto con nome e cognome
-            IncreaseFont welcomeText = new IncreaseFont("Benvenuto " + nome + " " + cognome);
+            IncreaseFont welcomeText = new IncreaseFont("Benvenuto/a \n"); //+ nome + " " + cognome);
+            IncreaseFont nc = new IncreaseFont(nome + " " + cognome);
             Font welcomeFont = welcomeText.getFont();
-            int fontSize = welcomeFont.getSize() + 20;
+            int fontSize = welcomeFont.getSize() + 25;
             Font increaseFont = welcomeFont.deriveFont((float)fontSize);
             welcomeText.setFont(increaseFont);
-            welcomeText.setForeground(new Color(0,0,128));
+            welcomeText.setForeground(new Color(0,0,205));
+            nc.setFont(increaseFont);
+            nc.setForeground(new Color(0,0,205));
             leftGbc.gridx = 0;
             leftGbc.gridy = 0;
             leftGbc.insets = new Insets(20,0,0,0);
             leftHomePage.add(welcomeText, leftGbc);
+            GridBagConstraints ncGbc = new GridBagConstraints();
+            ncGbc.gridx = 0;
+            ncGbc.gridy = 1;
+            leftHomePage.add(nc,ncGbc);
         }
+
+        /*JScrollPane scrollableLeftHomePage = new JScrollPane(leftHomePage);
+
+        // Imposta la politica della barra di scorrimento
+        scrollableLeftHomePage.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        scrollableLeftHomePage.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        // Aggiungi lo JScrollPane alla tua UI al posto di leftHomePage
+        add(scrollableLeftHomePage);*/
 
 
 

@@ -17,7 +17,5 @@ public class IncreaseFont extends JLabel {
         int fontSize = getFont.getSize() + increment;
         Font increaseFont = getFont.deriveFont((float)fontSize);
         mainText.setFont(increaseFont);
-
-
     }
 }

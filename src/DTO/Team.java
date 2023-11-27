@@ -5,14 +5,16 @@ public class Team {
     private String nome;
     private String descrizione;
     private String matricolaL;
+    private Integer n_tecnici;
     private Responsabile codR_fk;
     private DTO.Responsabile Responsabile;
 
-    public Team(String codTeam,String nome,String des,String matricolaLeader, Responsabile res) {
+    public Team(String codTeam,String nome,String des,String matricolaLeader,Integer n_tecnici, Responsabile res) {
         this.codTeam = codTeam;
         this.nome = nome;
         this.descrizione = des;
         this.matricolaL = matricolaLeader;
+        this.n_tecnici = n_tecnici;
         this.codR_fk = res;
     }
 
@@ -47,6 +49,10 @@ public class Team {
     public void setMatricolaL(String matricolaL) {
         this.matricolaL = matricolaL;
     }
+
+    public Integer getN_tecnici() { return this.n_tecnici;}
+
+    public void setN_tecnici(Integer n_tecnici) { this.n_tecnici = n_tecnici; }
 
     public Responsabile getResponsabile() {
         return this.Responsabile;

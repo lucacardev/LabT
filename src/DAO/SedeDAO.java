@@ -82,32 +82,6 @@ public class SedeDAO {
 
     }
 
-    //Recupero indirizzo della sede tramite codSede
-    public String recuperoIndirizzo(int codSede) {
-
-        String indirizzoTrovato = " ";
-
-        try {
-            String query = "SELECT indirizzo FROM sede WHERE codSede = ?" ;
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
-            preparedStatement.setInt(1, '%' + codSede + '%');
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                indirizzoTrovato = resultSet.getString("indirizzo");
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Errore nel recupero dell'indirizzo tramite codS");
-            e.printStackTrace();
-        }
-
-        return  indirizzoTrovato;
-
-    }
-
-
-
 
 
 }
