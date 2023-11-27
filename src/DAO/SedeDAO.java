@@ -8,6 +8,7 @@ import java.sql.*;
 public class SedeDAO {
 
     private DB_Connection connessioneDB;
+    private Statement statement;
     Controller currController;
 
 
