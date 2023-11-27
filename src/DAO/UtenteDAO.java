@@ -1,5 +1,7 @@
 package DAO;
 
+import DTO.Postazione;
+import DTO.Utente;
 import UTILITIES.*;
 import DTO.Sede;
 import DTO.Laboratorio;
@@ -199,6 +201,35 @@ public class UtenteDAO {
             e.printStackTrace();
             return false;
         }
+
+    }
+
+    public Utente recuperoUtente(String username) {
+
+        Utente utenteTrovato = null;
+
+        try {
+            String query = "SELECT * FROM utente WHERE username = ?";
+            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String usernameUtente = resultSet.getString("username");
+                String emailUtente = resultSet.getString("email");
+                String pwUtente = resultSet.getString("pw");
+
+                utenteTrovato = new Utente(usernameUtente, emailUtente, pwUtente.toCharArray());
+            }
+
+
+
+        } catch (SQLException e) {
+            System.out.println("Errore nel recupero dell'utente mediante il suo username");
+            e.printStackTrace();
+        }
+
+        return  utenteTrovato;
 
     }
 

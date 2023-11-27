@@ -3,6 +3,7 @@ package GUI;
 import DTO.Strumento;
 
 import javax.swing.table.AbstractTableModel;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class TableModelStrumento extends AbstractTableModel {
@@ -64,7 +65,8 @@ public class TableModelStrumento extends AbstractTableModel {
                     return strumento.getDescrizione();
 
                 case 3:
-                    return strumento.getTempoMaxUso();
+                    SimpleDateFormat sdfTime4 = new SimpleDateFormat("HH:mm");
+                    return sdfTime4.format(strumento.getTempoMaxUso());
 
                 case 4:
                     return strumento.getCodPostazione_fk().getCodPostazione();
@@ -77,6 +79,7 @@ public class TableModelStrumento extends AbstractTableModel {
             }
 
         } else {
+
             return null;
         }
     }

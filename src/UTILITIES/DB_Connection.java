@@ -69,4 +69,15 @@ public class DB_Connection {
 
     }
 
+    //Metodo che permette la chiusura della connessione con il database
+    public void closeConnection() {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

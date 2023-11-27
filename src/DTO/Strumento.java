@@ -4,6 +4,7 @@ import java.sql.Time;
 
 public class Strumento {
 
+
     private Integer CodStrumento;
     private String caratteristiche_tecniche;
     private String descrizione;
@@ -69,12 +70,14 @@ public class Strumento {
     }
 
     public Sede getCodSede_fk() {
-        return CodSede_fk;
+
+        return this.CodSede_fk;
     }
 
     public void setCodSede_fk(Sede codSede_fk) {
         CodSede_fk = codSede_fk;
     }
+
 
 
 

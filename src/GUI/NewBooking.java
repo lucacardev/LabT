@@ -31,10 +31,14 @@ public class NewBooking extends JPanel{
     private static JPanel footerPanel;
 
     private BookingFrame bookingFrame;
+    private CalendarDialog calendarDialog;
+
+    private Strumento strumentoSelezionato;
 
     private TablePanel tablePanel;
 
     private BtnLayout bookingButton;
+    private BtnLayout calendarButton;
 
     TextFieldBorderColor sedeSearch;
     TextFieldBorderColor descrizioneSearch;
@@ -52,15 +56,15 @@ public class NewBooking extends JPanel{
 
     String codStrumentoUni;
 
-    //private boolean cercato = false;
 
 
     public NewBooking(Controller controller, Utente utenteCorrente) {
 
-
         myController = controller;
         utenteLoggato = utenteCorrente;
-        bookingFrame = new BookingFrame(mainWindow, myController, utenteLoggato, null);
+
+            bookingFrame = new BookingFrame(mainWindow, myController, utenteLoggato, null);
+
 
         setLayout(new GridBagLayout());
         GridBagConstraints mainGbc = new GridBagConstraints();
@@ -83,7 +87,6 @@ public class NewBooking extends JPanel{
         mainGbc.weightx = 1;
         mainGbc.fill = GridBagConstraints.BOTH;
         mainGbc.anchor = GridBagConstraints.CENTER;
-        //showResultPanel.setBackground(Color.pink);
         add(showResultPanel, mainGbc);
 
         footerPanel = new JPanel();
@@ -163,6 +166,8 @@ public class NewBooking extends JPanel{
 
         showResultPanel.setLayout(new BorderLayout());
 
+        //Recupero tutta la lista degli strumenti per aggiungerla alla tabella
+
         tablePanel = new TablePanel(myController.recuperoTuttaListaStrumenti(), this, bookingFrame);
         showResultPanel.add(tablePanel, BorderLayout.CENTER);
 
@@ -189,13 +194,18 @@ public class NewBooking extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                HomePage homePage = new HomePage(myController, utenteLoggato);
-
                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(NewBooking.this);
 
-                mainWindow.addCardPanel(homePage, "homePage");
+                if(mainWindow.containsCard("homePage")) {
 
+                    mainWindow.showCard("homePage");
 
+                } else {
+
+                    HomePage homePage = new HomePage(myController, utenteLoggato);
+                    mainWindow.addCardPanel(homePage, "homePage");
+
+                }
             }
         });
 
@@ -205,7 +215,7 @@ public class NewBooking extends JPanel{
 
         BtnLayout searchButton = new BtnLayout("Cerca");
 
-        footerPanelGbc.gridx = 2;
+        footerPanelGbc.gridx = 3;
         footerPanelGbc.gridy = 0;
         footerPanelGbc.weightx = 0.33;
         footerPanelGbc.anchor = GridBagConstraints.LINE_END;
@@ -226,7 +236,7 @@ public class NewBooking extends JPanel{
 
                     if(getSede().length() > 0 && getDescrizione().length() > 0) {
 
-                        //cercato = true;
+
                         listaStrumento = myController.recuperoListaStrumenti(getSede(), getDescrizione());
 
                         //Se la lista strumento è maggiore di zero significa che la sede esiste altrimenti diamo errore
@@ -374,14 +384,13 @@ public class NewBooking extends JPanel{
 
 
     /*Bottone di verifica disponibilità della strumento in base all'orario scelto dall'utente che non supera quello massimo d'utilizzo dello strumento*/
-    public void bookingButton() {
+    public void bookingButtonAvailability() {
 
         if (bookingButton == null) {
             bookingButton = new BtnLayout("Verifica Disponibilità");
             footerPanelGbc.gridx = 1;
             footerPanelGbc.gridy = 0;
-            footerPanelGbc.weightx = 0.33;
-            footerPanelGbc.anchor = GridBagConstraints.CENTER;
+            footerPanelGbc.weightx = 0.22;
             bookingButton.setBackground(new Color(224, 186, 6));
             footerPanel.add(bookingButton, footerPanelGbc);
 
@@ -395,10 +404,6 @@ public class NewBooking extends JPanel{
                     bookingFrame.setCodStrumento(codStrumentoUni);
                     bookingFrame.setVisible(true);
 
-
-
-
-
                 }
             });
 
@@ -406,6 +411,39 @@ public class NewBooking extends JPanel{
 
 
         }
+
+    public void bookingButtonCalendar() {
+
+        if (calendarButton == null) {
+            calendarButton = new BtnLayout("Calendario Prenotazioni");
+            footerPanelGbc.gridx = 2;
+            footerPanelGbc.gridy = 0;
+            footerPanelGbc.weightx = 0.22;
+            calendarButton.setBackground(new Color(224, 186, 6));
+            footerPanel.add(calendarButton, footerPanelGbc);
+
+            footerPanel.revalidate();
+            footerPanel.repaint();
+
+            calendarButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+
+                    //Solo quando clicchiamo il pulsante viene creato il calendario
+                    //Lo strumento selezionato lo ricaviamo grazie alla chiamata del metodo setStrumSelezCalend
+                    //Dalla classe TablePanel viene passato lo strumento selezionato
+
+                    calendarDialog = new CalendarDialog(mainWindow, myController, strumentoSelezionato);
+
+                    calendarDialog.setVisible(true);
+
+                }
+            });
+
+        }
+
+
+    }
     public void removeBookingButton() {
         if (bookingButton != null) {
             footerPanel.remove(bookingButton);
@@ -416,10 +454,25 @@ public class NewBooking extends JPanel{
 
     }
 
+    public void removeCalendarButton() {
+        if (calendarButton != null) {
+            footerPanel.remove(calendarButton);
+            calendarButton = null; // Rimuovi il riferimento al pulsante
+            footerPanel.revalidate();
+            footerPanel.repaint();
+        }
+
+    }
+
     public void setCodStrumentoBookingFrame(String codStrumentoBookingFrame) {
 
         codStrumentoUni = codStrumentoBookingFrame;
 
+    }
+
+    public void setStrumSelezCalend(Strumento strumento) {
+
+        strumentoSelezionato = strumento;
     }
 
 

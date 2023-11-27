@@ -24,13 +24,25 @@ public class Prenotazione {
 
     public Prenotazione(int cod_prenotazione, Date data_prenotazioneS, Date ora_prenotazioneS, Date tempo_utilizzoS, Utente Username_fk, Strumento CodStrumento_fk) {
 
+
         this.cod_prenotazione = cod_prenotazione;
+        this.data_prenotazioneS = data_prenotazioneS;
         this.ora_prenotazioneS = ora_prenotazioneS;
         this.tempo_utilizzoS = tempo_utilizzoS;
         this.Username_fk = Username_fk;
         this.CodStrumento_fk = CodStrumento_fk;
 
     }
+
+    public Prenotazione(Date data_prenotazioneS, Date ora_prenotazioneS, Date tempo_utilizzoS, Strumento CodStrumento_fk) {
+
+        this.data_prenotazioneS = data_prenotazioneS;
+        this.ora_prenotazioneS = ora_prenotazioneS;
+        this.tempo_utilizzoS = tempo_utilizzoS;
+        this.CodStrumento_fk = CodStrumento_fk;
+    }
+
+
 
     public int getCod_prenotazione() {
         return cod_prenotazione;
