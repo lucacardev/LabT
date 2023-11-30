@@ -56,8 +56,6 @@ public class PrenotazioneDAO {
 
             String errorMassage = e.getMessage();
 
-            System.out.println(errorMassage);
-
 
             if(errorMassage.contains("ERRORE: Lo strumento non può essere prenotato per quell'ora.Il laboratorio è chiuso.")) {
 
@@ -79,9 +77,6 @@ public class PrenotazioneDAO {
 
             }
 
-
-
-
             return false;
         }
     }
@@ -95,7 +90,7 @@ public class PrenotazioneDAO {
         StrumentoDAO strumentoDAO = new StrumentoDAO(currController);
 
         try {
-            String query = "SELECT * FROM prenotazione WHERE username_fk = ?";
+            String query = "SELECT * FROM prenotazione WHERE username_fk = ? ORDER BY data_prenotaziones DESC";
             PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
             preparedStatement.setString(1,  utenteLoggato.getUsername());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -173,6 +168,73 @@ public class PrenotazioneDAO {
 
     }
 
+    public void eliminaPrenotazioneDAO(int codPrenotazione) {
+
+        try {
+            String query = "DELETE FROM prenotazione WHERE codprenotazione = ?";
+            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            preparedStatement.setInt(1,  codPrenotazione);
+            preparedStatement.executeUpdate();
+
+
+        } catch (SQLException e) {
+            System.out.println("Errore nell'eliminazione della prenotazione ");
+            e.printStackTrace();
+        }
+
+    }
+
+    public boolean modificaMiaPrenotazioneDAO (int codPrenotazione, Timestamp dataNuova, Timestamp oraNuova, Timestamp tempoUtilizzoNuovo) {
+
+        try {
+            String query = "UPDATE prenotazione SET " +
+                    "data_prenotaziones = ?, " +
+                    "ora_prenotaziones = ?, " +
+                    "tempo_utilizzos = ? " +
+                    "WHERE codprenotazione = ?";
+
+            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            preparedStatement.setTimestamp(1, dataNuova);
+            preparedStatement.setTimestamp(2,  oraNuova);
+            preparedStatement.setTimestamp(3,  tempoUtilizzoNuovo);
+            preparedStatement.setInt(4,  codPrenotazione);
+            preparedStatement.executeUpdate();
+
+            return true;
+
+
+        } catch (SQLException e) {
+            System.out.println("Errore nella modifica della prenotazione dell'utente");
+            e.printStackTrace();
+
+            String errorMassage = e.getMessage();
+
+
+            if(errorMassage.contains("ERRORE: Lo strumento non può essere prenotato per quell'ora. Il laboratorio è chiuso.")) {
+
+                JOptionPane.showMessageDialog(null,"Lo strumento non può essere prenotato per quell'ora.Il laboratorio è chiuso.");
+
+            } else if(errorMassage.contains("ERRORE: Durata minima di utilizzo deve essere superiore a 1 minuto.")) {
+
+                JOptionPane.showMessageDialog(null, "ATTENZIONE! Il tempo di utilizzo di uno strumento" +
+                        " deve essere superiore a 1 minuto!");
+
+            } else if (errorMassage.contains("ERRORE: Strumento già prenotato per questo orario")) {
+
+                JOptionPane.showMessageDialog(null, "ATTENZIONE! Strumento già prenotato per questo orario " +
+                        "in quel giorno");
+
+            } else if (errorMassage.contains("Errore, stai provando a prenotare uno strumento per un'ora passata")) {
+
+                JOptionPane.showMessageDialog(null, "Errore, stai provando a prenotare uno strumento per un'ora passata");
+
+            }
+
+            return false;
+        }
+
+
+    }
 
 }
 

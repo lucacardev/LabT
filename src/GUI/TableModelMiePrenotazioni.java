@@ -3,10 +3,17 @@ package GUI;
 import DTO.Prenotazione;
 import DTO.Strumento;
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableRowSorter;
+import java.awt.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static javax.swing.text.StyleConstants.setForeground;
 
 public class TableModelMiePrenotazioni extends AbstractTableModel {
 
@@ -18,7 +25,12 @@ public class TableModelMiePrenotazioni extends AbstractTableModel {
         this.listaPrenotazioni = listaPrenotazioni;
 
 
+
     }
+
+
+
+
 
     @Override
     public String getColumnName(int column) {
@@ -91,7 +103,6 @@ public class TableModelMiePrenotazioni extends AbstractTableModel {
 
         this.listaPrenotazioni = listaPrenotazioni;
 
-        fireTableDataChanged(); // Notifica alla tabella che i dati sono stati cambiati
     }
 
     public Prenotazione getPrenotazioneAtRow(int rowIndex) {

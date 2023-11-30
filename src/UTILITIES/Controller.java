@@ -5,7 +5,10 @@ import DTO.*;
 import DAO.SedeDAO;
 import GUI.RightLoginAccess;
 
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class Controller {
@@ -24,13 +27,6 @@ public class Controller {
 
     private ResponsabileDAO responsabileDAO;
 
-
-
-
-    public static void main(String[] args) {
-
-
-    }
 
     public Controller() {
 
@@ -240,6 +236,51 @@ public class Controller {
     public String MatricolaRecovery(Responsabile responsabile) {
 
         return responsabileDAO.matricolaRecovery(responsabile.getPw());
+
+    }
+
+    //Metodo per recuperare il tempo massimo dello strumento
+    public Time getStrumentHourC(Strumento strumento) {
+
+        return strumentoDAO.getStrumentHour(strumento);
+    }
+
+    //Metodo per eliminare una prneotazione
+
+    public void eliminaPrenotazioneC(Prenotazione prenotazione) {
+
+        prenotazioneDAO.eliminaPrenotazioneDAO(prenotazione.getCod_prenotazione());
+
+    }
+
+    public boolean modificaMiaPrenotazioneC(Prenotazione prenotazione) {
+
+        //Chiamiamo il metodo removeMills per togliere i millisecondi che potrebbero causare errpro
+        Timestamp tsDataPrenotazione = removeMillis(prenotazione.getData_prenotazioneS());
+        Timestamp tsOraPrenotazione = removeMillis(prenotazione.getOra_prenotazioneS());
+        Timestamp tsTempoUtilizzo = removeMillis(prenotazione.getTempo_utilizzoS());
+
+        System.out.println(prenotazione.getCod_prenotazione());
+
+        return prenotazioneDAO.modificaMiaPrenotazioneDAO(
+                prenotazione.getCod_prenotazione(),
+                tsDataPrenotazione,
+                tsOraPrenotazione,
+                tsTempoUtilizzo
+        );
+    }
+
+    private Timestamp removeMillis(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        return new Timestamp(calendar.getTimeInMillis());
+    }
+
+    public Strumento recuperoStrumentoC (int codStrumento) {
+
+        return strumentoDAO.recuperoStrumento(codStrumento);
 
     }
 

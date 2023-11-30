@@ -48,7 +48,6 @@ public class StrumentoDAO {
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 while (resultSet.next()) {
-                    System.out.println("Risultati trovati!");
                     int codStrumento = resultSet.getInt("codstrumento");
                     String caratteristiche_tecniche = resultSet.getString("caratteristiche_tecniche");
                     String descrizione = resultSet.getString("descrizione");
@@ -232,7 +231,7 @@ public class StrumentoDAO {
 
 
         } catch (SQLException e) {
-            System.out.println("Errore nel recupero dell'utente mediante il suo username");
+            System.out.println("Errore nel recupero dello strumento mediante il suo codice");
             e.printStackTrace();
         }
 
@@ -240,5 +239,27 @@ public class StrumentoDAO {
 
     }
 
+    public Time getStrumentHour(Strumento strumento) {
+
+        Time tempoMaxUso = null;
+
+        try {
+            String query = "SELECT tempomaxuso FROM strumento WHERE codstrumento = ?";
+            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            preparedStatement.setInt(1, strumento.getCodStrumento());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+                tempoMaxUso = resultSet.getTime("tempomaxuso");
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+        return tempoMaxUso;
+    }
 
 }

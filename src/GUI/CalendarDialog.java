@@ -19,7 +19,7 @@ public class CalendarDialog extends JDialog {
 
         //Qui devo chiamare il metododo del controller che mi recupera la lista
 
-            tablePanel = new TablePanel(myController.recuperoPrenStrumenti(strumento), null);
+            tablePanel = new TablePanel(myController.recuperoPrenStrumenti(strumento), " ");
 
 
         getContentPane().add(tablePanel);

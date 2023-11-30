@@ -85,6 +85,7 @@ public class SedeDAO {
 
     public List<Sede> recuperaListaSediDalDB() {
         List<Sede> sedi = new ArrayList<>();
+
         try {
             String query = "SELECT * FROM sede";
             PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);

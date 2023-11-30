@@ -63,8 +63,6 @@ public class NewBooking extends JPanel{
         myController = controller;
         utenteLoggato = utenteCorrente;
 
-            bookingFrame = new BookingFrame(mainWindow, myController, utenteLoggato, null);
-
 
         setLayout(new GridBagLayout());
         GridBagConstraints mainGbc = new GridBagConstraints();
@@ -168,7 +166,7 @@ public class NewBooking extends JPanel{
 
         //Recupero tutta la lista degli strumenti per aggiungerla alla tabella
 
-        tablePanel = new TablePanel(myController.recuperoTuttaListaStrumenti(), this, bookingFrame);
+        tablePanel = new TablePanel(myController.recuperoTuttaListaStrumenti(), this, null);
         showResultPanel.add(tablePanel, BorderLayout.CENTER);
 
 
@@ -244,7 +242,7 @@ public class NewBooking extends JPanel{
                         if(listaStrumento.size() > 0 ) {
 
                             showResultPanel.removeAll();
-                            tablePanel = new TablePanel(listaStrumento, NewBooking.this, bookingFrame);
+                            tablePanel = new TablePanel(listaStrumento, NewBooking.this, null);
 
                             showResultPanel.add(tablePanel);
                             showResultPanel.revalidate();
@@ -269,6 +267,7 @@ public class NewBooking extends JPanel{
 
                                     //Aggiorniamo i dati della tabella
                                     tablePanel.setData(myController.recuperoTuttaListaStrumenti());
+                                    tablePanel.setDataMiePrenotazioni(myController.recuperoMiePrenotazioniC(utenteLoggato));
 
                                     searchPanel.remove(annulla);
 
@@ -300,7 +299,7 @@ public class NewBooking extends JPanel{
                         if(listaStrumento.size() > 0 ) {
 
                             showResultPanel.removeAll();
-                            tablePanel = new TablePanel(listaStrumento, NewBooking.this, bookingFrame);
+                            tablePanel = new TablePanel(listaStrumento, NewBooking.this, null);
 
                             showResultPanel.add(tablePanel);
                             showResultPanel.revalidate();
@@ -347,7 +346,7 @@ public class NewBooking extends JPanel{
 
                      else {
 
-                     if(getSede().length() == 0 || getDescrizione().length() == 0) {
+                     if(getSede().isEmpty() || getDescrizione().isEmpty()) {
 
                         JOptionPane.showMessageDialog(null, "ATTENZIONE! I campi non possono essere vuoti");
 
@@ -401,7 +400,9 @@ public class NewBooking extends JPanel{
                 @Override
                 public void mouseClicked(MouseEvent e) {
 
+                    bookingFrame = new BookingFrame(mainWindow, myController, utenteLoggato, strumentoSelezionato);
                     bookingFrame.setCodStrumento(codStrumentoUni);
+                    bookingFrame.setStrumentoAttuale(strumentoSelezionato);
                     bookingFrame.setVisible(true);
 
                 }
