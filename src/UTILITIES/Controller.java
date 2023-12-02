@@ -284,4 +284,16 @@ public class Controller {
 
     }
 
+    public String riepilogoStrumentoC (Strumento strumento, int mese, int anno) {
+
+        return strumentoDAO.riepilogoStrumentoDAO(strumento.getCodStrumento(), mese, anno);
+
+    }
+
+    public String riepilogoStrumentoNoMeseC (Strumento strumento, int anno) {
+
+        return strumentoDAO.riepilogoStrumentoNoMeseDAO(strumento.getCodStrumento(), anno);
+
+    }
+
 }

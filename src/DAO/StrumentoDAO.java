@@ -262,4 +262,89 @@ public class StrumentoDAO {
         return tempoMaxUso;
     }
 
+
+    public String riepilogoStrumentoDAO(int codStrumento, int mese, int anno ) {
+
+        String risultato = null;
+        int codStrumentoRec = codStrumento;
+        int annoScelto = anno;
+        int meseScelto = mese;
+
+        try {
+            String query = "SELECT * FROM riepilogo_strumenti(?, ?, ?)";
+            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            preparedStatement.setInt(1, codStrumento);
+            preparedStatement.setInt(2, mese);
+            preparedStatement.setInt(3, anno);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                 codStrumentoRec = resultSet.getInt("codstrumento");
+                 annoScelto = resultSet.getInt("anno");
+                 meseScelto = resultSet.getInt("mese");
+                Time durataTotale = resultSet.getTime("durata_totale");
+                String utenteMax = resultSet.getString("utentemax");
+
+                risultato = "Strumento con codice: " + codStrumentoRec + "\n" +
+                        " Periodo : " + meseScelto + "\\" + annoScelto + "\n" +
+                        " Tempo totale d'uso: " + durataTotale + "\n" +
+                        " Utilizzato maggiormente da: " + utenteMax;
+
+            }
+
+
+
+        } catch (SQLException e) {
+            System.out.println("Errore nel recupero del riepilogo dello strumento");
+            e.printStackTrace();
+
+            risultato =  "Lo strumento nel periodo: " + meseScelto + "\\" + annoScelto + "\n" +
+                    "non è stato prenotato.";
+        }
+
+        return  risultato;
+
+    }
+
+    public String riepilogoStrumentoNoMeseDAO(int codStrumento, int anno ) {
+
+        String risultato = null;
+        int codStrumentoRec = codStrumento;
+        int annoScelto = anno;
+
+        try {
+            String query = "SELECT * FROM riepilogo_strumenti_noMese(?, ?)";
+            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            preparedStatement.setInt(1, codStrumento);
+            preparedStatement.setInt(2, anno);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                codStrumentoRec = resultSet.getInt("codstrumento");
+                annoScelto = resultSet.getInt("anno");
+                Time durataTotale = resultSet.getTime("durata_totale");
+                String utenteMax = resultSet.getString("utentemax");
+
+                risultato = "Strumento con codice: " + codStrumentoRec + "\n" +
+                        " Anno : " + annoScelto + "\n" +
+                        " Tempo totale d'uso: " + durataTotale + "\n" +
+                        " Utilizzato maggiormente da: " + utenteMax;
+
+            }
+
+
+
+        } catch (SQLException e) {
+            System.out.println("Errore nel recupero del riepilogo dello strumento senza mese");
+            e.printStackTrace();
+
+            risultato =  "Lo strumento nell'anno: " + annoScelto + "\n" +
+                    "non è stato prenotato.";
+        }
+
+        return  risultato;
+
+    }
+
+
 }

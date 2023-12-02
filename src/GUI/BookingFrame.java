@@ -483,6 +483,18 @@ public class BookingFrame extends JDialog{
 
     }
 
+    public BookingFrame(JFrame parent, Controller controller, Strumento strumento) {
+
+        super(parent, "Riepilogo strumento", true);
+
+        myController = controller;
+        strumentoSelezionato = strumento;
+
+
+
+
+    }
+
 
 
     public void setCodStrumento(String codStrumento) {

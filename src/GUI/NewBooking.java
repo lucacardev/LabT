@@ -33,12 +33,16 @@ public class NewBooking extends JPanel{
     private BookingFrame bookingFrame;
     private CalendarDialog calendarDialog;
 
+    private SummaryWindow summaryWindow;
+
+
     private Strumento strumentoSelezionato;
 
     private TablePanel tablePanel;
 
     private BtnLayout bookingButton;
     private BtnLayout calendarButton;
+    private BtnLayout riepilogoButton;
 
     TextFieldBorderColor sedeSearch;
     TextFieldBorderColor descrizioneSearch;
@@ -213,7 +217,7 @@ public class NewBooking extends JPanel{
 
         BtnLayout searchButton = new BtnLayout("Cerca");
 
-        footerPanelGbc.gridx = 3;
+        footerPanelGbc.gridx = 4;
         footerPanelGbc.gridy = 0;
         footerPanelGbc.weightx = 0.33;
         footerPanelGbc.anchor = GridBagConstraints.LINE_END;
@@ -445,6 +449,48 @@ public class NewBooking extends JPanel{
 
 
     }
+
+    public void setRiepilogoButton() {
+
+        if (riepilogoButton == null) {
+            riepilogoButton = new BtnLayout("Riepilogo");
+            footerPanelGbc.gridx = 3;
+            footerPanelGbc.gridy = 0;
+            footerPanelGbc.weightx = 0.22;
+            riepilogoButton.setBackground(Color.RED);
+            footerPanel.add(riepilogoButton, footerPanelGbc);
+
+            footerPanel.revalidate();
+            footerPanel.repaint();
+
+            riepilogoButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+
+                summaryWindow = new SummaryWindow(mainWindow, myController, strumentoSelezionato);
+                summaryWindow.setVisible(true);
+
+
+
+                }
+            });
+
+        }
+
+
+    }
+
+    public void removeRiepilogoButton() {
+        if (riepilogoButton!= null) {
+            footerPanel.remove(riepilogoButton);
+            riepilogoButton = null; // Rimuovi il riferimento al pulsante
+            footerPanel.revalidate();
+            footerPanel.repaint();
+        }
+
+    }
+
+
     public void removeBookingButton() {
         if (bookingButton != null) {
             footerPanel.remove(bookingButton);

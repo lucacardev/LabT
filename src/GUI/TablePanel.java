@@ -68,12 +68,14 @@ public class TablePanel extends JPanel {
 
                             newBooking.bookingButtonAvailability();
                             newBooking.bookingButtonCalendar();
+                            newBooking.setRiepilogoButton();
 
 
 
                     } else {
                         newBooking.removeBookingButton();
                         newBooking.removeCalendarButton();
+                        newBooking.removeRiepilogoButton();
                     }
                 }
             }

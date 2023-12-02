@@ -66,7 +66,13 @@ public class PrenotazioneDAO {
                 JOptionPane.showMessageDialog(null, "ATTENZIONE! Il tempo di utilizzo di uno strumento" +
                         " deve essere superiore a 1 minuto!");
 
-            } else if (errorMassage.contains("ERRORE: Strumento già prenotato per questo orario")) {
+            } else if(errorMassage.contains("ERRORE: Lo strumento non può essere prenotato per quell'ora. Il laboratorio è chiuso.")) {
+
+                JOptionPane.showMessageDialog(null,"Lo strumento non può essere prenotato per quell'ora.Il laboratorio è chiuso.");
+
+            }
+
+            else if (errorMassage.contains("ERRORE: Strumento già prenotato per questo orario")) {
 
                 JOptionPane.showMessageDialog(null, "ATTENZIONE! Strumento già prenotato per questo orario " +
                         "in quel giorno");

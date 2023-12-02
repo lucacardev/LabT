@@ -13,6 +13,11 @@ public class Sede {
         this.indirizzo = indirizzo;
     }
 
+    public Sede (String nome,String indirizzo) {
+        this.nome = nome;
+        this.indirizzo = indirizzo;
+    }
+
 //GETTERS E SETTERS
 
     public Integer getCodS() {
