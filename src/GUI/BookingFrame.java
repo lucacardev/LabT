@@ -237,6 +237,8 @@ public class BookingFrame extends JDialog{
                             dispose();
                         }
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "ATTENZIONE! Devi selezionare una data.");
                 }
             }
         });
@@ -469,6 +471,8 @@ public class BookingFrame extends JDialog{
                     }
 
 
+                } else {
+                    JOptionPane.showMessageDialog(null, "ATTENZIONE! Devi selezionare una data.");
                 }
 
             }
