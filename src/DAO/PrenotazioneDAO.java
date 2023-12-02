@@ -77,11 +77,16 @@ public class PrenotazioneDAO {
                 JOptionPane.showMessageDialog(null, "ATTENZIONE! Strumento già prenotato per questo orario " +
                         "in quel giorno");
 
+            } else if (errorMassage.contains("ERRORE: Errore, stai provando a prenotare uno strumento per una data  passata")) {
+
+                JOptionPane.showMessageDialog(null, "Errore, stai provando a prenotare uno strumento per una data passata");
+
             } else if (errorMassage.contains("Errore, stai provando a prenotare uno strumento per un'ora passata")) {
 
                 JOptionPane.showMessageDialog(null, "Errore, stai provando a prenotare uno strumento per un'ora passata");
 
             }
+
 
             return false;
         }
@@ -229,6 +234,11 @@ public class PrenotazioneDAO {
 
                 JOptionPane.showMessageDialog(null, "ATTENZIONE! Strumento già prenotato per questo orario " +
                         "in quel giorno");
+
+            } else if(errorMassage.contains("ERRORE: Errore, stai provando a prenotare uno strumento per una data  passata")) {
+
+                JOptionPane.showMessageDialog(null, "ERRORE: Errore, stai provando a prenotare uno strumento per una data passata");
+
 
             } else if (errorMassage.contains("Errore, stai provando a prenotare uno strumento per un'ora passata")) {
 
