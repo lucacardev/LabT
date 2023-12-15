@@ -1,5 +1,6 @@
 package DAO;
 
+import DTO.Responsabile;
 import DTO.Sede;
 import UTILITIES.Controller;
 import UTILITIES.DB_Connection;
@@ -219,6 +220,52 @@ public class ResponsabileDAO {
             return false;
         }
         return false;
+    }
+
+    public Responsabile recuperoResponsabile (String codR_fk)
+    {
+        Responsabile responsabile = null;
+        String matricola;
+        String nome;
+        String cognome;
+        String codfis;
+        String telefono;
+        String email;
+        char[] pw = new char[0];
+        int cods_fk;
+
+        try {
+            String query = "SELECT * FROM Responsabile WHERE matricola = ?";
+            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            preparedStatement.setString(1, codR_fk);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                matricola = resultSet.getString("matricola");
+                nome = resultSet.getString("nome");
+                cognome = resultSet.getString("cognome");
+                codfis = resultSet.getString("codfiscale");
+                telefono = resultSet.getString("telefono");
+                email = resultSet.getString("email");
+                String password = resultSet.getString("pw");
+
+                if (password != null) {
+                    pw = password.toCharArray();
+                }
+
+                cods_fk = resultSet.getInt("codS_fk");
+                SedeDAO sedeDao = new SedeDAO(currController);
+                Sede sede = sedeDao.recuperoSede(cods_fk); // Metodo per ottenere l'oggetto Sede a partire dall'ID
+
+
+                responsabile = new Responsabile(matricola, nome, cognome,codfis,telefono,email,pw,sede);
+            }
+        } catch (SQLException e) {
+            System.out.println("Errore nella ricerca del responsabile");
+            e.printStackTrace();
+        }
+
+        return responsabile;
     }
 
 

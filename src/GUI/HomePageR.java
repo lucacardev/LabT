@@ -66,15 +66,15 @@ public class HomePageR extends JPanel {
             String cognome = informazioni[1];
 
             // Testo di benvenuto con nome e cognome
-            IncreaseFont welcomeText = new IncreaseFont("Benvenuto/a \n"); //+ nome + " " + cognome);
+            IncreaseFont welcomeText = new IncreaseFont("Benvenuto/a \n");
             IncreaseFont nc = new IncreaseFont(nome + " " + cognome);
             Font welcomeFont = welcomeText.getFont();
-            int fontSize = welcomeFont.getSize() + 25;
+            int fontSize = welcomeFont.getSize() + 20;
             Font increaseFont = welcomeFont.deriveFont((float)fontSize);
             welcomeText.setFont(increaseFont);
-            welcomeText.setForeground(new Color(0,0,205));
+            welcomeText.setForeground(new Color(0, 0, 0));
             nc.setFont(increaseFont);
-            nc.setForeground(new Color(0,0,205));
+            nc.setForeground(new Color(0,0,0));
             leftGbc.gridx = 0;
             leftGbc.gridy = 0;
             leftGbc.insets = new Insets(20,0,0,0);
@@ -160,7 +160,7 @@ public class HomePageR extends JPanel {
         int style = 10;
         String font = "Arial";
 
-        //Bottone nuovo Team
+        /*//Bottone nuovo Team
         BtnLayout newTeam = new BtnLayout("Le mie informazioni");
         newTeam.setFont(new FontUIResource(font, style, sizeFont));
 
@@ -181,7 +181,7 @@ public class HomePageR extends JPanel {
                 mainWindow.addCardPanel(newTeam, "newTeam");
 
             }
-        });
+        });*/
 
         //Bottone I miei Team
         BtnLayout myTeams = new BtnLayout("I miei Teams");
@@ -205,19 +205,19 @@ public class HomePageR extends JPanel {
             }
         });
 
-        //Bottone Organigramma
+        /*//Bottone Organigramma
         BtnLayout Organig = new BtnLayout("Organigramma Teams");
         Organig.setFont(new FontUIResource(font, style, sizeFont));
 
         rightGbc.gridx = 0;
         rightGbc.gridy = 3;
         rightGbc.fill = GridBagConstraints.HORIZONTAL;
-        rightHomePage.add(Organig, rightGbc);
+        rightHomePage.add(Organig, rightGbc);*/
 
         //Disegno Background
         try {
             // Carica l'immagine di sfondo dal file specificato
-            leftHomePageBackground = ImageIO.read(new File("src/GUI/icon/vecteezy_isometric-illustration-concept-team-discussion-about_9160177.jpg"));
+            leftHomePageBackground = ImageIO.read(new File("src/GUI/icon/Immagine WhatsApp 2023-12-04 ore 10.17.59_b126edae.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }

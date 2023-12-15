@@ -29,9 +29,6 @@ public class TableModelMiePrenotazioni extends AbstractTableModel {
     }
 
 
-
-
-
     @Override
     public String getColumnName(int column) {
 

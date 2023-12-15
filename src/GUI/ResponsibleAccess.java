@@ -300,7 +300,7 @@ public class ResponsibleAccess extends JPanel {
         backButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                int choice = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler uscire?", "Uscita Account", JOptionPane.OK_CANCEL_OPTION);
+                int choice = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler uscire?", "Uscita Responsabile", JOptionPane.OK_CANCEL_OPTION);
                 UIManager.put("choice.cancelButtonTex", "Non uscire");
                 if (choice == JOptionPane.OK_OPTION) {
 

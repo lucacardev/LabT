@@ -9,10 +9,10 @@ public class Tecnico {
     private String telefono;
     private Laboratorio codl_fk;
     private DTO.Laboratorio Laboratorio;
-    private  Team codTeam_fk;
+    private Team codTeam_fk;
     private DTO.Team Team;
 
-    public Tecnico (String matricola,String nome,String cognome,String codfis,String tel,Laboratorio lab,Team t) {
+    public Tecnico(String matricola, String nome, String cognome, String codfis, String tel, Laboratorio lab, Team t) {
         this.matricola = matricola;
         this.nome = nome;
         this.cognome = cognome;
@@ -81,11 +81,23 @@ public class Tecnico {
         this.codl_fk = laboratorio;
     }
 
-    public Team getCodTeam () {
+    public Team getCodTeam() {
         return this.Team;
     }
 
     public void setTeam(Team Team) {
         this.codTeam_fk = Team;
     }
+
+    public String toString() {
+        return matricola + " " + nome + " " + cognome;
+    }
+
+    /*Quando si aggiunge un oggetto Tecnico al DefaultListModel, il componente JList chiama implicitamente il metodo toString()
+     sull'oggetto per ottenere una rappresentazione di stringa da visualizzare. Se la classe Tecnico non ha un override del metodo toString(),
+      di default verrà utilizzata la rappresentazione fornita da Object.toString(), che mostra l'hashcode dell'oggetto.
+      Per visualizzare correttamente il nome e il cognome dei tecnici, dovresti sovrascrivere il metodo toString() nella classe Tecnico
+      in modo che restituisca una stringa che rappresenti correttamente l'oggetto, come ad esempio concatenare il nome e il cognome.
+     */
+
 }

@@ -55,7 +55,7 @@ public class Team {
     public void setN_tecnici(Integer n_tecnici) { this.n_tecnici = n_tecnici; }
 
     public Responsabile getResponsabile() {
-        return this.Responsabile;
+        return this.codR_fk;
     }
 
     public void setResponsabile(Responsabile responsabile) {

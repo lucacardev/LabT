@@ -187,7 +187,7 @@ public class NewRegResponsable extends JPanel {
         sedeComboBox.setBackground(Color.white);
 
         sedeComboBox.setBorder(new LineBorder(new Color(35,171,144),1));
-        sedeComboBox.insertItemAt("",0);
+
 
         gbc.gridy = 11;
         gbc.gridx = 0;
@@ -205,8 +205,6 @@ public class NewRegResponsable extends JPanel {
                 }
             }
         });
-
-
 
         //Bottone indietro
         gbc.gridy = 12;
@@ -254,15 +252,20 @@ public class NewRegResponsable extends JPanel {
 
                     JOptionPane.showMessageDialog(null,"I campi non possono essere vuoti.");
 
-                } else if  (getMatricolaNew().length() != 5 || !getMatricolaNew().startsWith("R") || !getMatricolaNew().substring(1).matches("\\d+")) //La condizione !matricola.substring(1).matches("\\d+") verifica che tutti i caratteri successivi al primo carattere  siano cifre. Ecco come funziona:
+                } else if  (getMatricolaNew().length() != 5 || !getMatricolaNew().startsWith("R") || !getMatricolaNew().substring(1).matches("\\d+"))
+                    /*La condizione !matricola.substring(1).matches("\\d+") verifica che tutti i caratteri successivi al primo carattere  siano cifre.
+                    Ecco come funziona:matricola.substring(1) estrae una sottostringa da matricola partendo dal secondo carattere in poi
+                    matches("\\d+") utilizza l'espressione regolare
+                    d+ per verificare se la sottostringa contiene solo cifre.
+                    d in un'espressione regolare corrisponde a una singola cifra da 0 a 9.
+                    + indica che la sequenza di cifre può essere lunga uno o più caratteri.*/
 
-                    //matricola.substring(1) estrae una sottostringa da matricola partendo dal secondo carattere in poi //matches("\\d+") utilizza l'espressione regolare \\d+ per verificare se la sottostringa contiene solo cifre. \\d in un'espressione regolare corrisponde a una singola cifra da 0 a 9. + indica che la sequenza di cifre può essere lunga uno o più caratteri.
                     {
                     // Mostra la finestra di avviso
                     JOptionPane.showMessageDialog(null, "Matricola errata. Ti ricordiamo che la matricola dei responsabili inizia con 'R' seguito da 4 numeri.", "Errore Matricola", JOptionPane.ERROR_MESSAGE);}
                 else {
 
-                    //Chiamo la classe DTO che incapsula le informazioni del nuovo utente
+                    //Chiamo la classe DTO che incapsula le informazioni del nuovo responsabile
                     Responsabile nuovoResponsabile = new Responsabile(getMatricolaNew(),getNomeNew(), getCognomeNew(),null,null,getEmailNew(),getPasswordNew(),sedeSelezionata);
 
                     String registerCode;
