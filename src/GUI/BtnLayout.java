@@ -18,7 +18,8 @@ public class BtnLayout extends JButton {
 
         this.setBackground(new Color(35,171,144));
         this.setForeground(ColorUIResource.white);
-            }
+
+    }
 
     }
 

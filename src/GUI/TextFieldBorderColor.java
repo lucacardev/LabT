@@ -28,5 +28,9 @@ public class TextFieldBorderColor extends JTextField {
 
 
     }
+    public static void disableTextField(JTextField textField) {
+        textField.setEditable(false);
+        textField.setBackground(Color.WHITE);
+    }
 
 }
