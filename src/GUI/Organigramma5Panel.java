@@ -26,8 +26,7 @@ public class Organigramma5Panel extends JPanel {
         this.Tecnici = Tecnici;
         this.team = t;
 
-        String nomeTeam = (team != null&& team.getNome() != null && !team.getNome().isEmpty()) ? team.getNome() : "Nome non disponibile";
-        JLabel teamLabel = new JLabel("Organigramma del " + nomeTeam);
+        JLabel teamLabel = new JLabel("Organigramma del " + team.getNome());
 
         setLayout(new BorderLayout());
 
