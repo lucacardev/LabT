@@ -84,7 +84,6 @@ public class Organigramma10Panel extends JPanel {
         int responsabile3X = getWidth() / 2 - 210;
         int responsabile4X = getWidth() / 2 - 330;
 
-        // Responsabili del primo coordinatore un po' più in alto
         int responsabile5X = getWidth() / 2 + 10 ;
         int responsabile6X = getWidth() / 2 + 150;
         int responsabile7X = getWidth() / 2 + 300;
