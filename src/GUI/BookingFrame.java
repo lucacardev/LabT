@@ -526,7 +526,6 @@ public class BookingFrame extends JDialog{
 
     */
 
-
     public void setPostazioneAttuale(Postazione postazione) {
 
         postazioneSelezionata = postazione;

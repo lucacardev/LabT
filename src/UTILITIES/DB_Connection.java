@@ -1,6 +1,10 @@
 package UTILITIES;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DB_Connection {
 
@@ -10,9 +14,9 @@ public class DB_Connection {
 
     /*I tipi Connection e Statement fanno parte della libreria java.SQL*/
 
-    private Connection connection;
+    private Connection connection = null;
     private Statement statement;
-    private static DB_Connection istanza;
+    private static DB_Connection istanza = null;
 
     /*Impostiamo il costruttore come private per assicurarci che ci sia una sola istanza per quanto riguarda
     la connesione al database (Singleton Pattern)*/

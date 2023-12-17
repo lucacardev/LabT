@@ -30,14 +30,14 @@ public class NewTeam extends JPanel {
     private final static JLabel respText = new JLabel("Responsabile del team");
 
 
-    private final static BtnLayout backButton = new BtnLayout("Indietro");
-    private final static BtnLayout insertButton = new BtnLayout("Inserisci");
-    private final static BtnLayout tecniciButton = new BtnLayout("Seleziona membri");
+    private final  BtnLayout backButton = new BtnLayout("Indietro");
+    private final  BtnLayout insertButton = new BtnLayout("Inserisci");
+    private final  BtnLayout tecniciButton = new BtnLayout("Seleziona membri");
 
     private TextFieldBorderColor codTeamField;
     private TextFieldBorderColor nomeField;
     private TextFieldBorderColor descrizioneField;
-    private TextFieldBorderColor matricolaLField;
+    private JComboBox matricolaLField;
     private JComboBox<Integer> ntecniciComboBox;
 
     Integer scelta;
@@ -138,9 +138,10 @@ public class NewTeam extends JPanel {
         gbc.gridy = 9;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        matricolaLField = new TextFieldBorderColor(15);
-        TextFieldBorderColor.changeTextFieldBorderColor(matricolaLField);
-        TextFieldBorderColor.disableTextField(matricolaLField);
+        matricolaLField = new JComboBox<>();
+        DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
+        comboBoxModel.addElement(" - ");
+        matricolaLField.setModel(comboBoxModel);
         gbc.anchor = GridBagConstraints.CENTER;
         rightPage.add(matricolaLField, gbc);
 
@@ -159,12 +160,24 @@ public class NewTeam extends JPanel {
             public void itemStateChanged(ItemEvent event) {
                 if (event.getStateChange() == ItemEvent.SELECTED) {
                    scelta = (Integer) event.getItem();
+
+                    //In questo modo ogni volta che si seleziona il numero la lista si azzera
+                    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+                    model.addElement(" - ");
+                    matricolaLField.setModel(model);
+
                     if (scelta == 5 || scelta == 10) {
                         selectTecnici(scelta);
+
                     }
                 }
             }
         });
+
+
+
+
+
 
 
         //Bottone indietro
@@ -205,7 +218,7 @@ public class NewTeam extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                if(getCodTeamNew().isEmpty() || getNomeNew().isEmpty() || /*getDescrizioneNew().isEmpty() ||*/ getMatricolaLNew().isEmpty() ) {
+                if(getCodTeamNew().isEmpty() || getNomeNew().isEmpty() || matricolaLField.getSelectedItem().toString().isEmpty()) {
 
                     JOptionPane.showMessageDialog(null,"I campi non possono essere vuoti.");
 
@@ -214,13 +227,16 @@ public class NewTeam extends JPanel {
 
                 }
                 else {
-                    boolean Teampresente = controller.recuperoTeamdaCodC(getCodTeamNew());
-                    if (Teampresente) {
+
+                    System.out.println(getCodTeamNew());
+                    if (controller.recuperoTeamdaCodC(getCodTeamNew())) {
+
                         JOptionPane.showMessageDialog(null, "Il codice del team è già presente nel database.");
-                    } else
-                    {
+
+                    } else {
+
                         //Chiamo la classe DTO che incapsula le informazioni del nuovo team
-                        Team nuovoTeam = new Team(getCodTeamNew(), getNomeNew(), getDescrizioneNew(), getMatricolaLNew(), scelta, responsabileCorrente);
+                        Team nuovoTeam = new Team(getCodTeamNew(), getNomeNew(), getDescrizioneNew(), matricolaLField.getSelectedItem().toString(), scelta, responsabileCorrente);
 
                         boolean complete = myController.newTeamInsert(nuovoTeam);
 
@@ -283,9 +299,11 @@ public class NewTeam extends JPanel {
         return descrizioneField.getText().trim();
     }
 
+    /*
     private String getMatricolaLNew() {
         return matricolaLField.getText().trim();
     }
+    */
 
     private List<Tecnico> selectTecnici(int numTecniciDaSelezionare) {
         // Crei un'istanza di TecnicoDAO
@@ -296,17 +314,45 @@ public class NewTeam extends JPanel {
 
         //finestra di dialogo per la selezione dei tecnici
         JDialog dialog = new JDialog();
+        dialog.setModal(true);
         dialog.setTitle("Seleziona Tecnici");
         dialog.setLayout(new BorderLayout());
 
+
         DefaultListModel<Tecnico> listModel = new DefaultListModel<>();
         JList<Tecnico> tecniciList = new JList<>(listModel);
-        tecniciList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        System.out.println("Tenere premuto il pulsante ctrl per la selezione multipla \n");
 
+        //Ci permette di selezionare tecnici multipli senza l'uso di CTRL
+        tecniciList.setSelectionModel(new DefaultListSelectionModel() {
+
+            int count = 0;
+            @Override
+            public void setSelectionInterval(int index0, int index1) {
+
+                //Impediamo di selezionare più tecnici del previsto
+                if(!super.isSelectedIndex(index0)) {
+                    if(count < numTecniciDaSelezionare) {
+                        count++;
+                        super.addSelectionInterval(index0, index1);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Non puoi selezionare più di " +
+                                numTecniciDaSelezionare + " tecnici");
+                    }
+
+                }
+                else {
+                    count--;
+                    super.removeSelectionInterval(index0, index1);
+
+                }
+            }
+        });
+
+        //Aggiungiamo alla JList i tecnici recuperati dal DB che non hanno un Team
         for (Tecnico tecnico : listaCompletaTecnici) {
             listModel.addElement(tecnico);
         }
+
 
         JScrollPane scrollPane = new JScrollPane(tecniciList);
         dialog.add(scrollPane, BorderLayout.CENTER);
@@ -315,12 +361,20 @@ public class NewTeam extends JPanel {
         dialog.add(selectButton, BorderLayout.SOUTH);
 
         selectButton.addActionListener(e -> {
+
+
             List<Tecnico> selectedTecnici = tecniciList.getSelectedValuesList();
             if (selectedTecnici.size() == numTecniciDaSelezionare) {
                 tecniciSelezionati.addAll(selectedTecnici);
 
-                // Imposta il campo matricolaLField con la matricola del primo tecnico selezionato
-                matricolaLField.setText(selectedTecnici.get(0).getMatricola());
+                //Ricavate le matricole le aggiungiamo al JComboBox per poi scegliere il leader
+                DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
+
+                for (Tecnico tecnico : tecniciSelezionati) {
+                    comboBoxModel.addElement(tecnico.getMatricola().trim() + " " + tecnico.getNome().trim() + " " + tecnico.getCognome().trim());
+                }
+
+                matricolaLField.setModel(comboBoxModel);
 
                 dialog.dispose();
             } else {
@@ -331,6 +385,7 @@ public class NewTeam extends JPanel {
         dialog.setSize(300, 400);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setLocationRelativeTo(null);
+        SwingUtilities.invokeLater(() -> tecniciList.requestFocusInWindow());
         dialog.setVisible(true);
         try {
             BufferedImage iconImage = ImageIO.read(new File("src/GUI/icon/icons8-laboratorio-64.png"));
@@ -339,7 +394,7 @@ public class NewTeam extends JPanel {
             e.printStackTrace();
         };
 
-
+        SwingUtilities.invokeLater(() -> tecniciList.requestFocusInWindow());
         return tecniciSelezionati;
     }
 

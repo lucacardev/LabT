@@ -53,6 +53,7 @@ public class MyTeam extends JPanel {
         deleteTeamButton = new BtnLayout("Elimina Team");
 
         backButton.setBackground(Color.RED);
+        backButton.setForeground(Color.WHITE);
         deleteTeamButton.setBackground(Color.RED);
         buttonPanel.add(backButton);
         buttonPanel.add(Box.createHorizontalStrut(50)); // Aggiungi spazio tra i pulsanti
@@ -64,9 +65,20 @@ public class MyTeam extends JPanel {
         add(buttonPanel, BorderLayout.SOUTH); // Aggiunge il pannello dei pulsanti nella parte inferiore del frame
 
         addTeamButton.addActionListener(e -> {
-            NewTeam newTeam = new NewTeam(myController,responsabileCorrente);
+
             MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(MyTeam.this);
-            mainWindow.addCardPanel(newTeam, "newteam");
+
+            if(mainWindow.containsCard("newteam")) {
+
+                mainWindow.showCard("newteam");
+            }
+
+            else {
+
+                NewTeam newTeam = new NewTeam(myController,responsabileCorrente);
+                mainWindow.addCardPanel(newTeam, "newteam");
+
+            }
 
         });
 
@@ -104,6 +116,7 @@ public class MyTeam extends JPanel {
 
         visualizzaTeamsResponsabile();
 
+        //Azione per tornare indietro
         backButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
