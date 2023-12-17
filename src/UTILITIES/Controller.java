@@ -279,7 +279,6 @@ public class Controller {
         return tecnicoDAO.recuperoTecniciDalDB(team);
     }
     public boolean updateTecniciC(Tecnico tecnico,String nuovoCodTeam) {
-
         return tecnicoDAO.updateTecnici(tecnico,nuovoCodTeam);
     }
 
