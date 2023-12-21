@@ -56,7 +56,7 @@ public class ResponsibleAccess extends JPanel {
         //Impostazione sfondo background di destra
 
         try {
-            backgroundRight = ImageIO.read(new File("src/GUI/icon/imm.jpg"));
+            backgroundRight = ImageIO.read(new File("src/GUI/icon/OIP.jpg"));
 
 
         } catch (Exception ex) {
@@ -71,7 +71,7 @@ public class ResponsibleAccess extends JPanel {
         rightGbc.insets = new Insets(5,5,5,5);
 
 
-        ImageIcon loginImage = new ImageIcon("src/GUI/icon/icons8-rete-aziendale.gif");
+        ImageIcon loginImage = new ImageIcon("src/GUI/icon/output-onlinegiftools.gif");
         JLabel imageLabel = new JLabel(loginImage);
 
         // Posiziona l'immagine al centro del pannello

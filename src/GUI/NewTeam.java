@@ -336,7 +336,8 @@ public class NewTeam extends JPanel {
                         super.addSelectionInterval(index0, index1);
                     } else {
                         JOptionPane.showMessageDialog(null, "Non puoi selezionare più di " +
-                                numTecniciDaSelezionare + " tecnici");
+                                numTecniciDaSelezionare + " tecnici", "Numero tecnici superato", JOptionPane.ERROR_MESSAGE);
+
                     }
 
                 }
