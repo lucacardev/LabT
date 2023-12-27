@@ -15,45 +15,28 @@ public class Organigramma10Panel extends JPanel {
 
     Controller myController;
     Responsabile responsabile;
-    private List<Tecnico> listaTecnici;
+    private List<Tecnico> Tecnici;
     private Team team;
     private BtnLayout backButton = new BtnLayout("Indietro");
 
-    private BtnLayout modifyButton = new BtnLayout("Modifica Organigramma");
-
-    private ModOrganigramma modOrganigramma;
-
-    public Organigramma10Panel (Controller controller,Responsabile responsabileLoggato,List<Tecnico> tecnici, Team t) {
+    public Organigramma10Panel (Controller controller,Responsabile responsabileLoggato,List<Tecnico> Tecnici, Team t) {
 
         myController = controller;
         responsabile = responsabileLoggato;
-        listaTecnici = tecnici;
+        this.Tecnici = Tecnici;
         this.team = t;
 
         JLabel teamLabel = new JLabel("Organigramma del " + team.getNome());
 
-        setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5,5,5,5);
+
+        setLayout(new BorderLayout());
 
         //Trova il leader nella lista e posizionalo come primo elemento
-        Tecnico leader = trovaLeader(listaTecnici, t);
+        Tecnico leader = trovaLeader(this.Tecnici, t);
         if (leader != null) {
-            listaTecnici.remove(leader);
-            listaTecnici.add(0, leader); // Inserisci il leader come primo elemento
+            this.Tecnici.remove(leader);
+            this.Tecnici.add(0, leader); // Inserisci il leader come primo elemento
         }
-
-        modifyButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(Organigramma10Panel.this);
-                modOrganigramma = new ModOrganigramma(mainWindow, myController, responsabile, listaTecnici, team);
-                modOrganigramma.setVisible(true);
-
-
-            }
-        });
 
         backButton.setBackground(Color.RED);
         backButton.addMouseListener(new MouseAdapter() {
@@ -66,33 +49,16 @@ public class Organigramma10Panel extends JPanel {
             }
         });
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weighty = 0.50;
-        gbc.weightx = 0.33;
-        gbc.anchor = GridBagConstraints.NORTH;
-        add(teamLabel, gbc);
+        //JLabel teamLabel = new JLabel("Organigramma del " + t.getNome());
+        teamLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(teamLabel, BorderLayout.NORTH);
 
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.weighty = 0.50;
-        gbc.weightx = 0.33;
-        gbc.anchor = GridBagConstraints.SOUTH;
-        add(modifyButton, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.weighty = 0.50;
-        gbc.weightx = 0.33;
-        gbc.anchor = GridBagConstraints.SOUTHWEST;
-        add(backButton, gbc);
+        add(backButton, BorderLayout.SOUTH);
     }
 
     private Tecnico trovaLeader(List<Tecnico> listaTecnici, Team team) {
         for (Tecnico tecnico : listaTecnici) {
-
-            if ((tecnico.getMatricola().substring(0, Math.min(7, tecnico.getMatricola().length()))).equals(
-                    team.getMatricolaL().substring(0, Math.min(7, team.getMatricolaL().length())))) {
+            if (tecnico.getMatricola().equals(team.getMatricolaL())) {
                 return tecnico; // Restituisce il tecnico se la matricola corrisponde al leader
             }
         }
@@ -123,16 +89,16 @@ public class Organigramma10Panel extends JPanel {
         int responsabile7X = getWidth() / 2 + 300;
 
         // Disegna i nodi rettangolari e mostra i nomi dei tecnici
-        disegnaNodo(g2d, leaderX, leaderY, listaTecnici.get(0));
-        disegnaNodo(g2d, coordinatoreX1, coordinatoreY, listaTecnici.get(1));
-        disegnaNodo(g2d, coordinatoreX2, coordinatoreY, listaTecnici.get(2));
-        disegnaNodo(g2d, responsabile1X, responsabileY1, listaTecnici.get(3));
-        disegnaNodo(g2d, responsabile2X, responsabileY1, listaTecnici.get(4));
-        disegnaNodo(g2d, responsabile3X, responsabileY1, listaTecnici.get(5));
-        disegnaNodo(g2d, responsabile4X, responsabileY1, listaTecnici.get(6));
-        disegnaNodo(g2d, responsabile5X, responsabileY2, listaTecnici.get(7));
-        disegnaNodo(g2d, responsabile6X, responsabileY2, listaTecnici.get(8));
-        disegnaNodo(g2d, responsabile7X, responsabileY2, listaTecnici.get(9));
+        disegnaNodo(g2d, leaderX, leaderY, Tecnici.get(0));
+        disegnaNodo(g2d, coordinatoreX1, coordinatoreY, Tecnici.get(1));
+        disegnaNodo(g2d, coordinatoreX2, coordinatoreY, Tecnici.get(2));
+        disegnaNodo(g2d, responsabile1X, responsabileY1, Tecnici.get(3));
+        disegnaNodo(g2d, responsabile2X, responsabileY1, Tecnici.get(4));
+        disegnaNodo(g2d, responsabile3X, responsabileY1, Tecnici.get(5));
+        disegnaNodo(g2d, responsabile4X, responsabileY1, Tecnici.get(6));
+        disegnaNodo(g2d, responsabile5X, responsabileY2, Tecnici.get(7));
+        disegnaNodo(g2d, responsabile6X, responsabileY2, Tecnici.get(8));
+        disegnaNodo(g2d, responsabile7X, responsabileY2, Tecnici.get(9));
 
         // Disegna i collegamenti tra i nodi
         disegnaCollegamento(g2d, leaderX, leaderY + 20, coordinatoreX1, coordinatoreY - 20);

@@ -87,13 +87,13 @@ public class NewTeam extends JPanel {
         rightPage.add(descrizioneText, gbc);
 
         //Testo matricola leader
-        gbc.gridy = 11;
+        gbc.gridy = 8;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         rightPage.add(matricolaLText, gbc);
 
         //Testo ntecnici
-        gbc.gridy = 8;
+        gbc.gridy = 10;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         rightPage.add(ntecniciText, gbc);
@@ -135,7 +135,7 @@ public class NewTeam extends JPanel {
         rightPage.add(descrizioneField, gbc);
 
         //Campo matricola leader
-        gbc.gridy = 12;
+        gbc.gridy = 9;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         matricolaLField = new JComboBox<>();
@@ -146,7 +146,7 @@ public class NewTeam extends JPanel {
         rightPage.add(matricolaLField, gbc);
 
         //Campo ntecnici
-        gbc.gridy = 10;
+        gbc.gridy = 11;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         Integer[] scelte = {0,5,10};
@@ -181,7 +181,7 @@ public class NewTeam extends JPanel {
 
 
         //Bottone indietro
-        gbc.gridy = 13;
+        gbc.gridy = 12;
         gbc.gridx = 0;
         gbc.gridwidth = 1;
         gbc.weightx = 0;
@@ -204,7 +204,7 @@ public class NewTeam extends JPanel {
 
 
         //Bottone inserisci
-        gbc.gridy = 13;
+        gbc.gridy = 12;
         gbc.gridx = 1;
         gbc.gridwidth = 1;
         gbc.weightx = 0;
@@ -228,17 +228,15 @@ public class NewTeam extends JPanel {
                 }
                 else {
 
+                    System.out.println(getCodTeamNew());
                     if (controller.recuperoTeamdaCodC(getCodTeamNew())) {
 
                         JOptionPane.showMessageDialog(null, "Il codice del team è già presente nel database.");
 
                     } else {
 
-                        //Salviamo solo la matricola
-                        String matrENome = matricolaLField.getSelectedItem().toString().substring(0, 7);
-
                         //Chiamo la classe DTO che incapsula le informazioni del nuovo team
-                        Team nuovoTeam = new Team(getCodTeamNew(), getNomeNew(), getDescrizioneNew(), matrENome, scelta, responsabileCorrente);
+                        Team nuovoTeam = new Team(getCodTeamNew(), getNomeNew(), getDescrizioneNew(), matricolaLField.getSelectedItem().toString(), scelta, responsabileCorrente);
 
                         boolean complete = myController.newTeamInsert(nuovoTeam);
 
@@ -264,11 +262,9 @@ public class NewTeam extends JPanel {
             //Metodo per impostare l'immagine di background
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g;
 
                 // Disegna l'immagine di sfondo
                 if (backgroundImageNew != null) {
-                    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
                     g.drawImage(backgroundImageNew, 0, 0, getWidth(), getHeight(), this);
                 }
 
@@ -340,8 +336,7 @@ public class NewTeam extends JPanel {
                         super.addSelectionInterval(index0, index1);
                     } else {
                         JOptionPane.showMessageDialog(null, "Non puoi selezionare più di " +
-                                numTecniciDaSelezionare + " tecnici", "Numero tecnici superato", JOptionPane.ERROR_MESSAGE);
-
+                                numTecniciDaSelezionare + " tecnici");
                     }
 
                 }
