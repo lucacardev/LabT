@@ -7,16 +7,17 @@ public class Tecnico {
     private String cognome;
     private String codfiscale;
     private String telefono;
-    private Laboratorio codl_fk;
-    private DTO.Laboratorio Laboratorio;
-    private Team codTeam_fk;
-    private DTO.Team Team;
 
-    public Tecnico(String matricola, String nome, String cognome, String codfis, String tel, Laboratorio lab, Team t) {
+    private String email;
+    private Laboratorio codl_fk;
+    private Team codTeam_fk;
+
+    public Tecnico(String matricola, String nome, String cognome, String codfis,  String tel, String email, Laboratorio lab, Team t) {
         this.matricola = matricola;
         this.nome = nome;
         this.cognome = cognome;
         this.codfiscale = codfis;
+        this.email = email;
         this.telefono = tel;
         this.codl_fk = lab;
         this.codTeam_fk = t;
@@ -73,7 +74,7 @@ public class Tecnico {
 
     public Laboratorio getLaboratorio() {
 
-        return this.Laboratorio;
+        return this.codl_fk;
     }
 
     public void setLaboratorio(Laboratorio laboratorio) {
@@ -81,8 +82,18 @@ public class Tecnico {
         this.codl_fk = laboratorio;
     }
 
+    public String getEmail() {
+
+        return this.email;
+    }
+
+    public void setEmail(Laboratorio laboratorio) {
+
+        this.email = email;
+    }
+
     public Team getCodTeam() {
-        return this.Team;
+        return this.codTeam_fk;
     }
 
     public void setTeam(Team Team) {
