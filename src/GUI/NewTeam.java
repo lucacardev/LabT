@@ -174,12 +174,6 @@ public class NewTeam extends JPanel {
             }
         });
 
-
-
-
-
-
-
         //Bottone indietro
         gbc.gridy = 12;
         gbc.gridx = 0;
@@ -235,8 +229,11 @@ public class NewTeam extends JPanel {
 
                     } else {
 
+                        String selectedLeader = matricolaLField.getSelectedItem().toString();
+                        String matricolaLeader = selectedLeader.split(" ")[0]; // Estraggo solo la matricola
+
                         //Chiamo la classe DTO che incapsula le informazioni del nuovo team
-                        Team nuovoTeam = new Team(getCodTeamNew(), getNomeNew(), getDescrizioneNew(), matricolaLField.getSelectedItem().toString(), scelta, responsabileCorrente);
+                        Team nuovoTeam = new Team(getCodTeamNew(), getNomeNew(), getDescrizioneNew(), matricolaLeader, scelta, responsabileCorrente);
 
                         boolean complete = myController.newTeamInsert(nuovoTeam);
 
@@ -299,11 +296,6 @@ public class NewTeam extends JPanel {
         return descrizioneField.getText().trim();
     }
 
-    /*
-    private String getMatricolaLNew() {
-        return matricolaLField.getText().trim();
-    }
-    */
 
     private List<Tecnico> selectTecnici(int numTecniciDaSelezionare) {
         // Crei un'istanza di TecnicoDAO
@@ -361,8 +353,6 @@ public class NewTeam extends JPanel {
         dialog.add(selectButton, BorderLayout.SOUTH);
 
         selectButton.addActionListener(e -> {
-
-
             List<Tecnico> selectedTecnici = tecniciList.getSelectedValuesList();
             if (selectedTecnici.size() == numTecniciDaSelezionare) {
                 tecniciSelezionati.addAll(selectedTecnici);

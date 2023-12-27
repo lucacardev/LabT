@@ -104,10 +104,7 @@ public class MyTeam extends JPanel {
                     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(MyTeam.this);
                     mainWindow.addCardPanel(organigramma10, "Organigramma");
 
-                }
-
-                 // Passa la lista dei nomi dei tecnici a Organigramma5Panel
-
+                };
 
             } else {
                 JOptionPane.showMessageDialog(MyTeam.this, "Seleziona un team prima di visualizzare l'organigramma.", "Nessun team selezionato", JOptionPane.WARNING_MESSAGE);
@@ -143,6 +140,7 @@ public class MyTeam extends JPanel {
                     ((DefaultTableModel) teamTable.getModel()).removeRow(selectedRow);
                     JOptionPane.showMessageDialog(null, "Team eliminato con successo!");
                 }
+
             } else {
                 JOptionPane.showMessageDialog(MyTeam.this, "Seleziona un team prima di eliminare.", "Nessun team selezionato", JOptionPane.WARNING_MESSAGE);
             }
@@ -184,13 +182,13 @@ public class MyTeam extends JPanel {
                 List<Team> teams = myController.recuperoTeamsDalDBC(responsabileCorrente);
                 String[] informazioni = ResponsabileDAO.nomecognomeRecovery(responsabileCorrente.getMatricola(), responsabileCorrente.getPw());
 
-                if (informazioni[0] != null && informazioni[1] != null) {
-                    String nome = informazioni[0];
-                    String cognome = informazioni[1];
+               //if (informazioni[0] != null && informazioni[1] != null) {
+                    //String nome = informazioni[0];
+                    //String cognome = informazioni[1];
 
                     if (!teams.isEmpty()) {
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(nome).append(" ").append(cognome).append(" , matricola ").append(responsabileCorrente.getMatricola()).append(" , i tuoi teams sono:\n");
+                       // StringBuilder sb = new StringBuilder();
+                        //sb.append(nome).append(" ").append(cognome).append(" , matricola ").append(responsabileCorrente.getMatricola()).append(" , i tuoi teams sono:\n");
 
                         Object[][] data = new Object[teams.size()][5]; // Array bidimensionale per i dati dei team
 
@@ -219,7 +217,7 @@ public class MyTeam extends JPanel {
                         JLabel noTeamsLabel = new JLabel("Nessun team associato al responsabile");
                         add(noTeamsLabel, BorderLayout.CENTER);
                     }
-                }
+               //}
             } catch (Exception e) {
                 JLabel errorLabel = new JLabel("Recupero dei team non riuscito: " + e.getMessage());
                 add(errorLabel, BorderLayout.CENTER);

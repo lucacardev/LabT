@@ -90,7 +90,7 @@ public class Tecnico {
     }
 
     public String toString() {
-        return matricola + " " + nome + " " + cognome;
+        return matricola + " " + nome + " " + cognome ;
     }
 
     /*Quando si aggiunge un oggetto Tecnico al DefaultListModel, il componente JList chiama implicitamente il metodo toString()
@@ -99,5 +99,6 @@ public class Tecnico {
       Per visualizzare correttamente il nome e il cognome dei tecnici, dovresti sovrascrivere il metodo toString() nella classe Tecnico
       in modo che restituisca una stringa che rappresenti correttamente l'oggetto, come ad esempio concatenare il nome e il cognome.
      */
+
 
 }
