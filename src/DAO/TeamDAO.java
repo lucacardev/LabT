@@ -171,4 +171,27 @@ public class TeamDAO {
 
     }
 
+    public boolean updateTeamLeader(String codTeam, String leader) {
+
+        try {
+
+            String query = "UPDATE team SET matricolal = ? WHERE codteam = ?";
+            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+
+            preparedStatement.setString(1, leader);
+            preparedStatement.setString(2, codTeam);
+
+            int updateCount = preparedStatement.executeUpdate();
+
+            return updateCount > 0; // Ritorna true se l'aggiornamento ha avuto successo, altrimenti false
+
+        } catch (SQLException e) {
+            System.out.println("Errore durante l'aggiornamento del leader del team");
+            e.printStackTrace();
+            return false;
+        }
+
+
+    }
+
 }

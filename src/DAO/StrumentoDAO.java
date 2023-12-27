@@ -290,6 +290,9 @@ public class StrumentoDAO {
                         " Tempo totale d'uso: " + durataTotale + "\n" +
                         " Utilizzato maggiormente da: " + utenteMax;
 
+            } else {
+
+                System.out.println("Non trovato");
             }
 
 

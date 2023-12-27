@@ -28,7 +28,7 @@ public class MainWindow extends JFrame {
 
         setSize(800,512);
         try {
-            BufferedImage iconImage = ImageIO.read(new File("src/GUI/icon/icons8-laboratorio-64.png"));
+            BufferedImage iconImage = ImageIO.read(new File("src/GUI/icon/favicon.png"));
             setIconImage(iconImage);
         } catch (IOException e) {
             e.printStackTrace();

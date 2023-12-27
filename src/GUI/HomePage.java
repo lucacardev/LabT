@@ -45,11 +45,14 @@ public class HomePage extends JPanel{
             @Override
             //Metodo per impostare l'immagine di background
             protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g;
                 super.paintComponent(g);
 
                 // Disegna l'immagine di sfondo
                 if (leftHomePageBackground != null) {
+                    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
                     g.drawImage(leftHomePageBackground, 0, 0, getWidth(), getHeight(), this);
+
                 }
 
             }

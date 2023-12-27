@@ -61,7 +61,6 @@ public class NewBooking extends JPanel{
     String codStrumentoUni;
 
 
-
     public NewBooking(Controller controller, Utente utenteCorrente) {
 
         myController = controller;

@@ -14,21 +14,22 @@ public class LinkMouseOn extends JLabel{
         
     }
     
-    public void ActiveLinkMouseOn(JLabel label) {
+    public void ActiveLinkMouseOn(JLabel label, Color color, Color firstColor) {
 
         addMouseListener(new MouseAdapter() {
 
-            //Cambio colore del testo password dimenticata al passaggio del mouse
+            //Cambio colore del testo al passaggio del mouse
             @Override
             public void mouseEntered(MouseEvent e) {
-                setForeground(new Color(35, 171, 144));
-                setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(35, 171, 144)));
+                setForeground(color);
+                setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, color));
             }
 
             //Ripristino colore originale
+
             @Override
             public void mouseExited(MouseEvent e) {
-                setForeground(Color.BLACK);
+                setForeground(firstColor);
                 setBorder(null);
             }
         });

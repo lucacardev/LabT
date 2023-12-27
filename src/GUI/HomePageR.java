@@ -45,14 +45,24 @@ public class HomePageR extends JPanel {
             //Metodo per impostare l'immagine di background
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
 
                 // Disegna l'immagine di sfondo
                 if (leftHomePageBackground != null) {
-                    g.drawImage(leftHomePageBackground, 0, 0, getWidth(), getHeight(), this);
+                    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                    g2d.drawImage(leftHomePageBackground, 0, 0, getWidth(), getHeight(), this);
                 }
 
             }
         };
+
+        //Disegno Background
+        try {
+            // Carica l'immagine di sfondo dal file specificato
+            leftHomePageBackground = ImageIO.read(new File("src/GUI/icon/Immagine WhatsApp 2023-12-04 ore 10.17.59_b126edae.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         leftHomePage.setLayout(new GridBagLayout());
         GridBagConstraints leftGbc = new GridBagConstraints();
@@ -84,26 +94,6 @@ public class HomePageR extends JPanel {
             ncGbc.gridy = 1;
             leftHomePage.add(nc,ncGbc);
         }
-
-        /*JScrollPane scrollableLeftHomePage = new JScrollPane(leftHomePage);
-
-        // Imposta la politica della barra di scorrimento
-        scrollableLeftHomePage.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        scrollableLeftHomePage.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-        // Aggiungi lo JScrollPane alla tua UI al posto di leftHomePage
-        add(scrollableLeftHomePage);*/
-
-
-
-        /*// matricola del responsabile registrato
-
-        IncreaseFont responsabileMatricola = new IncreaseFont(responsabileCorrente.getMatricola());
-        responsabileMatricola.increaseFont(responsabileMatricola,7);
-        leftGbc.gridx = 0;
-        leftGbc.gridy = 1;
-
-        leftHomePage.add(responsabileMatricola, leftGbc);*/
 
         //Pulsante indietro
 
@@ -145,12 +135,10 @@ public class HomePageR extends JPanel {
 
         });
 
-
-
         ////////////////////////////////RIGHT PAGE//////////////////////////////
 
         rightHomePage.setLayout(new GridBagLayout());
-        rightHomePage.setBackground(new Color(171,205,239));
+        rightHomePage.setBackground(new Color(239,239,239));
 
         GridBagConstraints rightGbc = new GridBagConstraints();
 
@@ -159,29 +147,6 @@ public class HomePageR extends JPanel {
         int sizeFont = 17;
         int style = 10;
         String font = "Arial";
-
-        /*//Bottone nuovo Team
-        BtnLayout newTeam = new BtnLayout("Le mie informazioni");
-        newTeam.setFont(new FontUIResource(font, style, sizeFont));
-
-        rightGbc.gridx = 0;
-        rightGbc.gridy = 0;
-        rightGbc.fill = GridBagConstraints.HORIZONTAL;
-        rightHomePage.add(newTeam, rightGbc);
-
-        //Cambio pagina quando nuova prenotazione viene premuto
-        newTeam.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-                NewTeam newTeam  = new NewTeam(myController, ResponsabileLoggato);
-
-                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(HomePageR.this);
-
-                mainWindow.addCardPanel(newTeam, "newTeam");
-
-            }
-        });*/
 
         //Bottone I miei Team
         BtnLayout myTeams = new BtnLayout("I miei Teams");
@@ -204,23 +169,6 @@ public class HomePageR extends JPanel {
 
             }
         });
-
-        /*//Bottone Organigramma
-        BtnLayout Organig = new BtnLayout("Organigramma Teams");
-        Organig.setFont(new FontUIResource(font, style, sizeFont));
-
-        rightGbc.gridx = 0;
-        rightGbc.gridy = 3;
-        rightGbc.fill = GridBagConstraints.HORIZONTAL;
-        rightHomePage.add(Organig, rightGbc);*/
-
-        //Disegno Background
-        try {
-            // Carica l'immagine di sfondo dal file specificato
-            leftHomePageBackground = ImageIO.read(new File("src/GUI/icon/Immagine WhatsApp 2023-12-04 ore 10.17.59_b126edae.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         add(leftHomePage);
         add(rightHomePage);

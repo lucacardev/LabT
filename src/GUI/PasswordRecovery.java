@@ -51,9 +51,12 @@ public class PasswordRecovery extends JPanel{
             //Metodo per impostare l'immagine di background
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+
 
                 // Disegna l'immagine di sfondo
                 if (leftRecoveryBackground != null) {
+                    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
                     g.drawImage(leftRecoveryBackground, 0, 0, getWidth(), getHeight(), this);
                 }
 
@@ -275,6 +278,7 @@ public class PasswordRecovery extends JPanel{
 
         //Impostazione background
         try {
+
             leftRecoveryBackground = ImageIO.read(new File("src/GUI/icon/mailbackground.png"));
 
 

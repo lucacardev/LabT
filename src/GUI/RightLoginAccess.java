@@ -17,6 +17,7 @@ import java.awt.event.FocusListener;
 import java.io.File;
 
 
+
 public class RightLoginAccess extends JPanel {
 
     private JTextField campoEmail;
@@ -24,6 +25,7 @@ public class RightLoginAccess extends JPanel {
     private BtnLayout loginButton;
     private LinkMouseOn passwordDimenticata;
     private JButton pwdEye;
+    private JLabel occhioPw;
     private BufferedImage rightLoginBackground;
 
 
@@ -38,6 +40,8 @@ public class RightLoginAccess extends JPanel {
 
     public RightLoginAccess(Controller controller) {
 
+
+
         this.myController = controller;
 
         setLayout(new GridBagLayout());
@@ -48,6 +52,7 @@ public class RightLoginAccess extends JPanel {
         gbc.insets = new Insets(5, 5, 5, 5);
 
         //Impostazione background
+
         try {
             rightLoginBackground = ImageIO.read(new File("src/GUI/icon/background.png"));
 
@@ -56,7 +61,8 @@ public class RightLoginAccess extends JPanel {
             System.out.println("Errore caricamento immagine background login page");
         }
 
-        ImageIcon loginImage = new ImageIcon("src/GUI/icon/icons8-utente-uomo-cerchiato.gif");
+        /*
+        ImageIcon loginImage = new ImageIcon("src/GUI/icon/");
         JLabel imageLabel = new JLabel(loginImage);
 
         // Posiziona l'immagine al centro del pannello
@@ -65,6 +71,7 @@ public class RightLoginAccess extends JPanel {
         gbc.gridwidth = 2; // Occupa due colonne orizzontali
         add(imageLabel, gbc);
 
+         */
 
         //Testo email
         JLabel emailText = new JLabel("Email: ");
@@ -107,6 +114,7 @@ public class RightLoginAccess extends JPanel {
 
         //Posizionamento campo password
         campoPassword = new JPasswordField(15);
+        campoPassword.setBorder(new LineBorder(Color.BLACK, 1));
         campoPassword.setEchoChar('\u2022');
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -126,11 +134,10 @@ public class RightLoginAccess extends JPanel {
         });
 
         //Posizionamento occhio per visualizzare password
-
         pwdEye = new JButton();
         try {
-            BufferedImage eyeImage = ImageIO.read(new File("src/GUI/icon/eye (1).png"));
-            pwdEye.setIcon(new ImageIcon(eyeImage));
+            NoScalingIcon pwdEyeNoScale = new NoScalingIcon(new ImageIcon("src/GUI/icon/hide.png"));
+            pwdEye.setIcon(pwdEyeNoScale);
 
         } catch (Exception ex) {
             System.out.println("Errore caricamento immagine occhio - pagina Login");
@@ -140,7 +147,7 @@ public class RightLoginAccess extends JPanel {
         pwdEye.setContentAreaFilled(false);
         pwdEye.setBorderPainted(false);
         GridBagConstraints pwdEyeGbc = new GridBagConstraints();
-        pwdEyeGbc.insets = new Insets(0, -30, 0, 0);
+        pwdEyeGbc.insets = new Insets(0, -60, 0, 0);
 
 
         //Chiamata al metodo per mostrare/nascondere la password
@@ -153,7 +160,7 @@ public class RightLoginAccess extends JPanel {
 
         pwdEyeGbc.gridx = 2;
         pwdEyeGbc.gridy = 4;
-        pwdEyeGbc.anchor = GridBagConstraints.LINE_END;  // Allinea il pulsante all'inizio della colonna
+        pwdEyeGbc.anchor = GridBagConstraints.LINE_START;  // Allinea il pulsante all'inizio della colonna
         add(pwdEye, pwdEyeGbc);
 
 
@@ -182,7 +189,7 @@ public class RightLoginAccess extends JPanel {
             }
         });
 
-        passwordDimenticata.ActiveLinkMouseOn(passwordDimenticata);
+        passwordDimenticata.ActiveLinkMouseOn(passwordDimenticata, new Color(35, 171, 144), Color.black);
 
         add(passwordDimenticata, gbc);
 
@@ -214,7 +221,7 @@ public class RightLoginAccess extends JPanel {
         });
 
         //Cambio colore al passaggio del mouse
-        regUtente.ActiveLinkMouseOn(regUtente);
+        regUtente.ActiveLinkMouseOn(regUtente, new Color(35, 171, 144), Color.BLACK);
 
         //Posizionamento accesso responsabile
         accResponsabile = new LinkMouseOn("Sei un responsabile? Clicca qui");
@@ -236,7 +243,7 @@ public class RightLoginAccess extends JPanel {
         });
 
         //Cambio colore al passaggio del mouse
-        accResponsabile.ActiveLinkMouseOn(accResponsabile);
+        accResponsabile.ActiveLinkMouseOn(accResponsabile, new Color(35, 171, 144), Color.black);
 
 
         //Verifica credenziali quando il pulsante di accesso viene premuto

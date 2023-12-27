@@ -459,10 +459,6 @@ public class BookingFrame extends JDialog{
                         EmailSender.sendVerificationCode(utenteLoggato.getEmail(), " ", "Riepilogo Prenotazione Modificata",
                                 "Prenotazione modificata con sucesso: \n" + riepilogoPrenotazione);
 
-                        //Aggiorniamo la tabella delle mie prenotazioni
-
-
-
                         //Chiusura del JDialog
                         dispose();
 
@@ -479,7 +475,6 @@ public class BookingFrame extends JDialog{
 
 
         });
-
 
 
         setResizable(false);

@@ -21,6 +21,8 @@ public class Controller {
     private StrumentoDAO strumentoDAO;
     private PrenotazioneDAO prenotazioneDAO;
 
+    private LaboratorioDAO laboratorioDAO;
+
     private AppartenenzaDAO appartenenzaDAO;
 
     private PostazioneDAO postazioneDAO;
@@ -51,14 +53,16 @@ public class Controller {
         responsabileDAO = new ResponsabileDAO(this);
         teamDAO = new TeamDAO(this);
         tecnicoDAO = new TecnicoDAO(this);
+        laboratorioDAO = new LaboratorioDAO(this);
 
 
     }
 
-    //////////////////////////////METODI UTENTE DAO///////////////////////////////
+    public Laboratorio recuperoLaboratorioConCodC(String codL) {
 
+        return laboratorioDAO.recuperoLaboratorio(codL);
 
-    /*Verifica utente presente nel database*/
+    }
 
 
     public boolean verificaUtente(Utente utente) {
@@ -169,23 +173,6 @@ public class Controller {
 
     }
 
-
-
-    /*
-    public Integer codificaSede(String nomeSede) {
-
-        return sedeDAO.codificaSedeDAO(nomeSede);
-
-
-    }
-    */
-
-    //////////////////////////////RESPONSABILE///////////////////////////////
-
-
-    /*Verifica responsabile presente nel database*/
-
-
     public boolean verificaResponsabile(Responsabile responsabile) {
 
         boolean responsabileTrovato;
@@ -204,7 +191,6 @@ public class Controller {
         return emailTrovata;
 
     }
-
 
     public boolean verificaMatricolaResponsabile (String matricola) {
 
@@ -250,8 +236,6 @@ public class Controller {
 
     }
 
-    //////////////////////////////////////////////////TEAM/////////////////////////////////////////////////////////
-
     public boolean recuperoTeamdaCodC(String codT) {
         boolean teamTrovato;
         teamTrovato = teamDAO.recuperoTeamDaCodice(codT);
@@ -273,8 +257,6 @@ public class Controller {
         teamDAO.deleteTeam(team.getCodTeam());
     }
 
-    /////////////////////////////TECNICO/////////////////////////////////////////
-
     public List<Tecnico> recuperoTecniciC (Team team) {
         return tecnicoDAO.recuperoTecniciDalDB(team);
     }
@@ -288,13 +270,11 @@ public class Controller {
         return tecnicoDAO.recuperoTecnicoMatricola(matricola);
     }
 
-    //Metodo per recuperare il tempo massimo dello strumento
     public Time getStrumentHourC(Strumento strumento) {
 
         return strumentoDAO.getStrumentHour(strumento);
     }
 
-    //Metodo per eliminare una prneotazione
 
     public void eliminaPrenotazioneC(Prenotazione prenotazione) {
 
@@ -348,5 +328,17 @@ public class Controller {
     public List<Team> recuperoTeamsDalDBC(Responsabile responsabileCorrente) {
 
         return teamDAO.recuperoTeamsDalDB(responsabileCorrente);
+    }
+
+    public boolean updateTeamLeaderC(Team team, Tecnico leader) {
+
+        return teamDAO.updateTeamLeader(team.getCodTeam(), leader.getMatricola());
+
+    }
+
+    public boolean updateTecnico1to1C(Tecnico tecnicoDaSostituire, Tecnico tecnicoSostituto, Team team) {
+
+        return tecnicoDAO.updateTecnico1to1(tecnicoDaSostituire, tecnicoSostituto, team.getCodTeam());
+
     }
 }

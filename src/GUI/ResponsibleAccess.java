@@ -18,9 +18,7 @@ import java.util.UUID;
 public class ResponsibleAccess extends JPanel {
     private JTextField campoMatricola;
     private JPasswordField campoPassword;
-    private BtnLayout loginButton = new BtnLayout("Accesso");
-
-    private final BtnLayout backButton = new BtnLayout("Indietro");
+    private BtnLayout loginButton = new BtnLayout("Accedi");
 
     private LinkMouseOn passwordDimenticata;
 
@@ -39,24 +37,25 @@ public class ResponsibleAccess extends JPanel {
         this.myController = controller;
 
         setLayout(new GridLayout(0,2));
+
         rightRApage = new JPanel() {
             @Override
-            //Metodo per impostare l'immagine di background
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
 
-                // Disegna l'immagine di sfondo
+                // Disegna l'immagine di sfondo con interpolazione bilineare
                 if (backgroundRight != null) {
-                    g.drawImage(backgroundRight, 0, 0, getWidth(), getHeight(), this);
+                    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                    g2d.drawImage(backgroundRight, 0, 0, getWidth(), getHeight(), this);
                 }
-
             }
         };
 
         //Impostazione sfondo background di destra
 
         try {
-            backgroundRight = ImageIO.read(new File("src/GUI/icon/OIP.jpg"));
+            backgroundRight = ImageIO.read(new File("src/GUI/icon/sfondoR.png"));
 
 
         } catch (Exception ex) {
@@ -65,13 +64,15 @@ public class ResponsibleAccess extends JPanel {
         }
 
 
-        rightRApage.setBackground(Color.white);
+
+
+        rightRApage.setBackground(Color.WHITE);
         rightRApage.setLayout(new GridBagLayout());
         GridBagConstraints rightGbc = new GridBagConstraints();
         rightGbc.insets = new Insets(5,5,5,5);
 
 
-        ImageIcon loginImage = new ImageIcon("src/GUI/icon/output-onlinegiftools.gif");
+        ImageIcon loginImage = new ImageIcon("src/GUI/icon/avatarR.gif");
         JLabel imageLabel = new JLabel(loginImage);
 
         // Posiziona l'immagine al centro del pannello
@@ -83,6 +84,7 @@ public class ResponsibleAccess extends JPanel {
 
         //Testo matricola
         JLabel matricolaText = new JLabel("Matricola: ");
+        matricolaText.setForeground(new Color(23,65,95));
         Font fontMatricolaText = matricolaText.getFont();
         int sizeMatricolaText = fontMatricolaText.getSize() + 4;
         Font increaseMatricolaText = fontMatricolaText.deriveFont((float) sizeMatricolaText);
@@ -98,6 +100,7 @@ public class ResponsibleAccess extends JPanel {
         campoMatricola = new TextFieldBorderColor(15);
 
         //Risalto colore dei bordi del campo matricola quando cliccato
+        campoMatricola.setBorder(new LineBorder(Color.BLACK, 1));
         TextFieldBorderColor.changeTextFieldBorderColor(campoMatricola);
 
         rightGbc.gridx = 1;  // Colonna a destra
@@ -107,6 +110,7 @@ public class ResponsibleAccess extends JPanel {
 
         //Testo password
         JLabel pwdText = new JLabel("Password: ");
+        pwdText.setForeground(new Color(23,65,95));
         pwdText.setFont(increaseMatricolaText);
         pwdText.setForeground(Color.BLACK);
 
@@ -116,16 +120,32 @@ public class ResponsibleAccess extends JPanel {
 
         //Posizionamento campo password
         campoPassword = new JPasswordField(15);
+        campoPassword.setBorder(new LineBorder(Color.BLACK, 1));
         campoPassword.setEchoChar('\u2022');
         rightGbc.gridx = 1;
         rightGbc.gridy = 4;
         rightRApage.add(campoPassword, rightGbc);
 
+        campoMatricola.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+
+                campoMatricola.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+
+                campoMatricola.setBorder(new LineBorder(Color.BLACK));
+
+            }
+        });
+
         //Risalto colore dei bordi del campo password quando cliccato
         campoPassword.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                campoPassword.setBorder(new LineBorder(new Color(35, 171, 144), 2));
+                campoPassword.setBorder(new LineBorder(new Color(246, 183, 55), 2));
             }
 
             @Override
@@ -138,8 +158,9 @@ public class ResponsibleAccess extends JPanel {
 
         JButton pwdEye = new JButton();
         try {
-            BufferedImage eyeImage = ImageIO.read(new File("src/GUI/icon/eye (1).png"));
-            pwdEye.setIcon(new ImageIcon(eyeImage));
+            NoScalingIcon noScalingEye = new NoScalingIcon(new ImageIcon("src/GUI/icon/hide.png"));
+            pwdEye.setIcon(noScalingEye);
+
 
         } catch (Exception ex) {
             System.out.println("Errore caricamento immagine occhio ");
@@ -149,8 +170,6 @@ public class ResponsibleAccess extends JPanel {
         pwdEye.setContentAreaFilled(false);
         pwdEye.setBorderPainted(false);
         GridBagConstraints pwdEyeGbc = new GridBagConstraints();
-
-
 
         //Chiamata al metodo per mostrare/nascondere la password
         pwdEye.addActionListener(new ActionListener() {
@@ -162,11 +181,13 @@ public class ResponsibleAccess extends JPanel {
 
         pwdEyeGbc.gridx = 2;
         pwdEyeGbc.gridy = 4;
-        pwdEyeGbc.anchor = GridBagConstraints.LINE_END;  // Allinea il pulsante alla fine della colonna
+        pwdEyeGbc.anchor = GridBagConstraints.LINE_END;
+        pwdEyeGbc.insets = new Insets(0, 0, 0, 35);
         rightRApage.add(pwdEye,pwdEyeGbc);
 
         rightGbc.gridx = 1;
         rightGbc.gridy = 5;
+        loginButton.setBackground(new Color(23,65,95));
         rightRApage.add(loginButton, rightGbc);
 
 
@@ -191,7 +212,7 @@ public class ResponsibleAccess extends JPanel {
         });
 
         //Cambio colore al passaggio del mouse
-        passwordDimenticata.ActiveLinkMouseOn(passwordDimenticata);
+        passwordDimenticata.ActiveLinkMouseOn(passwordDimenticata, new Color(246, 183, 55), new Color(23,65,95));
 
 
         //Posizionamento registrazione nuovo utente
@@ -214,7 +235,7 @@ public class ResponsibleAccess extends JPanel {
         });
 
         //Cambio colore al passaggio del mouse
-        regResponsabile.ActiveLinkMouseOn(regResponsabile);
+        regResponsabile.ActiveLinkMouseOn(regResponsabile, new Color(246, 183, 55), new Color(23,65,95));
 
         //Verifica credenziali quando il pulsante di accesso viene premuto
         loginButton.addActionListener(new ActionListener() {
@@ -231,6 +252,9 @@ public class ResponsibleAccess extends JPanel {
 
 
     //Impostazione Background left
+        leftRApage.setBackground(Color.WHITE);
+
+        /*
 
         leftRApage = new JPanel() {
             @Override
@@ -246,6 +270,8 @@ public class ResponsibleAccess extends JPanel {
             }
         };
 
+
+
         //Impostazione sfondo background di sinistra
 
         try {
@@ -258,9 +284,12 @@ public class ResponsibleAccess extends JPanel {
         }
 
 
-        /*int sizeFont = 17;
+        int sizeFont = 17;
         int style = 10;
-        String font = "Arial";*/
+        String font = "Arial";
+
+
+         */
 
         IncreaseFont welcomeText = new IncreaseFont("Benvenuto!");
         Font welcomeFont = welcomeText.getFont();
@@ -277,6 +306,9 @@ public class ResponsibleAccess extends JPanel {
 
         BtnLayout backButton = new BtnLayout("Torna Indietro");
 
+        JLabel logo = new JLabel(new NoScalingIcon(new ImageIcon("src/GUI/icon/LogoLabTRit.png")));
+
+        leftRApage.setLayout(new GridBagLayout());
         GridBagConstraints leftGbc = new GridBagConstraints();
         leftGbc.gridx = 0;
         leftGbc.gridy = 0;
@@ -284,16 +316,24 @@ public class ResponsibleAccess extends JPanel {
 
         leftRApage.add(welcomeText,leftGbc);
 
+        leftGbc.gridx = 0;
         leftGbc.gridy = 1;
         leftGbc.insets = new Insets(5, 0, 0, 0);
         leftRApage.add(Text1, leftGbc);
 
+        leftGbc.gridx = 0;
         leftGbc.gridy = 2;
         leftGbc.insets = new Insets(5, 0, 0, 0);
         leftRApage.add(Text2, leftGbc);
 
-        leftGbc.gridy =3;
+        leftGbc.gridx = 0;
+        leftGbc.gridy = 3;
         leftRApage.add(backButton, leftGbc);
+        backButton.setBackground(Color.RED);
+
+        leftGbc.gridx = 0;
+        leftGbc.gridy = 4;
+        leftRApage.add(logo, leftGbc);
 
         //Cambio pagina quando il pulsante indietro viene premuto
 
@@ -311,10 +351,12 @@ public class ResponsibleAccess extends JPanel {
             }
         });
 
-
+        /*
         //Immagine logo
         ImageIcon footImage = new ImageIcon("src/GUI/icon/icons8-organizzazione.gif");
         JLabel imagefLabel = new JLabel(footImage);
+
+         */
 
        //add(imagefLabel,BorderLayout.EAST);
 
