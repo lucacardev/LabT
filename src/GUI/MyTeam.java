@@ -90,7 +90,8 @@ public class MyTeam extends JPanel {
             if (selectedRow != -1) { // Verifica se una riga è stata selezionata
                 String teamCode = (String) teamTable.getValueAt(selectedRow, 0); // Ottieni il nome del team dalla riga selezionata
                 String teamName = (String) teamTable.getValueAt(selectedRow, 1);
-                Team team = new Team(teamCode, teamName, null, null, 0, null);
+                String teamMatricolaLeader = (String) teamTable.getValueAt(selectedRow,3);
+                Team team = new Team(teamCode, teamName, null, teamMatricolaLeader, 0, null);
                 List<Tecnico> tecniciDelTeam = myController.recuperoTecniciC(team);
 
                 if(tecniciDelTeam.size() == 5) {

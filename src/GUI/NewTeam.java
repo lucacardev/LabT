@@ -229,8 +229,9 @@ public class NewTeam extends JPanel {
 
                     } else {
 
-                        String selectedLeader = matricolaLField.getSelectedItem().toString();
-                        String matricolaLeader = selectedLeader.split(" ")[0]; // Estraggo solo la matricola
+                        String Leaderselezionato = matricolaLField.getSelectedItem().toString();
+                        String matricolaLeader = Leaderselezionato.split(" ")[0]; // Estraggo solo la matricola
+
 
                         //Chiamo la classe DTO che incapsula le informazioni del nuovo team
                         Team nuovoTeam = new Team(getCodTeamNew(), getNomeNew(), getDescrizioneNew(), matricolaLeader, scelta, responsabileCorrente);

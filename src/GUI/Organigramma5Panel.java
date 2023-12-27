@@ -31,7 +31,7 @@ public class Organigramma5Panel extends JPanel {
         setLayout(new BorderLayout());
 
         //Trova il leader nella lista e posizionalo come primo elemento
-        Tecnico leader = trovaLeader(this.Tecnici, t);
+        Tecnico leader = trovaLeader(this.Tecnici, this.team);
         if (leader != null) {
             this.Tecnici.remove(leader);
             this.Tecnici.add(0, leader); // Inserisci il leader come primo elemento
@@ -48,7 +48,7 @@ public class Organigramma5Panel extends JPanel {
             }
         });
 
-        //JLabel teamLabel = new JLabel("Organigramma del " + t.getNome());
+
         teamLabel.setHorizontalAlignment(SwingConstants.CENTER);
         add(teamLabel, BorderLayout.NORTH);
 
@@ -56,8 +56,9 @@ public class Organigramma5Panel extends JPanel {
     }
 
     private Tecnico trovaLeader(List<Tecnico> listaTecnici, Team team) {
+        String matricolaLeader = team.getMatricolaL();
         for (Tecnico tecnico : listaTecnici) {
-            if (tecnico.getMatricola().equals(team.getMatricolaL())) {
+            if (tecnico.getMatricola().equals(matricolaLeader)) {
                 return tecnico; // Restituisce il tecnico se la matricola corrisponde al leader
             }
         }
