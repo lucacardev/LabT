@@ -26,7 +26,12 @@ public class Organigramma5Panel extends JPanel {
         this.Tecnici = Tecnici;
         this.team = t;
 
+        setBackground(new Color(99, 178, 231, 255));
         JLabel teamLabel = new JLabel("Organigramma del " + team.getNome());
+        teamLabel.setForeground(Color.BLACK);
+        Font font = new Font("Helvetica", Font.BOLD, 20);
+
+        teamLabel.setFont(font);
 
         setLayout(new BorderLayout());
 
@@ -97,9 +102,15 @@ public class Organigramma5Panel extends JPanel {
     }
 
     private void disegnaNodo(Graphics2D g2d, int x, int y, Tecnico tecnico) {
-        g2d.setColor(Color.WHITE);
-        g2d.fillRect(x - 50, y - 20, 100, 40);
-        g2d.setColor(Color.BLACK);
+        ImageIcon imageIcon = new ImageIcon("src/GUI/icon/3317.jpg");
+        Image backgroundImage = imageIcon.getImage();
+
+        // Disegna l'immagine come sfondo dei riquadri dei nodi
+        g2d.drawImage(backgroundImage, x - 50, y - 20, 100, 40, null);
+
+        int border = 2;
+        g2d.setStroke(new BasicStroke(border));
+
         g2d.drawRect(x - 50, y - 20, 100, 40);
         FontMetrics fm = g2d.getFontMetrics();
         String testoTecnico = tecnico.getNome() + " " + tecnico.getCognome();
@@ -122,6 +133,9 @@ public class Organigramma5Panel extends JPanel {
     }
 
     private void disegnaCollegamento(Graphics2D g2d, int x1, int y1, int x2, int y2) {
+        int border = 2;
+        g2d.setStroke(new BasicStroke(border));
+        g2d.setColor(new Color(5, 5, 75));
         g2d.drawLine(x1, y1, x2, y2);
     }
 }

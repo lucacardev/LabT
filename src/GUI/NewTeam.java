@@ -280,6 +280,8 @@ public class NewTeam extends JPanel {
             ex.printStackTrace();
         }
 
+        rightPage.setBackground(new Color(151, 212, 248, 255));
+
         add(leftPage);
         add(rightPage);
     }
