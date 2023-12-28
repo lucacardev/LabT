@@ -289,8 +289,6 @@ public class Controller {
         Timestamp tsOraPrenotazione = removeMillis(prenotazione.getOra_prenotazioneS());
         Timestamp tsTempoUtilizzo = removeMillis(prenotazione.getTempo_utilizzoS());
 
-        System.out.println(prenotazione.getCod_prenotazione());
-
         return prenotazioneDAO.modificaMiaPrenotazioneDAO(
                 prenotazione.getCod_prenotazione(),
                 tsDataPrenotazione,
@@ -338,7 +336,8 @@ public class Controller {
 
     public boolean updateTecnico1to1C(Tecnico tecnicoDaSostituire, Tecnico tecnicoSostituto, Team team) {
 
-        return tecnicoDAO.updateTecnico1to1(tecnicoDaSostituire, tecnicoSostituto, team.getCodTeam());
+        return tecnicoDAO.updateTecnico1to1C(tecnicoDaSostituire, tecnicoSostituto, team);
 
     }
+
 }

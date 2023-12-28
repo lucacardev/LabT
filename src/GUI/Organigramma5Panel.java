@@ -95,6 +95,7 @@ public class Organigramma5Panel extends JPanel {
     }
 
     private Tecnico trovaLeader(List<Tecnico> listaTecnici, Team team) {
+
         for (Tecnico tecnico : listaTecnici) {
             if (tecnico.getMatricola().equals(team.getMatricolaL())) {
                 return tecnico; // Restituisce il tecnico se la matricola corrisponde al leader

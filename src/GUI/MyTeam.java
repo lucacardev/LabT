@@ -90,7 +90,12 @@ public class MyTeam extends JPanel {
             if (selectedRow != -1) { // Verifica se una riga è stata selezionata
                 String teamCode = (String) teamTable.getValueAt(selectedRow, 0); // Ottieni il nome del team dalla riga selezionata
                 String teamName = (String) teamTable.getValueAt(selectedRow, 1);
-                Team team = new Team(teamCode, teamName, null, null, 0, null);
+                String teamDes = (String) teamTable.getValueAt(selectedRow, 2);
+                String teamMat = (String) teamTable.getValueAt(selectedRow, 3);
+                int nTec = (Integer) teamTable.getValueAt(selectedRow, 4);
+
+
+                Team team = new Team(teamCode, teamName, teamDes, teamMat, nTec, responsabileCorrente);
                 List<Tecnico> tecniciDelTeam = myController.recuperoTecniciC(team);
 
                 if(tecniciDelTeam.size() == 5) {
@@ -98,16 +103,13 @@ public class MyTeam extends JPanel {
                     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(MyTeam.this);
                     mainWindow.addCardPanel(organigramma5, "Organigramma");
 
-                } else {
+                } if(tecniciDelTeam.size() == 10) {
 
                     Organigramma10Panel organigramma10 = new Organigramma10Panel(myController,responsabileCorrente,tecniciDelTeam,team);
                     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(MyTeam.this);
                     mainWindow.addCardPanel(organigramma10, "Organigramma");
 
                 }
-
-                 // Passa la lista dei nomi dei tecnici a Organigramma5Panel
-
 
             } else {
                 JOptionPane.showMessageDialog(MyTeam.this, "Seleziona un team prima di visualizzare l'organigramma.", "Nessun team selezionato", JOptionPane.WARNING_MESSAGE);

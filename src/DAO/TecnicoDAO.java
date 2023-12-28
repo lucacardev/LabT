@@ -23,22 +23,19 @@ public class TecnicoDAO {
     }
 
 
-    public boolean eliminaTecnicoMatricola(String matricola) {
+    public void eliminaTecniciTeam(String codTeam) {
 
         try {
-            String query = "DELETE FROM tecnico WHERE matricola = ?";
+            String query = "DELETE FROM tecnico WHERE codteam_fk = ?";
             PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
 
-            preparedStatement.setString(1, matricola);
+            preparedStatement.setString(1, codTeam);
+            preparedStatement.executeUpdate();
 
-            int updateCount = preparedStatement.executeUpdate();
-
-            return updateCount > 0;
 
         } catch (SQLException e) {
-            System.out.println("Errore durante l'eliminazione del tecnico");
+            System.out.println("Errore durante l'eliminazione dei tecnici con cod Team");
             e.printStackTrace();
-            return false;
         }
 
 
@@ -175,75 +172,83 @@ public class TecnicoDAO {
     /*Metodo per aggiornare i tecnici durante la modifica dell'organigramma, la modifica avviene 1 to 1 altrimentri
      * avremmo problemi con la posizione del tecnico nel organigramma.*/
 
-    public boolean updateTecnico1to1 (Tecnico tecnicoDaSostituire, Tecnico tecnicoSostituto, String nuovoCodiceTeam) {
+    public boolean updateTecnico1to1C(Tecnico tecnicoDaSostituire, Tecnico tecnicoSostituto, Team team) {
 
-        String matricola1 = tecnicoDaSostituire.getMatricola();
-        String nome1 = tecnicoDaSostituire.getNome();
-        String cognome1 = tecnicoDaSostituire.getCognome();
-        String codF1 = tecnicoDaSostituire.getCodfiscale();
-        String telefono1 = tecnicoDaSostituire.getTelefono();
-        String email1 = tecnicoDaSostituire.getEmail();
-        String codlFk1 = tecnicoDaSostituire.getLaboratorio().getCodL();
-
-        String matricola2 = tecnicoSostituto.getMatricola();
-        String nome2 = tecnicoSostituto.getNome();
-        String cognome2 = tecnicoSostituto.getCognome();
-        String codF = tecnicoSostituto.getCodfiscale();
-        String telefono2 = tecnicoSostituto.getTelefono();
-        String email2 = tecnicoSostituto.getEmail();
-        String codlFk = tecnicoSostituto.getLaboratorio().getCodL();
-
-        eliminaTecnicoMatricola(tecnicoSostituto.getMatricola());
+        List<Tecnico> listaTecnici;
 
         try {
 
-            String query = "UPDATE tecnico " +
-                    "SET matricola = ?, " +
-                    "nome = ?, " +
-                    "cognome = ?, " +
-                    "codfiscale = ?, " +
-                    "telefono = ?, " +
-                    "email = ?, " +
-                    "codl_fk = ?, " +
-                    "codteam_fk = ? " +
-                    "WHERE matricola = ?";
+            //Recupero della lista dei tecnici nel team
+            listaTecnici = recuperoTecniciDalDB(team);
 
-            String query2 = "INSERT INTO tecnico (matricola, nome, cognome, codfiscale, telefono, email, codl_fk, codteam_fk) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            // Trova l'indice del tecnico da sostituire nella lista del team
+            int index = listaTecnici.indexOf(tecnicoDaSostituire);
 
+            // Rimuovi il tecnico da sostituire dalla lista del team
+            listaTecnici.remove(tecnicoDaSostituire);
 
-            PreparedStatement preparedStatement1 = connessioneDB.getPreparedStatement(query);
-            PreparedStatement preparedStatement2 = connessioneDB.getPreparedStatement(query2);
+            // Inserisci il tecnico sostituto nella posizione trovata
+            listaTecnici.add(index, tecnicoSostituto);
 
-            preparedStatement1.setString(1, matricola2);
-            preparedStatement1.setString(2, nome2);
-            preparedStatement1.setString(3, cognome2);
-            preparedStatement1.setString(4, codF);
-            preparedStatement1.setString(5, telefono2);
-            preparedStatement1.setString(6, email2);
-            preparedStatement1.setString(7, codlFk);
-            preparedStatement1.setString(8, nuovoCodiceTeam);
-            preparedStatement1.setString(9, tecnicoDaSostituire.getMatricola());
+            // Aggiorna il valore di codteam_fk del tecnico da sostituire a null nel database
+            aggiornaCodTeam(tecnicoDaSostituire.getMatricola(), null);
 
-            preparedStatement2.setString(1, matricola1);
-            preparedStatement2.setString(2, nome1);
-            preparedStatement2.setString(3, cognome1);
-            preparedStatement2.setString(4, codF1);
-            preparedStatement2.setString(5, telefono1);
-            preparedStatement2.setString(6, email1);
-            preparedStatement2.setString(7, codlFk1);
-            preparedStatement2.setString(8, null);
+            aggiornaCodTeam(tecnicoSostituto.getMatricola(), team.getCodTeam());
 
-            int updateCount1 = preparedStatement1.executeUpdate();
-            int updateCount2 = preparedStatement2.executeUpdate();
+            //Eliminiamo tutti i tecnici dal DB
+            eliminaTecniciTeam(team.getCodTeam());
 
-            return updateCount1 > 0 && updateCount2 > 0; // Ritorna true se l'aggiornamento ha avuto successo, altrimenti false
-        } catch (SQLException e) {
+            // Aggiorna il team nel database o in memoria, a seconda della tua implementazione
+           insertTecniciTeam(team, listaTecnici);
+
+            return true;
+
+        } catch (Exception e) {
             System.out.println("Errore durante lo scambio dei tecnici");
             e.printStackTrace();
             return false;
         }
+    }
 
+    // Aggiorna il valore di codteam_fk del tecnico a null nel database
+    private void aggiornaCodTeam(String matricola, String codTeam) {
+        try {
+            String query = "UPDATE tecnico SET codteam_fk = ? WHERE matricola = ?";
+            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            preparedStatement.setString(1, codTeam);
+            preparedStatement.setString(2, matricola);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Errore durante l'aggiornamento del codteam_fk");
+            e.printStackTrace();
+        }
+    }
+
+    public void insertTecniciTeam(Team team, List<Tecnico> listaTecnici) {
+
+        try {
+
+            String query = "INSERT INTO tecnico(matricola, nome, cognome, codfiscale, telefono, email, codl_fk, codteam_fk)" +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+
+            for (Tecnico tecnico : listaTecnici) {
+                preparedStatement.setString(1, tecnico.getMatricola());
+                preparedStatement.setString(2, tecnico.getNome());
+                preparedStatement.setString(3, tecnico.getCognome());
+                preparedStatement.setString(4, tecnico.getCodfiscale());
+                preparedStatement.setString(5, tecnico.getTelefono());
+                preparedStatement.setString(6, tecnico.getEmail());
+                preparedStatement.setString(7, tecnico.getLaboratorio().getCodL());
+                preparedStatement.setString(8, team.getCodTeam());
+                preparedStatement.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Errore durante l'inserimento del team nel database");
+            e.printStackTrace();
+        }
     }
 
 }

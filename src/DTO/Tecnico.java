@@ -1,5 +1,7 @@
 package DTO;
 
+import java.util.Objects;
+
 public class Tecnico {
 
     private String matricola;
@@ -104,11 +106,21 @@ public class Tecnico {
         return matricola + " " + nome + " " + cognome;
     }
 
-    /*Quando si aggiunge un oggetto Tecnico al DefaultListModel, il componente JList chiama implicitamente il metodo toString()
-     sull'oggetto per ottenere una rappresentazione di stringa da visualizzare. Se la classe Tecnico non ha un override del metodo toString(),
-      di default verrà utilizzata la rappresentazione fornita da Object.toString(), che mostra l'hashcode dell'oggetto.
-      Per visualizzare correttamente il nome e il cognome dei tecnici, dovresti sovrascrivere il metodo toString() nella classe Tecnico
-      in modo che restituisca una stringa che rappresenti correttamente l'oggetto, come ad esempio concatenare il nome e il cognome.
-     */
+    //Questi due metodi ci permettono di confrontare l'uguaglianza tra tecnici in base alla matricola
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tecnico tecnico = (Tecnico) o;
+        return Objects.equals(matricola, tecnico.matricola);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(matricola);
+    }
+
 
 }

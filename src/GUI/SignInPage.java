@@ -265,7 +265,6 @@ public class SignInPage extends JPanel {
         } catch (Exception ex) {
 
             System.out.println("Errore nella generazione del codice");
-            System.out.println(randomCode);
 
         }
 
