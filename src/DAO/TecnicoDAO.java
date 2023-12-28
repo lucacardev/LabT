@@ -173,7 +173,7 @@ public class TecnicoDAO {
     }
 
     /*Metodo per aggiornare i tecnici durante la modifica dell'organigramma, la modifica avviene 1 to 1 altrimentri
-    * avremmo problemi con la posizione del tecnico nel organigramma.*/
+     * avremmo problemi con la posizione del tecnico nel organigramma.*/
 
     public boolean updateTecnico1to1 (Tecnico tecnicoDaSostituire, Tecnico tecnicoSostituto, String nuovoCodiceTeam) {
 

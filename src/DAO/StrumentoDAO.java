@@ -149,10 +149,10 @@ public class StrumentoDAO {
                 System.out.println("Errore nella ricerca degli strumenti tramite descrizione");
                 e.printStackTrace();
 
+            }
+
+
         }
-
-
-    }
         return strumenti;
     }
 
@@ -226,7 +226,7 @@ public class StrumentoDAO {
 
 
                 strumentoTrovato = new Strumento(codStrumentoRec, caratteristicheTecnicheRec, descrizioneRec,
-                                        tempoMaxUsoRec, postazione, sede);
+                        tempoMaxUsoRec, postazione, sede);
             }
 
 
@@ -279,9 +279,9 @@ public class StrumentoDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                 codStrumentoRec = resultSet.getInt("codstrumento");
-                 annoScelto = resultSet.getInt("anno");
-                 meseScelto = resultSet.getInt("mese");
+                codStrumentoRec = resultSet.getInt("codstrumento");
+                annoScelto = resultSet.getInt("anno");
+                meseScelto = resultSet.getInt("mese");
                 Time durataTotale = resultSet.getTime("durata_totale");
                 String utenteMax = resultSet.getString("utentemax");
 

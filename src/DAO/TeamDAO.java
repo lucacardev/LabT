@@ -93,29 +93,29 @@ public class TeamDAO {
         List<Team> teams = new ArrayList<>();
 
         try {
-                String query = "SELECT * FROM team where codR_fk = ?";
-                PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
-                preparedStatement.setString(1,responsabile.getMatricola());
-                ResultSet resultSet = preparedStatement.executeQuery();
+            String query = "SELECT * FROM team where codR_fk = ?";
+            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            preparedStatement.setString(1,responsabile.getMatricola());
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-                while (resultSet.next()) {
-                    String codTeam = resultSet.getString("codTeam");
-                    String nomeTeam = resultSet.getString("nome");
-                    String descrizione = resultSet.getString("descrizione");
-                    String matricolaL = resultSet.getString("matricolaL");
-                    Integer n_tecnici = resultSet.getInt("n_tecnici");
-                    String codR_fk = resultSet.getString("codR_fk");
+            while (resultSet.next()) {
+                String codTeam = resultSet.getString("codTeam");
+                String nomeTeam = resultSet.getString("nome");
+                String descrizione = resultSet.getString("descrizione");
+                String matricolaL = resultSet.getString("matricolaL");
+                Integer n_tecnici = resultSet.getInt("n_tecnici");
+                String codR_fk = resultSet.getString("codR_fk");
 
-                    ResponsabileDAO responsabileDAO = new ResponsabileDAO(currController);
-                    Responsabile responsabile1 = responsabileDAO.recuperoResponsabile(codR_fk);
+                ResponsabileDAO responsabileDAO = new ResponsabileDAO(currController);
+                Responsabile responsabile1 = responsabileDAO.recuperoResponsabile(codR_fk);
 
-                    Team team = new Team(codTeam, nomeTeam, descrizione,matricolaL,n_tecnici,responsabile1);
-                    teams.add(team);
-                }
-            } catch (SQLException e) {
-                System.out.println("Errore durante il recupero dei team dal DB");
-                e.printStackTrace();
+                Team team = new Team(codTeam, nomeTeam, descrizione,matricolaL,n_tecnici,responsabile1);
+                teams.add(team);
             }
+        } catch (SQLException e) {
+            System.out.println("Errore durante il recupero dei team dal DB");
+            e.printStackTrace();
+        }
 
         return teams;
     }

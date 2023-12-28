@@ -14,6 +14,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -87,13 +89,13 @@ public class NewTeam extends JPanel {
         rightPage.add(descrizioneText, gbc);
 
         //Testo matricola leader
-        gbc.gridy = 8;
+        gbc.gridy = 11;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         rightPage.add(matricolaLText, gbc);
 
         //Testo ntecnici
-        gbc.gridy = 10;
+        gbc.gridy = 8;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         rightPage.add(ntecniciText, gbc);
@@ -135,7 +137,7 @@ public class NewTeam extends JPanel {
         rightPage.add(descrizioneField, gbc);
 
         //Campo matricola leader
-        gbc.gridy = 9;
+        gbc.gridy = 12;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         matricolaLField = new JComboBox<>();
@@ -146,7 +148,7 @@ public class NewTeam extends JPanel {
         rightPage.add(matricolaLField, gbc);
 
         //Campo ntecnici
-        gbc.gridy = 11;
+        gbc.gridy = 10;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         Integer[] scelte = {0,5,10};
@@ -159,7 +161,7 @@ public class NewTeam extends JPanel {
         ntecniciComboBox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent event) {
                 if (event.getStateChange() == ItemEvent.SELECTED) {
-                   scelta = (Integer) event.getItem();
+                    scelta = (Integer) event.getItem();
 
                     //In questo modo ogni volta che si seleziona il numero la lista si azzera
                     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
@@ -181,7 +183,7 @@ public class NewTeam extends JPanel {
 
 
         //Bottone indietro
-        gbc.gridy = 12;
+        gbc.gridy = 13;
         gbc.gridx = 0;
         gbc.gridwidth = 1;
         gbc.weightx = 0;
@@ -204,7 +206,7 @@ public class NewTeam extends JPanel {
 
 
         //Bottone inserisci
-        gbc.gridy = 12;
+        gbc.gridy = 13;
         gbc.gridx = 1;
         gbc.gridwidth = 1;
         gbc.weightx = 0;
@@ -228,15 +230,17 @@ public class NewTeam extends JPanel {
                 }
                 else {
 
-                    System.out.println(getCodTeamNew());
                     if (controller.recuperoTeamdaCodC(getCodTeamNew())) {
 
                         JOptionPane.showMessageDialog(null, "Il codice del team è già presente nel database.");
 
                     } else {
 
+                        //Salviamo solo la matricola
+                        String matrENome = matricolaLField.getSelectedItem().toString().substring(0, 7);
+
                         //Chiamo la classe DTO che incapsula le informazioni del nuovo team
-                        Team nuovoTeam = new Team(getCodTeamNew(), getNomeNew(), getDescrizioneNew(), matricolaLField.getSelectedItem().toString(), scelta, responsabileCorrente);
+                        Team nuovoTeam = new Team(getCodTeamNew(), getNomeNew(), getDescrizioneNew(), matrENome, scelta, responsabileCorrente);
 
                         boolean complete = myController.newTeamInsert(nuovoTeam);
 
@@ -262,9 +266,11 @@ public class NewTeam extends JPanel {
             //Metodo per impostare l'immagine di background
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
 
                 // Disegna l'immagine di sfondo
                 if (backgroundImageNew != null) {
+                    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
                     g.drawImage(backgroundImageNew, 0, 0, getWidth(), getHeight(), this);
                 }
 
@@ -318,11 +324,12 @@ public class NewTeam extends JPanel {
         dialog.setTitle("Seleziona Tecnici");
         dialog.setLayout(new BorderLayout());
 
-
         DefaultListModel<Tecnico> listModel = new DefaultListModel<>();
+
         JList<Tecnico> tecniciList = new JList<>(listModel);
 
         //Ci permette di selezionare tecnici multipli senza l'uso di CTRL
+
         tecniciList.setSelectionModel(new DefaultListSelectionModel() {
 
             int count = 0;
@@ -336,7 +343,8 @@ public class NewTeam extends JPanel {
                         super.addSelectionInterval(index0, index1);
                     } else {
                         JOptionPane.showMessageDialog(null, "Non puoi selezionare più di " +
-                                numTecniciDaSelezionare + " tecnici");
+                                numTecniciDaSelezionare + " tecnici", "Numero tecnici superato", JOptionPane.ERROR_MESSAGE);
+
                     }
 
                 }
@@ -360,6 +368,18 @@ public class NewTeam extends JPanel {
         JButton selectButton = new JButton("Seleziona");
         dialog.add(selectButton, BorderLayout.SOUTH);
 
+        //Reset JComboBox ntecniciComboBox quando il JDialog viene chiuso
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (JOptionPane.CLOSED_OPTION == -1) {
+                    ntecniciComboBox.setSelectedIndex(0);
+                }
+            }
+        });
+
+
+        //Azione tasto quando i tecnici vengono selezionati per comporre il nuovo team
         selectButton.addActionListener(e -> {
 
 
