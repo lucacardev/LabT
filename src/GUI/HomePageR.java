@@ -17,15 +17,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class HomePageR extends JPanel {
-    private static JPanel leftHomePage;
-    private static JPanel rightHomePage;
-
-    private BufferedImage leftHomePageBackground;
-
+    private static BufferedImage leftHomePageBackground;
     Controller myController;
     Responsabile ResponsabileLoggato;
-
-
 
     public HomePageR(Controller controller, Responsabile responsabileCorrente) {
 
@@ -34,9 +28,8 @@ public class HomePageR extends JPanel {
 
         setLayout(new GridLayout(0,2));
 
-        leftHomePage = new JPanel();
-        rightHomePage = new JPanel();
-
+        JPanel leftHomePage;
+        JPanel rightHomePage = new JPanel();
 
         /////////////////////////////LEFT HOME PAGE//////////////////////////////////
 
@@ -68,7 +61,6 @@ public class HomePageR extends JPanel {
         GridBagConstraints leftGbc = new GridBagConstraints();
         leftGbc.insets = new Insets(5,5,5,5);
 
-
         String[] informazioni = ResponsabileDAO.nomecognomeRecovery(responsabileCorrente.getMatricola(),responsabileCorrente.getPw());
 
         if (informazioni[0] != null && informazioni[1] != null) {
@@ -85,10 +77,14 @@ public class HomePageR extends JPanel {
             welcomeText.setForeground(new Color(0, 0, 0));
             nc.setFont(increaseFont);
             nc.setForeground(new Color(0,0,0));
+
+            //Aggiunta del testo di benvenuto
             leftGbc.gridx = 0;
             leftGbc.gridy = 0;
             leftGbc.insets = new Insets(20,0,0,0);
             leftHomePage.add(welcomeText, leftGbc);
+
+            //Aggiunta del nome e cognome del responsabile
             GridBagConstraints ncGbc = new GridBagConstraints();
             ncGbc.gridx = 0;
             ncGbc.gridy = 1;
@@ -96,17 +92,15 @@ public class HomePageR extends JPanel {
         }
 
         //Pulsante indietro
-
         BtnLayout backButton = new BtnLayout("Esci");
+        backButton.setBackground(Color.RED);
+
         leftGbc.gridx = 0;
         leftGbc.gridy = 3;
         leftGbc.weightx = 0.5;
         leftGbc.weighty = 0.5;
-        backButton.setBackground(Color.RED);
         leftGbc.insets = new Insets(15,20,40,0);
         leftGbc.anchor = GridBagConstraints.NORTH;
-
-
         leftHomePage.add(backButton, leftGbc);
 
         //Cambio pagina quando il pulsante indietro viene premuto
@@ -127,7 +121,6 @@ public class HomePageR extends JPanel {
                     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(HomePageR.this);
 
                     mainWindow.addCardPanel(paginaAccessR, "AccessoR");
-
 
                 }
             }

@@ -35,6 +35,7 @@ public class DB_Connection {
 
             System.out.println("Connessione al Database fallita");
             e.printStackTrace();
+
         }
 
         /*Dopo aver stabilito la connesione con il DB possiamo definire la variabile statement che è quella che
@@ -47,7 +48,9 @@ public class DB_Connection {
         } catch(SQLException e) {
 
             System.out.println("Errore nella creazione dello statement");
+
         }
+
     }
 
     public static DB_Connection getConnessione() {
@@ -58,6 +61,7 @@ public class DB_Connection {
         }
 
         return istanza;
+
     }
 
     public Statement getStatement() {
@@ -69,19 +73,9 @@ public class DB_Connection {
     /*Metodo che ci permette di creare prima una connessione con il database e poi eseguire
     * una query passata come paramentro*/
     public PreparedStatement getPreparedStatement(String query) throws SQLException {
+
         return connection.prepareStatement(query);
 
-    }
-
-    //Metodo che permette la chiusura della connessione con il database
-    public void closeConnection() {
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 }

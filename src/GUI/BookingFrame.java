@@ -34,39 +34,23 @@ public class BookingFrame extends JDialog{
     private  static final JLabel tempoUtilizzoText = new JLabel("Tempo Utilizzo: ");
     private  static final JLabel codStrumento = new JLabel("Codice Strumento: ");
     private  static final JLabel codPrenotazione = new JLabel("Codice Prenotazione: ");
-
     private final BtnLayout prenotaButton = new BtnLayout("Prenota");
     private final BtnLayout modificaButton = new BtnLayout("Modifica Prenotazione");
-
     private Date selectedDate;
     private Date selectedTime;
     private Date selectedUtilizationTime;
-
-    private Date selezionaDataModificata;
-    private Date selezionaOraModificata;
-    private Date selezionaTempoUtilizzoModificato;
-
     private JLabel codiceStrumento;
     private JLabel codicePrenotazione;
-
     private JDateChooser dateChooser;
-
-    private int codL;
-
     Utente utenteLoggato;
-
     Controller myController;
-    Utente utenteCorrente;
     Strumento strumentoSelezionato;
     Postazione postazioneSelezionata;
-
     Prenotazione prenotazioneDaModificare;
-
 
     public  BookingFrame(JFrame parent, Controller controller , Utente utenteCorrente, Strumento strumentoScelto) {
 
         super(parent, "Nuova Prenotazione", true);
-
 
         myController = controller;
         utenteLoggato = utenteCorrente;
@@ -106,7 +90,6 @@ public class BookingFrame extends JDialog{
         gbc.weightx = 0.25;
         mainPanel.add(codStrumento, gbc);
 
-
         // Creazione calendario
         dateChooser = new JDateChooser();
         JCalendar calendar = dateChooser.getJCalendar();
@@ -126,13 +109,11 @@ public class BookingFrame extends JDialog{
         initialTime.setSeconds(0);
         initialTime.setTime((initialTime.getTime() / 1000) * 1000);
 
-
         TimeSpinnerModel timeSpinnerModel = new TimeSpinnerModel(initialTime);
         JSpinner timeSpinner = new JSpinner(timeSpinnerModel);
 
         JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) timeSpinner.getEditor();
         editor.getTextField().setFormatterFactory(new DefaultFormatterFactory(new DateFormatter(timeFormat)));
-
 
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -258,8 +239,6 @@ public class BookingFrame extends JDialog{
         }
     }
 
-
-
     ///////////////////////////////////////////BOOKING FRAME MODIFICA PRENOTAZIONE///////////////////////
 
     public  BookingFrame(JFrame parent, Controller controller , Utente utenteCorrente, Prenotazione prenotazione) {
@@ -309,7 +288,6 @@ public class BookingFrame extends JDialog{
         gbc.weightx = 0.25;
         mainPanel.add(codPrenotazione, gbc);
 
-
         //Creazione calendario
         dateChooser = new JDateChooser();
         JCalendar calendar = dateChooser.getJCalendar();
@@ -319,7 +297,6 @@ public class BookingFrame extends JDialog{
         gbc.gridx = 0;
         gbc.gridy = 1;
         mainPanel.add(dateChooser, gbc);
-
 
         //Impostiamo di default l'ora del laboratorio
         Date initialTime = new Date();
@@ -337,7 +314,6 @@ public class BookingFrame extends JDialog{
         gbc.gridx = 1;
         gbc.gridy = 1;
         mainPanel.add(timeSpinner, gbc);
-
 
         //In questo modo quando vogliamo prenotare uno strumento ci appare direttamente il tempo massimo
         //di utilizzo inerente allo strumento selezionato
@@ -378,18 +354,13 @@ public class BookingFrame extends JDialog{
         gbc.fill = GridBagConstraints.HORIZONTAL;
         mainPanel.add(modificaButton, gbc);
 
-
-
-
         modificaButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-
                 selectedDate = dateChooser.getDate();
                 selectedTime = (Date) timeSpinner.getValue();
                 selectedUtilizationTime = (Date) timeSpinnerTempoUtilizzo.getValue();
-
 
                 if(selectedDate != null && selectedTime != null && selectedUtilizationTime != null) {
 
@@ -424,7 +395,6 @@ public class BookingFrame extends JDialog{
 
                     Prenotazione prenotazioneDTO = new Prenotazione(prenotazione.getCod_prenotazione(), selectedDate, selectedTime, selectedUtilizationTime, utenteLoggato, strumentoRecDaPren);
 
-
                     //Se l'operazione è avvenuta con successo allora mostro il messaggio di modifica avvenuta con successo
                         // Prima controlliamo che la prenotazione non sia già presente con gli stessi dati
                     if(myController.modificaMiaPrenotazioneC(prenotazioneDTO)) {
@@ -454,8 +424,6 @@ public class BookingFrame extends JDialog{
                                 "Sede: " + strumentoRecDaPren.getCodSede_fk().getNome() + "\n" +
                                 "Indirizzo: " + strumentoRecDaPren.getCodSede_fk().getIndirizzo();
 
-
-
                         EmailSender.sendVerificationCode(utenteLoggato.getEmail(), " ", "Riepilogo Prenotazione Modificata",
                                 "Prenotazione modificata con sucesso: \n" + riepilogoPrenotazione);
 
@@ -466,7 +434,6 @@ public class BookingFrame extends JDialog{
 
                     }
 
-
                 } else {
                     JOptionPane.showMessageDialog(null, "ATTENZIONE! Devi selezionare una data.");
                 }
@@ -476,9 +443,7 @@ public class BookingFrame extends JDialog{
 
         });
 
-
         setResizable(false);
-
 
     }
 
@@ -489,12 +454,7 @@ public class BookingFrame extends JDialog{
         myController = controller;
         strumentoSelezionato = strumento;
 
-
-
-
     }
-
-
 
     public void setCodStrumento(String codStrumento) {
 
@@ -508,25 +468,9 @@ public class BookingFrame extends JDialog{
 
     }
 
-    /*
-
-    public void getStrumentHour(Strumento strumento) {
-
-        Time tempoMaxUtilizzoStrum = myController.getStrumentHourC(strumento);
-
-        minutiTempoUtilizzo = tempoMaxUtilizzoStrum.getMinutes();
-        oraTempoUtilizzo = tempoMaxUtilizzoStrum.getHours();
-
-    }
-
-    */
-
     public void setPostazioneAttuale(Postazione postazione) {
 
         postazioneSelezionata = postazione;
     }
 
-
 }
-
-

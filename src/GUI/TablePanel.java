@@ -6,22 +6,14 @@ import DTO.Strumento;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.util.List;
 
 public class TablePanel extends JPanel {
-
     private JTable tableStrumenti;
     private JTable tablePrenotazioni;
-
-    private JTable tablePrenStrumenti;
     private TableModelStrumento tableModelStrumento;
-
     private TableModelMiePrenotazioni tableModelMiePrenotazioni;
-
-    private TableModelPrenStrum tableModelPrenStrum;
-
     private Integer codStrumentoAttuale = null;
 
     private PrenotazioneSelectionListener prenotazioneSelectionListener;
@@ -35,14 +27,12 @@ public class TablePanel extends JPanel {
 
         tableStrumenti = new JTable(tableModelStrumento);
 
-
         setLayout(new BorderLayout());
         add(new JScrollPane(tableStrumenti), BorderLayout.CENTER);
 
         tableStrumenti.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-
 
                 //In questo modo impediamo all'utente di selezionare più righe alla volta evitando errori
                 ListSelectionModel selectionModel = tableStrumenti.getSelectionModel();
@@ -54,7 +44,6 @@ public class TablePanel extends JPanel {
 
                         Strumento selectedStrumento = tableModelStrumento.getStrumentoAtRow(selectedRow);
 
-
                             codStrumentoAttuale = selectedStrumento.getCodStrumento();
 
                             //Con questo metodo passiamo lo strumento selezionato all'oggetto CalendarDialog
@@ -62,23 +51,28 @@ public class TablePanel extends JPanel {
 
                             //Passiamo lo Strumento alla classe BookingFrame quando l'utente prenota uno strumento
                             if(bookingFrame != null) {
-                                bookingFrame.setStrumentoAttuale(selectedStrumento);
-                            }
-                            newBooking.setCodStrumentoBookingFrame(codStrumentoAttuale.toString());
 
+                                bookingFrame.setStrumentoAttuale(selectedStrumento);
+
+                            }
+
+                            newBooking.setCodStrumentoBookingFrame(codStrumentoAttuale.toString());
                             newBooking.bookingButtonAvailability();
                             newBooking.bookingButtonCalendar();
                             newBooking.setRiepilogoButton();
 
-
-
                     } else {
+
                         newBooking.removeBookingButton();
                         newBooking.removeCalendarButton();
                         newBooking.removeRiepilogoButton();
+
                     }
+
                 }
+
             }
+
         });
 
     }
@@ -103,6 +97,7 @@ public class TablePanel extends JPanel {
 
                 //Prendiamo le informazioni della riga selezionata
                 if (!e.getValueIsAdjusting()) {
+
                     int selectedRow = tablePrenotazioni.getSelectedRow();
                     if (selectedRow != -1) {
 
@@ -116,19 +111,21 @@ public class TablePanel extends JPanel {
                     }
 
                     else {
+
                         //In questo modo quando non è selezionata nessuna riga non viene salvata l'ultima prneotazione e i pulsanti
                         //non sono disponibili e quindi non permettono di modificare o eliminare
                         prenotazioneSelectionListener.prenotazioneSelected(null);
+
                     }
+
                 }
+
             }
+
         });
-
-
 
         setLayout(new BorderLayout());
         add(new JScrollPane(tablePrenotazioni), BorderLayout.CENTER);
-
 
     }
 
@@ -138,24 +135,14 @@ public class TablePanel extends JPanel {
     //////////////////////////////TABLE PANEL PER IL CALENDARIO DEGLI STRUMENTI////////////////
     public TablePanel(List<Prenotazione> listaPrenotazioniStrumento, String calendario) {
 
-       tableModelPrenStrum = new TableModelPrenStrum(listaPrenotazioniStrumento);
+        TableModelPrenStrum tableModelPrenStrum = new TableModelPrenStrum(listaPrenotazioniStrumento);
 
-       tablePrenStrumenti = new JTable(tableModelPrenStrum);
+        JTable tablePrenStrumenti = new JTable(tableModelPrenStrum);
 
         setLayout(new BorderLayout());
         add(new JScrollPane(tablePrenStrumenti), BorderLayout.CENTER);
 
     }
-
-
-    public boolean isRowSelected() {
-
-        return tableStrumenti.getSelectedRow() != -1;
-
-
-    }
-
-
 
     public void setData(List<Strumento> listaStrumenti) {
 
@@ -171,18 +158,4 @@ public class TablePanel extends JPanel {
 
     }
 
-    public void aggiornaMiePrenotazioni() {
-
-        tableModelMiePrenotazioni.fireTableDataChanged();
-
-    }
-
-
-
-
-    public void aggiorna() {
-
-        tableModelStrumento.fireTableDataChanged();
-        tableModelMiePrenotazioni.fireTableDataChanged();
-    }
 }

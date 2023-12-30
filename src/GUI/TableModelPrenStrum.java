@@ -9,14 +9,13 @@ import java.util.List;
 public class TableModelPrenStrum extends AbstractTableModel {
 
     private final String[] columnsName = {"Data", "Ora", "Tempo di utilizzo", "Codice Strumento"};
-    private List<Prenotazione> listaPrenStrumenti;
+    private final List<Prenotazione> listaPrenStrumenti;
 
     public TableModelPrenStrum(List <Prenotazione> listaPrenStrumenti)  {
 
         this.listaPrenStrumenti = listaPrenStrumenti;
 
     }
-
 
     @Override
     public int getRowCount() {
@@ -28,7 +27,9 @@ public class TableModelPrenStrum extends AbstractTableModel {
         } else {
 
             return 22;
+
         }
+
     }
 
     @Override
@@ -49,29 +50,39 @@ public class TableModelPrenStrum extends AbstractTableModel {
 
             Prenotazione prenotazione = listaPrenStrumenti.get(rowIndex);
 
-            switch (columnIndex) {
-                case 0:
+            return switch (columnIndex) {
+
+                case 0 -> {
+
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                    return sdf.format(prenotazione.getData_prenotazioneS());
+                    yield sdf.format(prenotazione.getData_prenotazioneS());
 
-                case 1:
+                }
+                case 1 -> {
+
                     SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
-                    return sdfTime.format(prenotazione.getOra_prenotazioneS());
+                    yield sdfTime.format(prenotazione.getOra_prenotazioneS());
 
-                case 2:
+                }
+                case 2 -> {
+
                     SimpleDateFormat sdfTime3 = new SimpleDateFormat("HH:mm");
-                    return sdfTime3.format(prenotazione.getTempo_utilizzoS());
+                    yield sdfTime3.format(prenotazione.getTempo_utilizzoS());
 
-                case 3:
-                    return prenotazione.getCodStrumento_fk().getCodStrumento();
+                }
 
-                default:
-                    return null;
-            }
+                case 3 -> prenotazione.getCodStrumento_fk().getCodStrumento();
+                default -> null;
+
+            };
 
         } else {
+
             System.out.println("La lista delle prenotazioni dello strumento è vuota");
             return null;
+
         }
+
     }
+
 }

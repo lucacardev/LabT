@@ -8,41 +8,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
 
     Controller myController;
     Utente utenteLoggato;
-
     BookingFrame myBooking;
-
-    PrenotazioneSelectionListener listener;
-
     private static final JPanel topPanel = new JPanel();
     private static final JPanel footerPanel = new JPanel();
-
     private static final BtnLayout backButton = new BtnLayout("Indietro");
     private static final BtnLayout modifyButton = new BtnLayout("Modifica");
     private static final BtnLayout deleteButton = new BtnLayout("Elimina");
-
     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(MyBooking.this);
-
     private Prenotazione myPrenotazioneSelez;
-
-    int numeroPrenotazione;
-
-
-
-
+    private int numeroPrenotazione;
     GridBagConstraints footerPanelGbc = new GridBagConstraints();
 
     public MyBooking(Controller controller, Utente utente)  {
 
         myController = controller;
         utenteLoggato = utente;
-
-
 
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -73,8 +58,6 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
         //////////////////////////////////////////FOOTER PANEL//////////////////////////////////////
 
         footerPanel.setLayout(new GridBagLayout());
-        footerPanelGbc.insets = new Insets(5,5,5,5);
-
 
         //Creazione bottone per tornare indietro
 
@@ -95,12 +78,10 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
 
                     mainWindow.showCard("homePage");
 
-
                 }
             });
 
         //Creazione bottone per modificare la prenotazione
-
         footerPanelGbc.gridx = 1;
         footerPanelGbc.gridy = 0;
         footerPanelGbc.anchor = GridBagConstraints.CENTER;
@@ -121,17 +102,12 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
         if(myPrenotazioneSelez == null) {
             modifyButton.setVisible(false);
             deleteButton.setVisible(false);
-        } /*else {
-
-            modifyButton.setVisible(true);
-            deleteButton.setVisible(true);
         }
-        */
-
 
         modifyButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
                 super.mouseClicked(e);
 
                 myBooking = new BookingFrame(mainWindow, myController, utenteLoggato, myPrenotazioneSelez);
@@ -146,12 +122,15 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
         deleteButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
                 super.mouseClicked(e);
+
                 int scelta = JOptionPane.showConfirmDialog(MyBooking.this, "Sei sicuro di voler eliminare questa prenotazione?",
                         "Conferma Eliminazione", JOptionPane.YES_NO_OPTION);
 
                 //Chiediamo all'utente se è sicuro di eliminare la prenotazione
                 if(scelta == JOptionPane.OK_OPTION) {
+
                     //Passiamo al metodo del Controller la prenotazione selezionata (ricevuta da TablePanel) che vogliamo eliminare
                     myController.eliminaPrenotazioneC(myPrenotazioneSelez);
 
@@ -168,23 +147,6 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
             }
         });
 
-
-
-    }
-
-    private void visualizPulsModifica() {
-
-            footerPanelGbc.gridx = 1;
-            footerPanelGbc.gridy = 0;
-            footerPanelGbc.anchor = GridBagConstraints.CENTER;
-            footerPanelGbc.insets = new Insets(5, 0, 10, 0);
-            footerPanelGbc.weightx = 0.33;
-            modifyButton.setBackground(new Color(224, 186, 6));
-
-            footerPanel.add(modifyButton, footerPanelGbc);
-            footerPanel.revalidate();
-            footerPanel.repaint();
-
     }
 
     /*Questo metodo ci permette di ottenere la prnenotazione selezionata dalla tabella che mostra le prenotazioni
@@ -199,25 +161,25 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
         //Per evitare errori nella stampa della prneotazione eliminata
         //Salviamo il numero della prneotazione in una variabile temporanea di classe
         if(myPrenotazioneSelez != null) {
+
             numeroPrenotazione = myPrenotazioneSelez.getCod_prenotazione();
+
         }
 
         if (myPrenotazioneSelez != null) {
+
             // Se è stata selezionata, rendi visibili i bottoni
             modifyButton.setVisible(true);
             deleteButton.setVisible(true);
 
         } else {
+
             // Se non è stata selezionata, nascondi i bottoni
             modifyButton.setVisible(false);
             deleteButton.setVisible(false);
 
         }
+
     }
-
-
-
-
-
 
 }

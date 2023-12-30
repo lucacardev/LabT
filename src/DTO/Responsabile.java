@@ -9,9 +9,9 @@ public class Responsabile {
     private String email;
     private char[] pw;
     private Sede codS_fk;
-    private DTO.Sede Sede;
 
-    public Responsabile(String matricola,String nome,String cognome,String codfis,String tel,String email,char[] pw,Sede s) {
+    public Responsabile(String matricola, String nome, String cognome, String codfis, String tel, String email, char[] pw,  Sede s) {
+
         this.matricola = matricola;
         this.nome = nome;
         this.cognome = cognome;
@@ -20,6 +20,7 @@ public class Responsabile {
         this.email = email;
         this.pw = pw;
         this.codS_fk = s;
+
     }
 
     public String getMatricola() {
@@ -85,4 +86,5 @@ public class Responsabile {
     public void setSede(Sede codS_fk) {
         this.codS_fk = codS_fk;
     }
+
 }

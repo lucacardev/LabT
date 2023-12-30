@@ -11,20 +11,12 @@ import java.io.IOException;
 
 public class MainWindow extends JFrame {
 
-    private Controller myController;
-    private CardLayout cardLayout;
-    private JPanel cardPanel;
-    private JPanel passwordRecoveryPanel;
-
-    private MyBooking myBookingPage;
-
-    private PaginaLogin paginaLogin;
+    private final CardLayout cardLayout;
+    private final JPanel cardPanel;
 
     public MainWindow(Controller controller) {
 
         super("Lab-T");
-
-        myController = controller;
 
         setSize(800,512);
         try {
@@ -43,11 +35,11 @@ public class MainWindow extends JFrame {
         add(cardPanel);
 
         //Inserimento nel CardPanel della pagina di Login
-        paginaLogin = new PaginaLogin(myController);
+        PaginaLogin paginaLogin = new PaginaLogin(controller);
         cardPanel.add(paginaLogin, "login");
 
         //Inserimento nel CardPanel della pagina di recupero credenziali
-        passwordRecoveryPanel = new PasswordRecovery(myController);
+        JPanel passwordRecoveryPanel = new PasswordRecovery(controller);
         cardPanel.add(passwordRecoveryPanel, "recoveryPage");
 
         cardLayout.show(cardPanel, "login");
@@ -55,7 +47,6 @@ public class MainWindow extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
         setVisible(true);
-
 
     }
 
@@ -75,9 +66,15 @@ public class MainWindow extends JFrame {
         Component[] components = cardPanel.getComponents();
         for (Component component : components) {
             if (component instanceof JPanel && keyPanel.equals(component.getName())) {
+
                 return true;
+
             }
+
         }
+
         return false;
+
     }
+
 }

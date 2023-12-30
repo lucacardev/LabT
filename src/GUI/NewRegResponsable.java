@@ -139,8 +139,8 @@ public class NewRegResponsable extends JPanel {
 
         JButton pwdEye = new JButton();
         try {
-            BufferedImage eyeImage = ImageIO.read(new File("src/GUI/icon/eye (1).png"));
-            pwdEye.setIcon(new ImageIcon(eyeImage));
+            NoScalingIcon noScalingEye = new NoScalingIcon(new ImageIcon("src/GUI/icon/hide.png"));
+            pwdEye.setIcon(noScalingEye);
 
         } catch (Exception ex) {
             System.out.println("Errore caricamento immagine occhio ");
@@ -159,12 +159,11 @@ public class NewRegResponsable extends JPanel {
             }
         });
 
-        pwdEyeGbc.gridx = 2;
+        pwdEyeGbc.gridx = 1;
         pwdEyeGbc.gridy = 9;
-        pwdEyeGbc.anchor = GridBagConstraints.LINE_END;  // Allinea il pulsante alla fine della colonna
+        pwdEyeGbc.anchor = GridBagConstraints.LINE_END;
+        pwdEyeGbc.insets = new Insets(0,0,0,-20);
         rightPage.add(pwdEye,pwdEyeGbc);
-
-
 
         // Recupera la lista delle sedi dal database
         SedeDAO sedeDAO = new SedeDAO(controller);
@@ -173,7 +172,6 @@ public class NewRegResponsable extends JPanel {
         // Crea una lista per i nomi delle sedi
         List<String> nomiSedi = new ArrayList<>();
 
-        //sedeComboBox.addItem("");
         // Estrai i nomi delle sedi dalla lista di oggetti Sede
         for (Sede sede : sedi) {
             nomiSedi.add(sede.getNome());
@@ -185,17 +183,14 @@ public class NewRegResponsable extends JPanel {
         // Crea e aggiungi il JComboBox con i nomi delle sedi
         sedeComboBox = new JComboBox<>(nomiSediArray);
         sedeComboBox.setBackground(Color.white);
-
         sedeComboBox.setBorder(new LineBorder(new Color(35,171,144),1));
-
 
         gbc.gridy = 11;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         rightPage.add(sedeComboBox, gbc);
 
-        // Aggiungi un listener alla tua JComboBox
-
+        // Aggiunta listener alla JComboBox
         sedeComboBox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent event) {
                 if (event.getStateChange() == ItemEvent.SELECTED) {
@@ -217,7 +212,6 @@ public class NewRegResponsable extends JPanel {
         rightPage.add(backButton, gbc);
 
         //Indirizzamento alla pagina di login
-
         backButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -230,7 +224,6 @@ public class NewRegResponsable extends JPanel {
 
             }
         });
-
 
         //Bottone registrati
         gbc.gridy = 12;
@@ -263,6 +256,7 @@ public class NewRegResponsable extends JPanel {
                     {
                     // Mostra la finestra di avviso
                     JOptionPane.showMessageDialog(null, "Matricola errata. Ti ricordiamo che la matricola dei responsabili inizia con 'R' seguito da 4 numeri.", "Errore Matricola", JOptionPane.ERROR_MESSAGE);}
+
                 else {
 
                     //Chiamo la classe DTO che incapsula le informazioni del nuovo responsabile
@@ -271,13 +265,10 @@ public class NewRegResponsable extends JPanel {
                     String registerCode;
                     String verificationRegisterCode;
 
-
                     //Verifica che matricola e mailnon siano già usati nel database
-
                     Responsabile matricolaR = new Responsabile(getMatricolaNew(),null,null,null,null, getEmailNew(), null,null);
 
                     //Controlliamo prima che matricola e email non siano presenti e poi inviamo mail
-
                     if (!myController.verifyMatricolaMailResponsabileC(matricolaR)) {
 
                         registerCode = generateRandomCode();
@@ -306,16 +297,18 @@ public class NewRegResponsable extends JPanel {
 
                                 mainWindow.addCardPanel(paginaAccesso, "accesso");
 
-
                             }
 
                         } else if (verificationRegisterCode != null) {
+
                             JOptionPane.showMessageDialog(null, "Il codice inserito non è corretto, richiedi un nuovo codice");
+
                         }
 
-
                     } else {
+
                         JOptionPane.showMessageDialog(null, "Attenzione, la matricola e l'email  appartengono già ad un nostro responsabile! ");
+
                     }
 
                 }
@@ -325,11 +318,6 @@ public class NewRegResponsable extends JPanel {
 
 
         //Impostazione Background
-
-        /*Utilizzo della sottoclasse di JPanel (classe anonima) per evitare di creare una nuova classe
-         * e quindi personalizziamo solo il Pannello sinistro per impostare il background altrimenti non avremmo
-         * potuto impostarlo.*/
-
 
         JPanel leftSignInPage = new JPanel() {
             @Override
@@ -358,7 +346,6 @@ public class NewRegResponsable extends JPanel {
 
         add(leftSignInPage);
         add(rightPage);
-
 
     }
 
@@ -413,6 +400,5 @@ public class NewRegResponsable extends JPanel {
 
         return randomCode;
     }
-
 
 }

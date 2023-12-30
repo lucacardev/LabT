@@ -4,9 +4,8 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import javax.swing.*;
 
-
 public class NoScalingIcon implements Icon {
-    private Icon icon;
+    private final Icon icon;
 
     public NoScalingIcon(Icon icon) {
         this.icon = icon;
@@ -21,6 +20,7 @@ public class NoScalingIcon implements Icon {
     }
 
     public void paintIcon(Component c, Graphics g, int x, int y) {
+
         Graphics2D g2d = (Graphics2D) g.create();
 
         AffineTransform at = g2d.getTransform();
@@ -43,6 +43,7 @@ public class NoScalingIcon implements Icon {
         icon.paintIcon(c, g2d, locationX, locationY);
 
         g2d.dispose();
+
     }
 
     public static void main(String[] args) {
@@ -50,10 +51,13 @@ public class NoScalingIcon implements Icon {
             public void run() {
                 createAndShowGUI();
             }
+
         });
+
     }
 
     public static void createAndShowGUI() {
+
         JButton button = new JButton("Button");
         NoScalingIcon icon = new NoScalingIcon(new ImageIcon("box.jpg"));
         button.setIcon(icon);
@@ -67,5 +71,7 @@ public class NoScalingIcon implements Icon {
         f.setSize(200, 200);
         f.setLocationRelativeTo(null);
         f.setVisible(true);
+
     }
+
 }

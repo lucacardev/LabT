@@ -1,12 +1,7 @@
 package GUI;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class LeftLoginImage extends JPanel{
 
@@ -18,7 +13,6 @@ public class LeftLoginImage extends JPanel{
         JPanel upPanel = new JPanel();
         GridBagConstraints gbc = new GridBagConstraints();
 
-
         upPanel.setBackground(Color.WHITE);
         JLabel logo = new JLabel(new NoScalingIcon(new ImageIcon("src/GUI/icon/LogoLabT.png")));
 
@@ -29,9 +23,9 @@ public class LeftLoginImage extends JPanel{
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.NONE;
 
-
         upPanel.add(logo);
         add(upPanel, gbc);
 
     }
+
 }

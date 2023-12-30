@@ -11,7 +11,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.sql.SQLException;
 import java.util.UUID;
 
 public class SignInPage extends JPanel {
@@ -23,17 +22,10 @@ public class SignInPage extends JPanel {
     private final static BtnLayout backButton = new BtnLayout("Indietro");
     private final static BtnLayout signInButton = new BtnLayout("Registrati");
 
-    private TextFieldBorderColor emailField;
-
-    private TextFieldBorderColor usernameField;
-
-    private JPasswordField passwordField;
-
+    private final TextFieldBorderColor emailField;
+    private final TextFieldBorderColor usernameField;
+    private final JPasswordField passwordField;
     private static BufferedImage backgroundImageSignin;
-
-
-    private JPanel leftSignInPage = new JPanel();
-
     Controller myController;
 
 
@@ -147,7 +139,6 @@ public class SignInPage extends JPanel {
                     String registerCode;
                     String verificationRegisterCode;
 
-
                     //Verifica che mail e username non siano già usati nel database
 
                     Utente mailUsername = new Utente(getUsernameSignIn(), getEmailSignIn(), null);
@@ -170,7 +161,6 @@ public class SignInPage extends JPanel {
 
                             if (verificationRegisterCode != null && verificationRegisterCode.equals(registerCode)) {
 
-
                                 boolean complete = myController.newUserRegister(nuovoUtente);
 
                                 if (complete) {
@@ -183,16 +173,18 @@ public class SignInPage extends JPanel {
 
                                     mainWindow.addCardPanel(paginaLogin, "login");
 
-
                                 }
 
                             } else if (verificationRegisterCode != null) {
+
                                 JOptionPane.showMessageDialog(null, "Il codice inserito non è corretto, richiedi un nuovo codice");
+
                             }
 
-
                         } else {
+
                             JOptionPane.showMessageDialog(null, "Attenzione, email o username già appartengono ad un nostro utente! ");
+
                         }
 
                 }
@@ -200,21 +192,20 @@ public class SignInPage extends JPanel {
             }
         });
 
-        //Impostazione Background
-
-        /*Utilizzo della sottoclasse di JPanel (classe anonima) per evitare di creare una nuova classe
-         * e quindi personalizziamo solo il Pannello sinistro per impostare il background altrimenti non avremmo
-         * potuto impostarlo.*/
-
-        leftSignInPage = new JPanel() {
+        //Metodo per impostare l'immagine di background
+        // Disegna l'immagine di sfondo
+        JPanel leftSignInPage = new JPanel() {
             @Override
             //Metodo per impostare l'immagine di background
             protected void paintComponent(Graphics g) {
+
                 super.paintComponent(g);
 
                 // Disegna l'immagine di sfondo
                 if (backgroundImageSignin != null) {
+
                     g.drawImage(backgroundImageSignin, 0, 0, getWidth(), getHeight(), this);
+
                 }
 
             }
@@ -223,28 +214,31 @@ public class SignInPage extends JPanel {
         //Impostazione sfondo background di sinistra
 
         try {
+
             backgroundImageSignin = ImageIO.read(new File("src/GUI/icon/sign.png"));
 
-
         } catch (Exception ex) {
+
             System.out.println("Errore caricamento immagine background signIn");
             ex.printStackTrace();
+
         }
 
         add(leftSignInPage);
         add(rightSignInPage);
-
 
     }
 
     public String getEmailSignIn() {
 
         return emailField.getText().trim();
+
     }
 
     public char[] getPasswordSignIn() {
 
         return passwordField.getPassword();
+
     }
 
     public String getUsernameSignIn() {
@@ -256,11 +250,10 @@ public class SignInPage extends JPanel {
     //Metodo per generare un codice di verifica casuale
     public static String generateRandomCode() {
 
-        String randomCode = null;
-
         try {
+
             UUID uuid = UUID.randomUUID();
-            randomCode = uuid.toString().replaceAll("-", "").substring(0, 6); // Estrarre i primi sei caratteri
+            return uuid.toString().replaceAll("-", "").substring(0, 6); // Estrarre i primi sei caratteri
 
         } catch (Exception ex) {
 
@@ -268,6 +261,8 @@ public class SignInPage extends JPanel {
 
         }
 
-        return randomCode;
+        return null;
+
     }
+
 }

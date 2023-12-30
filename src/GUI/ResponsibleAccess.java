@@ -1,54 +1,46 @@
 package GUI;
 
-import DAO.ResponsabileDAO;
 import DTO.Responsabile;
 import UTILITIES.Controller;
-import UTILITIES.EmailSender;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.UUID;
 
 public class ResponsibleAccess extends JPanel {
-    private JTextField campoMatricola;
-    private JPasswordField campoPassword;
-    private BtnLayout loginButton = new BtnLayout("Accedi");
 
-    private LinkMouseOn passwordDimenticata;
-
-    private JPanel leftRApage = new JPanel();
-    private JPanel rightRApage = new JPanel();
-    private static BufferedImage backgroundImage;
+    private final JTextField campoMatricola;
+    private final JPasswordField campoPassword;
     private static BufferedImage backgroundRight;
-
-    private LinkMouseOn regResponsabile;
-
     Controller myController;
 
     private Responsabile responsabileCorrente;
 
     public ResponsibleAccess(Controller controller) {
+
         this.myController = controller;
 
         setLayout(new GridLayout(0,2));
 
-        rightRApage = new JPanel() {
+        // Disegna l'immagine di sfondo con interpolazione bilineare
+        JPanel rightRApage = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
+
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
 
                 // Disegna l'immagine di sfondo con interpolazione bilineare
                 if (backgroundRight != null) {
+
                     g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
                     g2d.drawImage(backgroundRight, 0, 0, getWidth(), getHeight(), this);
+
                 }
+
             }
         };
 
@@ -61,16 +53,13 @@ public class ResponsibleAccess extends JPanel {
         } catch (Exception ex) {
             System.out.println("Errore caricamento immagine background responsabile");
             ex.printStackTrace();
+
         }
-
-
-
 
         rightRApage.setBackground(Color.WHITE);
         rightRApage.setLayout(new GridBagLayout());
         GridBagConstraints rightGbc = new GridBagConstraints();
         rightGbc.insets = new Insets(5,5,5,5);
-
 
         ImageIcon loginImage = new ImageIcon("src/GUI/icon/avatarR.gif");
         JLabel imageLabel = new JLabel(loginImage);
@@ -80,7 +69,6 @@ public class ResponsibleAccess extends JPanel {
         rightGbc.gridy = 0;
         rightGbc.gridwidth = 2; // Occupa due colonne orizzontali
         rightRApage.add(imageLabel, rightGbc);
-
 
         //Testo matricola
         JLabel matricolaText = new JLabel("Matricola: ");
@@ -121,7 +109,7 @@ public class ResponsibleAccess extends JPanel {
         //Posizionamento campo password
         campoPassword = new JPasswordField(15);
         campoPassword.setBorder(new LineBorder(Color.BLACK, 1));
-        campoPassword.setEchoChar('\u2022');
+        campoPassword.setEchoChar('•');
         rightGbc.gridx = 1;
         rightGbc.gridy = 4;
         rightRApage.add(campoPassword, rightGbc);
@@ -131,6 +119,7 @@ public class ResponsibleAccess extends JPanel {
             public void focusGained(FocusEvent e) {
 
                 campoMatricola.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+
             }
 
             @Override
@@ -139,31 +128,41 @@ public class ResponsibleAccess extends JPanel {
                 campoMatricola.setBorder(new LineBorder(Color.BLACK));
 
             }
+
         });
 
         //Risalto colore dei bordi del campo password quando cliccato
         campoPassword.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
+
                 campoPassword.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+
             }
 
             @Override
             public void focusLost(FocusEvent e) {
+
                 campoPassword.setBorder(new LineBorder(Color.BLACK));
+
             }
+
         });
 
         //Posizionamento occhio per visualizzare password
 
         JButton pwdEye = new JButton();
+
         try {
+
             NoScalingIcon noScalingEye = new NoScalingIcon(new ImageIcon("src/GUI/icon/hide.png"));
             pwdEye.setIcon(noScalingEye);
 
 
         } catch (Exception ex) {
+
             System.out.println("Errore caricamento immagine occhio ");
+
         }
 
         //Nascondere il layout del pulsante (occhio password)
@@ -172,12 +171,7 @@ public class ResponsibleAccess extends JPanel {
         GridBagConstraints pwdEyeGbc = new GridBagConstraints();
 
         //Chiamata al metodo per mostrare/nascondere la password
-        pwdEye.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                viewPassword();
-            }
-        });
+        pwdEye.addActionListener(e -> viewPassword());
 
         pwdEyeGbc.gridx = 2;
         pwdEyeGbc.gridy = 4;
@@ -187,6 +181,7 @@ public class ResponsibleAccess extends JPanel {
 
         rightGbc.gridx = 1;
         rightGbc.gridy = 5;
+        BtnLayout loginButton = new BtnLayout("Accedi");
         loginButton.setBackground(new Color(23,65,95));
         rightRApage.add(loginButton, rightGbc);
 
@@ -201,6 +196,7 @@ public class ResponsibleAccess extends JPanel {
         passwordDimenticata.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
                 //Apri finestra d'inserimento email per recupero credenziali
 
                 PasswordRecoveryR passwordRecoveryPanel = new PasswordRecoveryR(myController);
@@ -208,15 +204,15 @@ public class ResponsibleAccess extends JPanel {
                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(ResponsibleAccess.this);
 
                 mainWindow.addCardPanel(passwordRecoveryPanel, "passwordRecoveryPanel");
+
             }
         });
 
         //Cambio colore al passaggio del mouse
-        passwordDimenticata.ActiveLinkMouseOn(passwordDimenticata, new Color(246, 183, 55), new Color(23,65,95));
-
+        passwordDimenticata.ActiveLinkMouseOn(new Color(246, 183, 55), new Color(23,65,95));
 
         //Posizionamento registrazione nuovo utente
-        regResponsabile = new LinkMouseOn("Sei un nuovo responsabile? Registrati");
+        LinkMouseOn regResponsabile = new LinkMouseOn("Sei un nuovo responsabile? Registrati");
         rightGbc.gridx = 1;
         rightGbc.gridy = 7;
         rightRApage.add(regResponsabile, rightGbc);
@@ -231,65 +227,26 @@ public class ResponsibleAccess extends JPanel {
                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(ResponsibleAccess.this);
 
                 mainWindow.addCardPanel(newRegResponsable, "newRegResponsable");
+
             }
         });
 
         //Cambio colore al passaggio del mouse
-        regResponsabile.ActiveLinkMouseOn(regResponsabile, new Color(246, 183, 55), new Color(23,65,95));
+        regResponsabile.ActiveLinkMouseOn(new Color(246, 183, 55), new Color(23,65,95));
 
         //Verifica credenziali quando il pulsante di accesso viene premuto
-        loginButton.addActionListener(new ActionListener() {
+        loginButton.addActionListener(e -> {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int msgError;
+            int msgError;
 
-                msgError = verificaCredenziali();
-                mostraErrore(msgError);
+            msgError = verificaCredenziali();
+            mostraErrore(msgError);
 
-            }
         });
 
-
     //Impostazione Background left
+        JPanel leftRApage = new JPanel();
         leftRApage.setBackground(Color.WHITE);
-
-        /*
-
-        leftRApage = new JPanel() {
-            @Override
-            //Metodo per impostare l'immagine di background
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-
-                // Disegna l'immagine di sfondo
-                if (backgroundImage != null) {
-                    g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-                }
-
-            }
-        };
-
-
-
-        //Impostazione sfondo background di sinistra
-
-        try {
-            backgroundImage = ImageIO.read(new File("src/GUI/icon/backgroundRa.png"));
-
-
-        } catch (Exception ex) {
-            System.out.println("Errore caricamento immagine background BackgroundRa");
-            ex.printStackTrace();
-        }
-
-
-        int sizeFont = 17;
-        int style = 10;
-        String font = "Arial";
-
-
-         */
 
         IncreaseFont welcomeText = new IncreaseFont("Benvenuto!");
         Font welcomeFont = welcomeText.getFont();
@@ -340,25 +297,20 @@ public class ResponsibleAccess extends JPanel {
         backButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
                 int choice = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler uscire?", "Uscita Responsabile", JOptionPane.OK_CANCEL_OPTION);
                 UIManager.put("choice.cancelButtonTex", "Non uscire");
+
                 if (choice == JOptionPane.OK_OPTION) {
 
                     PaginaLogin paginaLogin = new PaginaLogin(myController);
                     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(ResponsibleAccess.this);
                     mainWindow.addCardPanel(paginaLogin, "login");
+
                 }
+
             }
         });
-
-        /*
-        //Immagine logo
-        ImageIcon footImage = new ImageIcon("src/GUI/icon/icons8-organizzazione.gif");
-        JLabel imagefLabel = new JLabel(footImage);
-
-         */
-
-       //add(imagefLabel,BorderLayout.EAST);
 
         add(leftRApage);
         add(rightRApage);
@@ -368,16 +320,20 @@ public class ResponsibleAccess extends JPanel {
     public void mostraErrore(int messaggioErrore) {
 
         if(messaggioErrore == 1) {
+
             JOptionPane.showMessageDialog(campoMatricola, "I campi matricola e " +
                     "password non possono essere vuoti");
 
         }
+
         else if (messaggioErrore == 2){
 
             JOptionPane.showMessageDialog(campoMatricola, "Credenziali errate" +
                     " riprova o registrati");
+
         }
-        else if(messaggioErrore == 3){
+
+        else if(messaggioErrore == 3) {
 
             HomePageR homePage = new HomePageR(myController, responsabileCorrente);
 
@@ -391,11 +347,17 @@ public class ResponsibleAccess extends JPanel {
 
     //Metodo per visualizzare e nascondere la password
     private void viewPassword() {
-        if (campoPassword.getEchoChar() == '\u2022') {
+
+        if (campoPassword.getEchoChar() == '•') {
+
             campoPassword.setEchoChar((char) 0);
+
         } else {
-            campoPassword.setEchoChar('\u2022');
+
+            campoPassword.setEchoChar('•');
+
         }
+
     }
 
     public String getLoginMatricola() {
@@ -421,10 +383,6 @@ public class ResponsibleAccess extends JPanel {
 
         } else if (!this.campoMatricola.getText().isEmpty() && this.campoPassword.getPassword().length > 0) {
 
-            /*responsabileCorrente = new Responsabile(getLoginMatricola(),null, getLoginPassword());
-            String matricolaRecuperata = myController.MatricolaRecovery(responsabileCorrente);
-            responsabileCorrente = new Responsabile(matricolaRecuperata, getLoginMatricola(), getLoginPassword());
-            responsabileTrovato[0] = myController.verificaResponsabile(responsabileCorrente);*/
             responsabileCorrente = new Responsabile(getLoginMatricola(), null,null,null,null,null, getLoginPassword(),null);
             responsabileTrovato[0] = myController.verificaResponsabile(responsabileCorrente);
 
@@ -432,10 +390,15 @@ public class ResponsibleAccess extends JPanel {
             if (responsabileTrovato[0]) {
 
                 return 3; //credenziali corrette
-            }
-            return 2; //credenziali errate
-        }
-        return 0;
-    }
-}
 
+            }
+
+            return 2; //credenziali errate
+
+        }
+
+        return 0;
+
+    }
+
+}

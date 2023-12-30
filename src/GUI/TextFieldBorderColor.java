@@ -27,14 +27,8 @@ public class TextFieldBorderColor extends JTextField {
                 textField.setBorder(new LineBorder(new Color(35, 171, 144), 2));
             }
 
-
         });
 
-
-    }
-    public static void disableTextField(JTextField textField) {
-        textField.setEditable(false);
-        textField.setBackground(Color.WHITE);
     }
 
 }

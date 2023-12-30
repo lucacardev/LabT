@@ -1,63 +1,36 @@
 package GUI;
 
-import DAO.StrumentoDAO;
-import DTO.Sede;
 import DTO.Strumento;
 import DTO.Utente;
 import UTILITIES.Controller;
-import com.toedter.calendar.JCalendar;
-import com.toedter.calendar.JDateChooser;
-
-import javax.naming.ldap.Control;
 import javax.swing.*;
-import javax.swing.text.DateFormatter;
-import javax.swing.text.DefaultFormatterFactory;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
 
 public class NewBooking extends JPanel{
 
-    private static JPanel searchPanel;
-    private static JPanel showResultPanel;
-    private static JPanel footerPanel;
-
-    private BookingFrame bookingFrame;
-    private CalendarDialog calendarDialog;
-
-    private SummaryWindow summaryWindow;
-
-
-    private Strumento strumentoSelezionato;
-
-    private TablePanel tablePanel;
+    private final JPanel searchPanel;
+    private final JPanel showResultPanel;
+    private final JPanel footerPanel;
 
     private BtnLayout bookingButton;
     private BtnLayout calendarButton;
     private BtnLayout riepilogoButton;
+    private BookingFrame bookingFrame;
+    private CalendarDialog calendarDialog;
+    private SummaryWindow summaryWindow;
+    private Strumento strumentoSelezionato;
+    private TablePanel tablePanel;
 
-    TextFieldBorderColor sedeSearch;
-    TextFieldBorderColor descrizioneSearch;
-
-    JDateChooser dateChooser;
+    private final TextFieldBorderColor sedeSearch;
+    private final TextFieldBorderColor descrizioneSearch;
     Controller myController;
     Utente utenteLoggato;
-
-    GridBagConstraints mainGbc;
     GridBagConstraints footerPanelGbc = new GridBagConstraints();
-
     List<Strumento> listaStrumento;
-
     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(NewBooking.this);
-
     String codStrumentoUni;
 
 
@@ -143,26 +116,6 @@ public class NewBooking extends JPanel{
         searchPanelGbc.gridy = 0;
         searchPanel.add(descrizioneSearch, searchPanelGbc);
 
-        /*
-        //Aggiungiamo la possibilità di scelta della data
-        IncreaseFont textDateSearch = new IncreaseFont("Data: ");
-        textDateSearch.setForeground(Color.white);
-        textDateSearch.increaseFont(textDateSearch, 5);
-        searchPanelGbc.gridx = 4;
-        searchPanelGbc.gridy = 0;
-        searchPanel.add(textDateSearch, searchPanelGbc);
-        */
-        /*
-        dateChooser = new JDateChooser();
-        JCalendar calendar = dateChooser.getJCalendar();
-        calendar.setMinSelectableDate(new Date());
-        dateChooser.setDateFormatString("dd/MM/yyyy");  // Imposta il formato della data
-
-        searchPanelGbc.gridx = 5;
-        searchPanelGbc.gridy = 0;
-        searchPanel.add(dateChooser, searchPanelGbc);
-        */
-
         //////////////////////////SHOW RESULT PANEL///////////////////////////////
 
         showResultPanel.setLayout(new BorderLayout());
@@ -226,23 +179,18 @@ public class NewBooking extends JPanel{
 
         //Bottone Cerca quando viene premuto, controlla che i campi siano tutti non vuoti ed esegue la ricerca
 
-
         searchButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-
-
-
-
-                    if(getSede().length() > 0 && getDescrizione().length() > 0) {
+                    if(!getSede().isEmpty() && !getDescrizione().isEmpty()) {
 
 
                         listaStrumento = myController.recuperoListaStrumenti(getSede(), getDescrizione());
 
                         //Se la lista strumento è maggiore di zero significa che la sede esiste altrimenti diamo errore
 
-                        if(listaStrumento.size() > 0 ) {
+                        if(!listaStrumento.isEmpty()) {
 
                             showResultPanel.removeAll();
                             tablePanel = new TablePanel(listaStrumento, NewBooking.this, null);
@@ -291,7 +239,7 @@ public class NewBooking extends JPanel{
                     /////////////////////////////////RICERCA PER SEDE O DESCRIZIONE/////////////////////////////////////
                     //Se è stata inserita la sede allora effettuiamo la ricerca per sede altrimenti per descrizione
 
-                     else if(getSede().length() > 0 || getDescrizione().length() > 0) {
+                     else if(!getSede().isEmpty() || !getDescrizione().isEmpty()) {
 
                         //cercato = true;
 
@@ -299,7 +247,7 @@ public class NewBooking extends JPanel{
 
                         //Se la lista strumento è maggiore di zero significa che la sede esiste altrimenti diamo errore
 
-                        if(listaStrumento.size() > 0 ) {
+                        if(!listaStrumento.isEmpty()) {
 
                             showResultPanel.removeAll();
                             tablePanel = new TablePanel(listaStrumento, NewBooking.this, null);
@@ -336,8 +284,6 @@ public class NewBooking extends JPanel{
                                 }
                             });
 
-
-
                         } else {
                             JOptionPane.showMessageDialog(null,"ATTENZIONE! La sede selezionata o la descrizione non sono validi");
                         }
@@ -356,14 +302,9 @@ public class NewBooking extends JPanel{
                     }
 
                 }
-
-
-
-
             }
 
         });
-
 
     }
 
@@ -377,13 +318,6 @@ public class NewBooking extends JPanel{
 
         return descrizioneSearch.getText().trim();
     }
-
-    public Date getSelectedDate() {
-
-        return dateChooser.getDate();
-
-    }
-
 
     /*Bottone di verifica disponibilità della strumento in base all'orario scelto dall'utente che non supera quello massimo d'utilizzo dello strumento*/
     public void bookingButtonAvailability() {
@@ -412,7 +346,6 @@ public class NewBooking extends JPanel{
             });
 
         }
-
 
         }
 
@@ -446,7 +379,6 @@ public class NewBooking extends JPanel{
 
         }
 
-
     }
 
     public void setRiepilogoButton() {
@@ -468,14 +400,10 @@ public class NewBooking extends JPanel{
 
                 summaryWindow = new SummaryWindow(mainWindow, myController, strumentoSelezionato);
                 summaryWindow.setVisible(true);
-
-
-
                 }
             });
 
         }
-
 
     }
 
@@ -488,7 +416,6 @@ public class NewBooking extends JPanel{
         }
 
     }
-
 
     public void removeBookingButton() {
         if (bookingButton != null) {
@@ -520,8 +447,5 @@ public class NewBooking extends JPanel{
 
         strumentoSelezionato = strumento;
     }
-
-
-
 
 }

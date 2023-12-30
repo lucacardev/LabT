@@ -16,7 +16,6 @@ public class TableModelStrumento extends AbstractTableModel {
 
         listaStrumenti = strumenti;
 
-
     }
 
 
@@ -38,6 +37,7 @@ public class TableModelStrumento extends AbstractTableModel {
 
             return 22;
         }
+
     }
 
     @Override
@@ -54,34 +54,30 @@ public class TableModelStrumento extends AbstractTableModel {
 
             Strumento strumento = listaStrumenti.get(rowIndex);
 
-            switch (columnIndex) {
-                case 0:
-                    return strumento.getCodStrumento();
+            return switch (columnIndex) {
 
-                case 1:
-                    return strumento.getCaratteristiche_tecniche();
+                case 0 -> strumento.getCodStrumento();
+                case 1 -> strumento.getCaratteristiche_tecniche();
+                case 2 -> strumento.getDescrizione();
+                case 3 -> {
 
-                case 2:
-                    return strumento.getDescrizione();
-
-                case 3:
                     SimpleDateFormat sdfTime4 = new SimpleDateFormat("HH:mm");
-                    return sdfTime4.format(strumento.getTempoMaxUso());
+                    yield sdfTime4.format(strumento.getTempoMaxUso());
 
-                case 4:
-                    return strumento.getCodPostazione_fk().getCodPostazione();
+                }
 
-                case 5:
-                    return strumento.getCodSede_fk().getNome();
+                case 4 -> strumento.getCodPostazione_fk().getCodPostazione();
+                case 5 -> strumento.getCodSede_fk().getNome();
+                default -> null;
 
-                default:
-                    return null;
-            }
+            };
 
         } else {
 
             return null;
+
         }
+
     }
 
     public void setData(List<Strumento> strumenti) {
@@ -89,12 +85,18 @@ public class TableModelStrumento extends AbstractTableModel {
         listaStrumenti = strumenti;
 
         fireTableDataChanged(); // Notifica alla tabella che i dati sono stati cambiati
+
     }
 
     public Strumento getStrumentoAtRow(int rowIndex) {
+
         if (listaStrumenti != null && rowIndex >= 0 && rowIndex < listaStrumenti.size()) {
             return listaStrumenti.get(rowIndex);
+
         }
+
         return null;
+
     }
+
 }

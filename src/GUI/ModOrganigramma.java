@@ -1,6 +1,5 @@
 package GUI;
 
-import DAO.TeamDAO;
 import DAO.TecnicoDAO;
 import DTO.Responsabile;
 import DTO.Team;
@@ -8,43 +7,33 @@ import DTO.Tecnico;
 import UTILITIES.Controller;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.List;
 
 public class ModOrganigramma extends JDialog {
 
-    private final JPanel rightPanel = new JPanel();
-    private final JPanel leftPanel = new JPanel();
-    private final JPanel footerPanel = new JPanel();
-    private JTable tabDaSostituire;
-    private JTable tabDaSostituto;
-
+    private final JTable tabDaSostituire;
+    private final JTable tabDaSostituto;
     private Tecnico tecnicoDaSostituire;
     private Tecnico tecnicoSostituto;
-
-    private Team teamAttuale;
-
-    private Responsabile responsabileCorrente;
-    private BtnLayout confermaSostituzione = new BtnLayout("Conferma Sostituzione");
-
-    private List<Tecnico> listaTecnici;
-
-    private MainWindow mainWindowR;
+    private final Team teamAttuale;
+    private final Responsabile responsabileCorrente;
     Controller myController;
+
+    private int[] righeSelez = new int[0];
 
     public ModOrganigramma(MainWindow mainWindow, Controller controller, Responsabile responsabile, List<Tecnico> tecnici, Team team) {
 
         super(mainWindow, "Modifica Organigramma", true);
 
         myController = controller;
-        listaTecnici = tecnici;
         teamAttuale = team;
         responsabileCorrente = responsabile;
-        mainWindowR = mainWindow;
 
         setSize(500, 350);
 
@@ -55,12 +44,56 @@ public class ModOrganigramma extends JDialog {
         GridBagConstraints gbc = new GridBagConstraints();
 
         ////////////////////////////////PANNELLO SINISTRO/////////////////////////////
+        JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
 
         // Creazione della tabella sinistra
-        TableModelTeam tableModelDaSostituire = new TableModelTeam(listaTecnici);
-        tabDaSostituire = new JTable(tableModelDaSostituire);
-        tabDaSostituire.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        TableModelTeam tableModelDaSostituire = new TableModelTeam(tecnici);
+        tabDaSostituire = new JTable(tableModelDaSostituire) {
+
+            //Permette di selezionare più righe senza l'uso di CTRL
+            @Override
+            public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
+                ListSelectionModel selectionModel = getSelectionModel();
+                boolean selected = selectionModel.isSelectedIndex(rowIndex);
+
+                System.out.println("Righe selezionate: " + righeSelez.length);
+
+                //Se la riga è già selezionata allora rimuoviamo la selezione
+                if (selected) {
+
+                    selectionModel.removeSelectionInterval(rowIndex, rowIndex);
+                    getValueAt(rowIndex, columnIndex);
+
+                    tabDaSostituto.setVisible(righeSelez.length < 2);
+
+                } else {
+
+                        if (righeSelez.length < 2) {
+
+                            //Se ci sono due selezioni nella prima tabella la seconda scompare
+                            tabDaSostituto.setVisible(righeSelez.length != 1);
+
+                            //Togliamo le eventuali selezioni fatte in precedenza per evitare bug
+                            tabDaSostituto.clearSelection();
+
+                            selectionModel.addSelectionInterval(rowIndex, rowIndex);
+
+                        } else {
+
+                            JOptionPane.showMessageDialog(null, "Se intendi cambiare la gerarchia di due tecnici" +
+                                    " dello stesso team, puoi selezionare solo i due tecnici interessati", "Errore selezione", JOptionPane.ERROR_MESSAGE);
+
+                        }
+
+                }
+
+                tabDaSostituire.setRowSelectionAllowed(true);
+
+            }
+
+        };
+
 
         // Aggiungi la tabella a uno JScrollPane
         JScrollPane scrollPane = new JScrollPane(tabDaSostituire);
@@ -76,6 +109,7 @@ public class ModOrganigramma extends JDialog {
         add(leftPanel, gbc);
 
         //////////////////////////////////////////PANNELLO DESTRO//////////////////////////////
+        JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BorderLayout());
 
         // Creazione della tabella di destra
@@ -86,7 +120,7 @@ public class ModOrganigramma extends JDialog {
 
         TableModelTeam tableModelSostituto = new TableModelTeam(listaCompletaTecnici);
 
-        tableModelSostituto.modificaNomeColonne("Possibili sostituti: ");
+        tableModelSostituto.modificaNomeColonne();
         tabDaSostituto = new JTable(tableModelSostituto);
         tabDaSostituto.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -101,9 +135,11 @@ public class ModOrganigramma extends JDialog {
         add(rightPanel, gbc);
 
         ///////////////////////////////PANNELLO SOTTO//////////////////////////////
+        JPanel footerPanel = new JPanel();
         footerPanel.setLayout(new BorderLayout());
 
         // Inserisci il pulsante "Conferma Sostituzione" nella parte inferiore
+        BtnLayout confermaSostituzione = new BtnLayout("Conferma Sostituzione");
         footerPanel.add(confermaSostituzione, BorderLayout.SOUTH);
 
         gbc.gridx = 0;
@@ -113,21 +149,37 @@ public class ModOrganigramma extends JDialog {
         gbc.weighty = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         add(footerPanel, gbc);
+        
+        tabDaSostituire.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+
+                righeSelez = tabDaSostituire.getSelectedRows();
+
+                    if (e.getValueIsAdjusting()) {
+
+                        System.out.println(Arrays.toString(righeSelez));
+
+                    }
+            }
+
+        });
+
+
 
         //Azione quando il bottone di conferma sostituzione viene premuto
         confermaSostituzione.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                int selectedRow = tabDaSostituire.getSelectedRow();
-                int selectedRow2 = tabDaSostituto.getSelectedRow();
-                TecnicoDAO tecnicoDAO = new TecnicoDAO(myController);
+                int selectedRows2 = tabDaSostituto.getSelectedRow();
 
-                tecnicoDaSostituire =  tableModelDaSostituire.getTecnicoAtRow(selectedRow);
-                tecnicoSostituto = tableModelSostituto.getTecnicoAtRow(selectedRow2);
+                if (righeSelez.length > 0 && selectedRows2 != -1 ) {
 
-
-                if (selectedRow != -1 && selectedRow2 != -1) {
+                    tecnicoDaSostituire =  tableModelDaSostituire.getTecnicoAtRow(righeSelez[0]);
+                    tecnicoSostituto = tableModelSostituto.getTecnicoAtRow(selectedRows2);
 
 
                     Object[] options = { "Sostituisci", "Annulla" };
@@ -180,10 +232,71 @@ public class ModOrganigramma extends JDialog {
                             }
                         }
 
+                        dispose();
+
+                    }
+
+                } else if(righeSelez.length == 2) {
+
+                    tecnicoDaSostituire = tableModelDaSostituire.getTecnicoAtRow(righeSelez[0]);
+                    tecnicoSostituto = tableModelDaSostituire.getTecnicoAtRow(righeSelez[1]);
+
+                    Object[] options = { "Sostituisci", "Annulla" };
+
+                    int choice = JOptionPane.showOptionDialog(
+                            null,
+                            "Vuoi confermare l'operazione? \n"
+                                    + tecnicoDaSostituire.getNome() + " " + tecnicoDaSostituire.getCognome() + " " + tecnicoDaSostituire.getMatricola()
+                                    + " --> " + tecnicoSostituto.getNome() + " " + tecnicoSostituto.getCognome() + " "  + tecnicoSostituto.getMatricola(),
+                            "Conferma sostituzione",
+                            JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.PLAIN_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+
+                    if(choice == JOptionPane.YES_OPTION) {
+
+                        //Caso in cui il tecnico da sostituire è il leader del team
+                        if(righeSelez[0] == 0) {
+
+                            myController.updateTecnicoSameTeamC(tecnicoDaSostituire, tecnicoSostituto, teamAttuale);
+
+                            myController.updateTeamLeaderC(teamAttuale, tecnicoSostituto);
+
+                            if (mainWindow.containsCard("myTeamPage")) {
+
+                                mainWindow.showCard("myTeamPage");
+
+                            } else {
+
+                                MyTeam myteampage = new MyTeam(myController, responsabileCorrente);
+                                mainWindow.addCardPanel(myteampage, "myTeamPage");
+
+                            }
+
+                        } else {
+
+                            myController.updateTecnicoSameTeamC(tecnicoDaSostituire, tecnicoSostituto, teamAttuale);
+
+                            if (mainWindow.containsCard("myTeamPage")) {
+
+                                mainWindow.showCard("myTeamPage");
+
+                            } else {
+
+                                MyTeam myteampage = new MyTeam(myController, responsabileCorrente);
+                                mainWindow.addCardPanel(myteampage, "myTeamPage");
+
+                            }
+                        }
 
                         dispose();
 
                     }
+
+
+
 
                 } else {
 

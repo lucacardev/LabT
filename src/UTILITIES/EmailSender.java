@@ -14,7 +14,6 @@ public class EmailSender {
         * 3- E creare una password per App
         * 4- Inserire la password fornita da Google nel codice, così da accedere*/
 
-
         //Credenziali mail dell'applicazione (mittente )
         String username = "labTProject@gmail.com";
         String password = "yjlkmhuhmfufhvmc";
@@ -29,7 +28,9 @@ public class EmailSender {
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
+
                 return new PasswordAuthentication(username, password);
+
             }
         });
 
@@ -48,9 +49,12 @@ public class EmailSender {
             System.out.println("Email inviata con successo!");
 
         } catch (MessagingException e) {
+
             e.printStackTrace();
             System.out.println("Errore durante l'invio dell'email.");
+
         }
+
     }
 
 }

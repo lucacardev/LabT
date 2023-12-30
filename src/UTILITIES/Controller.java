@@ -2,59 +2,33 @@ package UTILITIES;
 
 import DAO.*;
 import DTO.*;
-import DAO.SedeDAO;
-import GUI.RightLoginAccess;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class Controller {
-
-    private RightLoginAccess loginPage;
-    private UtenteDAO utenteDAO;
-    private DB_Connection connection;
-    private Utente utenteDTO;
-    private SedeDAO sedeDAO;
-    private StrumentoDAO strumentoDAO;
-    private PrenotazioneDAO prenotazioneDAO;
-
-    private LaboratorioDAO laboratorioDAO;
-
-    private AppartenenzaDAO appartenenzaDAO;
-
-    private PostazioneDAO postazioneDAO;
-
-    private ResponsabileDAO responsabileDAO;
-
-    private TeamDAO teamDAO;
-    private TecnicoDAO tecnicoDAO;
-
-
-
-
-    public static void main(String[] args) {
-
-
-    }
+    private final UtenteDAO utenteDAO;
+    private final StrumentoDAO strumentoDAO;
+    private final PrenotazioneDAO prenotazioneDAO;
+    private final LaboratorioDAO laboratorioDAO;
+    private final ResponsabileDAO responsabileDAO;
+    private final TeamDAO teamDAO;
+    private final TecnicoDAO tecnicoDAO;
 
     public Controller() {
 
         /*Creiamo oggetti delle classi di cui occorriamo e passiamo come parametro
         * il controller*/
 
-        loginPage = new RightLoginAccess(this);
         utenteDAO = new UtenteDAO(this);
-        sedeDAO = new SedeDAO(this);
         strumentoDAO = new StrumentoDAO(this);
         prenotazioneDAO = new PrenotazioneDAO(this);
         responsabileDAO = new ResponsabileDAO(this);
         teamDAO = new TeamDAO(this);
         tecnicoDAO = new TecnicoDAO(this);
         laboratorioDAO = new LaboratorioDAO(this);
-
 
     }
 
@@ -64,7 +38,6 @@ public class Controller {
 
     }
 
-
     public boolean verificaUtente(Utente utente) {
 
         boolean utenteTrovato;
@@ -72,6 +45,7 @@ public class Controller {
         utenteTrovato = utenteDAO.verificaCredenzialiDAO(utente.getEmail(), utente.getPw());
 
         return utenteTrovato;
+
     }
 
     public boolean verificaMailUtente (String email) {
@@ -105,7 +79,6 @@ public class Controller {
     }
 
     public boolean newUserRegister(Utente utente) {
-
 
         return utenteDAO.newUserRegister(utente.getUsername(), utente.getEmail(), utente.getPw());
 
@@ -148,8 +121,6 @@ public class Controller {
 
     }
 
-
-
     public boolean newUserBookingC(Prenotazione prenotazione) {
         java.util.Date dataPrenotazione = prenotazione.getData_prenotazioneS();
         java.util.Date oraPrenotazione = prenotazione.getOra_prenotazioneS();
@@ -160,16 +131,6 @@ public class Controller {
         Timestamp tsTempoUtilizzo = new Timestamp(tempoUtilizzo.getTime());
 
         return prenotazioneDAO.newUserBooking(tsDataPrenotazione, tsOraPrenotazione, tsTempoUtilizzo, prenotazione.getUsername_fk(), prenotazione.getCodStrumento_fk());
-    }
-
-
-    public int recuperoCodlConPostazioneC(Postazione postazione) {
-        int codL;
-        codL =  postazioneDAO.recuperoCodlConPostazione(postazione.getCodPostazione());
-
-        System.out.println(codL);
-
-        return codL;
 
     }
 
@@ -180,6 +141,7 @@ public class Controller {
         responsabileTrovato = responsabileDAO.verificaCredenzialiDAO(responsabile.getMatricola(), responsabile.getPw());
 
         return responsabileTrovato;
+
     }
 
     public boolean verificaMailResponsabile (String email) {
@@ -189,16 +151,6 @@ public class Controller {
         emailTrovata = responsabileDAO.verificaMailResponsabile(email);
 
         return emailTrovata;
-
-    }
-
-    public boolean verificaMatricolaResponsabile (String matricola) {
-
-        boolean matricolaTrovata;
-
-        matricolaTrovata = responsabileDAO.verificaMatricolaResponsabile(matricola);
-
-        return matricolaTrovata;
 
     }
 
@@ -230,21 +182,18 @@ public class Controller {
 
     }
 
-    public String MatricolaRecovery(Responsabile responsabile) {
-
-        return responsabileDAO.matricolaRecovery(responsabile.getPw());
-
-    }
-
     public boolean recuperoTeamdaCodC(String codT) {
+
         boolean teamTrovato;
         teamTrovato = teamDAO.recuperoTeamDaCodice(codT);
         return teamTrovato;
+
     }
 
     public Team recuperoTeamC(String codT) {
 
         return teamDAO.recuperoTeam(codT);
+
     }
 
     public boolean newTeamInsert(Team team) {
@@ -255,6 +204,7 @@ public class Controller {
     public void deleteTeamC(Team team) {
 
         teamDAO.deleteTeam(team.getCodTeam());
+
     }
 
     public List<Tecnico> recuperoTecniciC (Team team) {
@@ -263,18 +213,8 @@ public class Controller {
     public boolean updateTecniciC(Tecnico tecnico,String nuovoCodTeam) {
 
         return tecnicoDAO.updateTecnici(tecnico,nuovoCodTeam);
+
     }
-
-    public Tecnico recuperoTecnicoDallaMatricola (String matricola) {
-
-        return tecnicoDAO.recuperoTecnicoMatricola(matricola);
-    }
-
-    public Time getStrumentHourC(Strumento strumento) {
-
-        return strumentoDAO.getStrumentHour(strumento);
-    }
-
 
     public void eliminaPrenotazioneC(Prenotazione prenotazione) {
 
@@ -295,14 +235,17 @@ public class Controller {
                 tsOraPrenotazione,
                 tsTempoUtilizzo
         );
+
     }
 
     private Timestamp removeMillis(Date date) {
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.set(Calendar.MILLISECOND, 0);
 
         return new Timestamp(calendar.getTimeInMillis());
+
     }
 
     public Strumento recuperoStrumentoC (int codStrumento) {
@@ -326,18 +269,26 @@ public class Controller {
     public List<Team> recuperoTeamsDalDBC(Responsabile responsabileCorrente) {
 
         return teamDAO.recuperoTeamsDalDB(responsabileCorrente);
-    }
-
-    public boolean updateTeamLeaderC(Team team, Tecnico leader) {
-
-        return teamDAO.updateTeamLeader(team.getCodTeam(), leader.getMatricola());
 
     }
 
-    public boolean updateTecnico1to1C(Tecnico tecnicoDaSostituire, Tecnico tecnicoSostituto, Team team) {
+    public void updateTeamLeaderC(Team team, Tecnico leader) {
 
-        return tecnicoDAO.updateTecnico1to1C(tecnicoDaSostituire, tecnicoSostituto, team);
+        teamDAO.updateTeamLeader(team.getCodTeam(), leader.getMatricola());
 
     }
+
+    public void updateTecnico1to1C(Tecnico tecnicoDaSostituire, Tecnico tecnicoSostituto, Team team) {
+
+        tecnicoDAO.updateTecnico1to1C(tecnicoDaSostituire, tecnicoSostituto, team);
+
+    }
+
+    public void updateTecnicoSameTeamC(Tecnico tecnicoDaSostituire, Tecnico tecnicoSostituto, Team team) {
+
+        tecnicoDAO.updateTecnicoSameTeam(tecnicoDaSostituire, tecnicoSostituto, team);
+
+    }
+
 
 }

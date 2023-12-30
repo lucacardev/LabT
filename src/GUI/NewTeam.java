@@ -1,11 +1,8 @@
 package GUI;
 
-
 import DAO.TecnicoDAO;
 import DTO.*;
 import UTILITIES.Controller;
-
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -30,33 +27,22 @@ public class NewTeam extends JPanel {
     private final static JLabel matricolaLText = new JLabel("Matricola Leader");
     private final static JLabel ntecniciText = new JLabel("Numero tecnici");
     private final static JLabel respText = new JLabel("Responsabile del team");
-
-
-    private final  BtnLayout backButton = new BtnLayout("Indietro");
-    private final  BtnLayout insertButton = new BtnLayout("Inserisci");
-    private final  BtnLayout tecniciButton = new BtnLayout("Seleziona membri");
-
-    private TextFieldBorderColor codTeamField;
-    private TextFieldBorderColor nomeField;
-    private TextFieldBorderColor descrizioneField;
-    private JComboBox matricolaLField;
-    private JComboBox<Integer> ntecniciComboBox;
-
-    Integer scelta;
-    private JLabel respField = new JLabel();
-
+    private final TextFieldBorderColor codTeamField;
+    private final TextFieldBorderColor nomeField;
+    private final TextFieldBorderColor descrizioneField;
+    private final JComboBox matricolaLField;
+    private final JComboBox<Integer> ntecniciComboBox;
+    private Integer scelta;
     private static BufferedImage backgroundImageNew;
-
-    private List<Tecnico> tecniciSelezionati = new ArrayList<>();
-
+    private final List<Tecnico> tecniciSelezionati = new ArrayList<>();
     Controller controller;
     Responsabile responsabileCorrente;
 
     public NewTeam(Controller myController, Responsabile responsabileLoggato) {
+
         controller = myController;
         responsabileCorrente = responsabileLoggato;
         setLayout(new GridLayout(0,2));
-
 
         JPanel rightPage = new JPanel();
         rightPage.setLayout(new GridBagLayout());
@@ -104,6 +90,7 @@ public class NewTeam extends JPanel {
         gbc.gridy = 1;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
+        JLabel respField = new JLabel();
         respField.setText(responsabileCorrente.getMatricola());
         respField.setEnabled(false);
         gbc.anchor = GridBagConstraints.CENTER;
@@ -176,12 +163,6 @@ public class NewTeam extends JPanel {
             }
         });
 
-
-
-
-
-
-
         //Bottone indietro
         gbc.gridy = 13;
         gbc.gridx = 0;
@@ -190,6 +171,7 @@ public class NewTeam extends JPanel {
         gbc.weighty = 0;
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         gbc.insets = new Insets(15,0,0,15);
+        BtnLayout backButton = new BtnLayout("Indietro");
         rightPage.add(backButton, gbc);
 
         //Indirizzamento alla pagina di login
@@ -213,6 +195,7 @@ public class NewTeam extends JPanel {
         gbc.weighty = 0;
         gbc.anchor = GridBagConstraints.FIRST_LINE_END;
         gbc.insets = new Insets(15,15,0,0);
+        BtnLayout insertButton = new BtnLayout("Inserisci");
         rightPage.add(insertButton, gbc);
 
         //Azioni dopo che il bottone registrati viene premuto
@@ -265,13 +248,16 @@ public class NewTeam extends JPanel {
             @Override
             //Metodo per impostare l'immagine di background
             protected void paintComponent(Graphics g) {
+
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
 
                 // Disegna l'immagine di sfondo
                 if (backgroundImageNew != null) {
+
                     g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
                     g.drawImage(backgroundImageNew, 0, 0, getWidth(), getHeight(), this);
+
                 }
 
             }
@@ -280,18 +266,20 @@ public class NewTeam extends JPanel {
         //Impostazione sfondo background di sinistra
 
         try {
+
             backgroundImageNew = ImageIO.read(new File("src/GUI/icon/teamwork.jpg"));
 
-
         } catch (Exception ex) {
+
             System.out.println("Errore caricamento immagine background NewTeam");
             ex.printStackTrace();
+
         }
 
         add(leftPage);
         add(rightPage);
-    }
 
+    }
 
     private String getCodTeamNew() {
         return codTeamField.getText().trim();
@@ -305,13 +293,8 @@ public class NewTeam extends JPanel {
         return descrizioneField.getText().trim();
     }
 
-    /*
-    private String getMatricolaLNew() {
-        return matricolaLField.getText().trim();
-    }
-    */
+    private void selectTecnici(int numTecniciDaSelezionare) {
 
-    private List<Tecnico> selectTecnici(int numTecniciDaSelezionare) {
         // Crei un'istanza di TecnicoDAO
         TecnicoDAO tecnicoDAO = new TecnicoDAO(controller);
 
@@ -338,29 +321,38 @@ public class NewTeam extends JPanel {
 
                 //Impediamo di selezionare più tecnici del previsto
                 if(!super.isSelectedIndex(index0)) {
+
                     if(count < numTecniciDaSelezionare) {
+
                         count++;
                         super.addSelectionInterval(index0, index1);
+
                     } else {
+
                         JOptionPane.showMessageDialog(null, "Non puoi selezionare più di " +
                                 numTecniciDaSelezionare + " tecnici", "Numero tecnici superato", JOptionPane.ERROR_MESSAGE);
 
                     }
 
                 }
+
                 else {
+
                     count--;
                     super.removeSelectionInterval(index0, index1);
 
                 }
+
             }
+
         });
 
         //Aggiungiamo alla JList i tecnici recuperati dal DB che non hanno un Team
         for (Tecnico tecnico : listaCompletaTecnici) {
-            listModel.addElement(tecnico);
-        }
 
+            listModel.addElement(tecnico);
+
+        }
 
         JScrollPane scrollPane = new JScrollPane(tecniciList);
         dialog.add(scrollPane, BorderLayout.CENTER);
@@ -372,16 +364,14 @@ public class NewTeam extends JPanel {
         dialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                if (JOptionPane.CLOSED_OPTION == -1) {
-                    ntecniciComboBox.setSelectedIndex(0);
-                }
+
+                ntecniciComboBox.setSelectedIndex(0);
+
             }
         });
 
-
         //Azione tasto quando i tecnici vengono selezionati per comporre il nuovo team
         selectButton.addActionListener(e -> {
-
 
             List<Tecnico> selectedTecnici = tecniciList.getSelectedValuesList();
             if (selectedTecnici.size() == numTecniciDaSelezionare) {
@@ -407,18 +397,23 @@ public class NewTeam extends JPanel {
         dialog.setLocationRelativeTo(null);
         SwingUtilities.invokeLater(() -> tecniciList.requestFocusInWindow());
         dialog.setVisible(true);
+
         try {
+
             BufferedImage iconImage = ImageIO.read(new File("src/GUI/icon/icons8-laboratorio-64.png"));
             dialog.setIconImage(iconImage);
+
         } catch (IOException e) {
+
             e.printStackTrace();
         };
 
         SwingUtilities.invokeLater(() -> tecniciList.requestFocusInWindow());
-        return tecniciSelezionati;
+
     }
 
     private void creazioneTeameAssegnamentoTecnici() {
+
         String codiceTeam = getCodTeamNew(); // Codice del team appena creato
         Team teamCreato = controller.recuperoTeamC(codiceTeam);
 

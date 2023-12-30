@@ -7,15 +7,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class SummaryWindow extends JDialog {
 
-    private JComboBox<Integer> yearComboBox;
-    private JComboBox<String> monthComboBox;
-
+    private final JComboBox<Integer> yearComboBox;
+    private final JComboBox<String> monthComboBox;
      Controller myController;
 
     public SummaryWindow(JFrame parent, Controller controller, Strumento strumento) {
@@ -33,8 +30,11 @@ public class SummaryWindow extends JDialog {
         LocalDate currentDate = LocalDate.now();
 
         yearComboBox = new JComboBox<>();
+
         for (int year = 2022; year <= currentDate.getYear(); year++) {
+
             yearComboBox.addItem(year);
+
         }
 
         monthComboBox = new JComboBox<>(new String[]{" - " ,"Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio",
@@ -101,19 +101,20 @@ public class SummaryWindow extends JDialog {
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 // Ottieniamo l'anno e il mese selezionati
                 int selectedYear = (int) yearComboBox.getSelectedItem();
                 String selectedMonth = (String) monthComboBox.getSelectedItem();
 
-                System.out.println(conversioneMese(selectedMonth));
-
                 if (conversioneMese(selectedMonth) != 0) {
+
                     JOptionPane.showMessageDialog(null,
                             myController.riepilogoStrumentoC(strumento, conversioneMese(selectedMonth), selectedYear)
                             , "Riepilogo Strumento", JOptionPane.INFORMATION_MESSAGE);
 
                     // Chiudi il dialog
                     dispose();
+
                 } else {
 
                     JOptionPane.showMessageDialog(null,
@@ -121,58 +122,33 @@ public class SummaryWindow extends JDialog {
                             "Riepilogo Strumento", JOptionPane.INFORMATION_MESSAGE);
 
                 }
+
             }
+
         });
 
     }
 
     public int conversioneMese(String mese) {
 
-        switch (mese) {
-            case " - ":
-                return 0;
-            case "Gennaio":
-                return 1;
+        return switch (mese) {
 
-            case "Febbraio":
-                return 2;
+            case " - " -> 0;
+            case "Gennaio" -> 1;
+            case "Febbraio" -> 2;
+            case "Marzo" -> 3;
+            case "Aprile" -> 4;
+            case "Maggio" -> 5;
+            case "Giugno" -> 6;
+            case "Luglio" -> 7;
+            case "Agosto" -> 8;
+            case "Settembre" -> 9;
+            case "Ottobre" -> 10;
+            case "Novembre" -> 11;
+            case "Dicembre" -> 12;
+            default -> -1;
 
-            case "Marzo":
-                return 3;
-
-            case "Aprile":
-                return 4;
-
-            case "Maggio":
-                return 5;
-
-            case "Giugno":
-                return 6;
-
-            case "Luglio":
-                return 7;
-
-            case "Agosto":
-                return 8;
-
-            case "Settembre":
-                return 9;
-
-            case "Ottobre":
-                return 10;
-
-            case "Novembre":
-                return 11;
-
-            case "Dicembre":
-                return 12;
-
-            default:
-
-                return -1;
-
-        }
-
+        };
 
     }
 

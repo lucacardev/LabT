@@ -17,20 +17,15 @@ public class Organigramma5Panel extends JPanel {
     Responsabile responsabile;
     private List<Tecnico> listaTecnici;
     private Team team;
-
-    private BtnLayout backButton = new BtnLayout("Indietro");
-    private BtnLayout modifyButton = new BtnLayout("Modifica Organigramma");
     private ModOrganigramma modOrganigramma;
 
-
     public Organigramma5Panel(Controller controller,Responsabile responsabileLoggato,List<Tecnico> Tecnici, Team t) {
-
-        Organigramma5Panel organigramma5Panel = this;
 
         myController = controller;
         responsabile = responsabileLoggato;
         listaTecnici = Tecnici;
         this.team = t;
+        BtnLayout modifyButton;
 
         JLabel teamLabel = new JLabel("Organigramma del " + team.getNome());
 
@@ -39,12 +34,17 @@ public class Organigramma5Panel extends JPanel {
         gbc.insets = new Insets(5,5,5,5);
 
         //Trova il leader nella lista e posizionalo come primo elemento
+
         Tecnico leader = trovaLeader(listaTecnici, t);
+
         if (leader != null) {
+
             listaTecnici.remove(leader);
             listaTecnici.add(0, leader); // Inserisci il leader come primo elemento
+
         }
 
+        modifyButton = new BtnLayout("Modifica Organigramma");
         modifyButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -53,11 +53,12 @@ public class Organigramma5Panel extends JPanel {
                 modOrganigramma = new ModOrganigramma(mainWindow, myController, responsabile, listaTecnici, team);
                 modOrganigramma.setVisible(true);
 
-
             }
         });
 
+        BtnLayout backButton = new BtnLayout("Indietro");
         backButton.setBackground(Color.RED);
+
         backButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -65,10 +66,9 @@ public class Organigramma5Panel extends JPanel {
                 MyTeam myTeam = new MyTeam(myController,responsabile);
                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(Organigramma5Panel.this);
                 mainWindow.addCardPanel(myTeam, "myTeam");
+
             }
         });
-
-
 
         //JLabel teamLabel = new JLabel("Organigramma del " + t.getNome());
         gbc.gridx = 0;
@@ -97,13 +97,18 @@ public class Organigramma5Panel extends JPanel {
     private Tecnico trovaLeader(List<Tecnico> listaTecnici, Team team) {
 
         for (Tecnico tecnico : listaTecnici) {
-            if (tecnico.getMatricola().equals(team.getMatricolaL())) {
-                return tecnico; // Restituisce il tecnico se la matricola corrisponde al leader
-            }
-        }
-        return null; // Se non viene trovato il leader
-    }
 
+            if (tecnico.getMatricola().equals(team.getMatricolaL())) {
+
+                return tecnico; // Restituisce il tecnico se la matricola corrisponde al leader
+
+            }
+
+        }
+
+        return null; // Se non viene trovato il leader
+
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -152,24 +157,18 @@ public class Organigramma5Panel extends JPanel {
         // Calcola la posizione per centrare il testo nel rettangolo
         int xTesto = x - larghezzaTesto / 2;
         int xMatricola = x - larghezzaMatricola / 2;
-        int yTesto = y;
         int yMatricola = y + 15; // Spazio tra il testo e la matricola
 
         // Disegna il testo del tecnico
-        g2d.drawString(testoTecnico, xTesto, yTesto);
+        g2d.drawString(testoTecnico, xTesto, y);
 
         // Disegna la matricola sotto il testo
         g2d.drawString(matricola, xMatricola, yMatricola);
+
     }
 
     private void disegnaCollegamento(Graphics2D g2d, int x1, int y1, int x2, int y2) {
         g2d.drawLine(x1, y1, x2, y2);
-    }
-
-    public void aggiornaOrganigramma(List<Tecnico> nuoviTecnici, Team nuovoTeam) {
-        listaTecnici = nuoviTecnici;
-        team = nuovoTeam;
-        repaint();
     }
 
 }

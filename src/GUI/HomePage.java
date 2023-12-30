@@ -15,18 +15,9 @@ import java.io.File;
 import java.io.IOException;
 
 public class HomePage extends JPanel{
-
-    private static JPanel leftHomePage;
-    private static JPanel rightHomePage;
-
-    private BufferedImage leftHomePageBackground;
-
-
-
+    private static BufferedImage leftHomePageBackground;
     Controller myController;
     Utente utenteLoggato;
-
-
 
     public HomePage(Controller controller, Utente utenteCorrente) {
 
@@ -35,9 +26,8 @@ public class HomePage extends JPanel{
 
         setLayout(new GridLayout(0,2));
 
-        leftHomePage = new JPanel();
-        rightHomePage = new JPanel();
-
+        JPanel leftHomePage;
+        JPanel rightHomePage = new JPanel();
 
         /////////////////////////////LEFT HOME PAGE//////////////////////////////////
 
@@ -58,25 +48,22 @@ public class HomePage extends JPanel{
             }
         };
 
+        //Layout della parte di sinistra
         leftHomePage.setLayout(new GridBagLayout());
         GridBagConstraints leftGbc = new GridBagConstraints();
         leftGbc.insets = new Insets(5,5,5,5);
-
 
         //Testo di benvenuto
         IncreaseFont welcomeText = new IncreaseFont("Benvenuto "+ utenteCorrente.getUsername());
         welcomeText.increaseFont(welcomeText, 15);
 
-
         leftGbc.gridx = 0;
         leftGbc.gridy = 0;
         leftGbc.insets = new Insets(20,0,0,0);
 
-
         leftHomePage.add(welcomeText, leftGbc);
 
         //Email dell'utente registrato
-
         IncreaseFont userEmail = new IncreaseFont(utenteCorrente.getEmail());
         userEmail.increaseFont(userEmail,7);
         leftGbc.gridx = 0;
@@ -85,7 +72,6 @@ public class HomePage extends JPanel{
         leftHomePage.add(userEmail, leftGbc);
 
         //Pulsante indietro
-
         BtnLayout backButton = new BtnLayout("Esci");
         leftGbc.gridx = 0;
         leftGbc.gridy = 3;
@@ -94,8 +80,6 @@ public class HomePage extends JPanel{
         backButton.setBackground(Color.RED);
         leftGbc.insets = new Insets(15,20,40,0);
         leftGbc.anchor = GridBagConstraints.NORTH;
-
-
         leftHomePage.add(backButton, leftGbc);
 
         //Cambio pagina quando il pulsante indietro viene premuto
@@ -103,7 +87,6 @@ public class HomePage extends JPanel{
         backButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
 
                 int choice = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler uscire?", "Uscita Account", JOptionPane.OK_CANCEL_OPTION);
 
@@ -123,8 +106,6 @@ public class HomePage extends JPanel{
 
 
         });
-
-
 
         ////////////////////////////////RIGHT PAGE//////////////////////////////
 
@@ -188,16 +169,6 @@ public class HomePage extends JPanel{
             }
         });
 
-        //Bottone nuova prenotazione
-        /*
-        BtnLayout bookingCalendar = new BtnLayout("Calendario prenotazioni");
-        bookingCalendar.setFont(new FontUIResource(font, style, sizeFont));
-
-        rightGbc.gridx = 0;
-        rightGbc.gridy = 3;
-        rightGbc.fill = GridBagConstraints.HORIZONTAL;
-        rightHomePage.add(bookingCalendar, rightGbc);
-        */
         //Disegno Background
         try {
             // Carica l'immagine di sfondo dal file specificato

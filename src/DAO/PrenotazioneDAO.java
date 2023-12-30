@@ -14,9 +14,7 @@ import java.text.ParseException;
 
 
 public class PrenotazioneDAO {
-
-    private DB_Connection connessioneDB;
-    private Statement statement;
+    private final DB_Connection connessioneDB;
     Controller currController;
 
 
@@ -25,8 +23,6 @@ public class PrenotazioneDAO {
         currController = controller;
 
         connessioneDB = DB_Connection.getConnessione();
-        statement = connessioneDB.getStatement();
-
 
     }
 
@@ -40,8 +36,8 @@ public class PrenotazioneDAO {
                 "VALUES (?, ?, ?, ?, ?)";
 
         try {
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
 
+            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
             preparedStatement.setTimestamp(1, dataPrenotazione);
             preparedStatement.setTimestamp(2, oraPrenotazione);
             preparedStatement.setTimestamp(3, tempoUtilizzo);
@@ -52,10 +48,10 @@ public class PrenotazioneDAO {
             return rowsInserted > 0;
 
         } catch (SQLException e) {
+
             e.printStackTrace();
 
             String errorMassage = e.getMessage();
-
 
             if(errorMassage.contains("ERRORE: Lo strumento non può essere prenotato per quell'ora.Il laboratorio è chiuso.")) {
 
@@ -87,7 +83,6 @@ public class PrenotazioneDAO {
 
             }
 
-
             return false;
         }
     }
@@ -105,7 +100,6 @@ public class PrenotazioneDAO {
             PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
             preparedStatement.setString(1,  utenteLoggato.getUsername());
             ResultSet resultSet = preparedStatement.executeQuery();
-
 
             //Se è presente una riga successiva allora continua a ciclare
             //Prendiamo gli attributi dalle rispettive colonne
@@ -175,8 +169,6 @@ public class PrenotazioneDAO {
 
         return prenStrumenti;
 
-
-
     }
 
     public void eliminaPrenotazioneDAO(int codPrenotazione) {
@@ -189,8 +181,10 @@ public class PrenotazioneDAO {
 
 
         } catch (SQLException e) {
+
             System.out.println("Errore nell'eliminazione della prenotazione ");
             e.printStackTrace();
+
         }
 
     }
@@ -198,6 +192,7 @@ public class PrenotazioneDAO {
     public boolean modificaMiaPrenotazioneDAO (int codPrenotazione, Timestamp dataNuova, Timestamp oraNuova, Timestamp tempoUtilizzoNuovo) {
 
         try {
+
             String query = "UPDATE prenotazione SET " +
                     "data_prenotaziones = ?, " +
                     "ora_prenotaziones = ?, " +
@@ -215,11 +210,11 @@ public class PrenotazioneDAO {
 
 
         } catch (SQLException e) {
+
             System.out.println("Errore nella modifica della prenotazione dell'utente");
             e.printStackTrace();
 
             String errorMassage = e.getMessage();
-
 
             if(errorMassage.contains("ERRORE: Lo strumento non può essere prenotato per quell'ora. Il laboratorio è chiuso.")) {
 
@@ -247,8 +242,8 @@ public class PrenotazioneDAO {
             }
 
             return false;
-        }
 
+        }
 
     }
 

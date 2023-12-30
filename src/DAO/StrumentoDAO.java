@@ -3,7 +3,6 @@ package DAO;
 import DTO.Postazione;
 import DTO.Sede;
 import DTO.Strumento;
-import DTO.Utente;
 import UTILITIES.*;
 
 import java.sql.*;
@@ -13,7 +12,6 @@ import java.util.List;
 public class StrumentoDAO {
 
     private DB_Connection connessioneDB;
-    private Statement statement;
     Controller currController;
 
 
@@ -22,8 +20,6 @@ public class StrumentoDAO {
         currController = controller;
 
         connessioneDB = DB_Connection.getConnessione();
-        statement = connessioneDB.getStatement();
-
 
     }
 
@@ -41,6 +37,7 @@ public class StrumentoDAO {
             PostazioneDAO postazioneDAO = new PostazioneDAO(currController);
 
             try {
+
                 String query = "SELECT * FROM strumento JOIN sede ON cods = codsede_fk WHERE descrizione ILIKE ? AND codsede_fk = ?";
                 PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
                 preparedStatement.setString(1, '%' + descrizioneStrumento + '%');
@@ -48,6 +45,7 @@ public class StrumentoDAO {
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 while (resultSet.next()) {
+
                     int codStrumento = resultSet.getInt("codstrumento");
                     String caratteristiche_tecniche = resultSet.getString("caratteristiche_tecniche");
                     String descrizione = resultSet.getString("descrizione");
@@ -55,39 +53,40 @@ public class StrumentoDAO {
                     Integer codSede_fk = resultSet.getInt("codsede_fk");
                     String codPostazione_fk = resultSet.getString("codpostazione_fk");
 
-
                     //Recupero della Sede tramite l'attributo codsede_fk dello strumento
                     //Recupero allo stesso modo anche la postazione tramite metodi delle proprie classi DAO
                     Sede sede = sedeDAO.recuperoSede(codSede_fk);
                     Postazione postazione = postazioneDAO.recuperoPostazione(codPostazione_fk);
 
-
                     // Creazione di un oggetto Strumento e aggiunta alla lista
                     Strumento strumento = new Strumento(codStrumento, caratteristiche_tecniche, descrizione, tempoMaxUso, postazione, sede);
                     strumenti.add(strumento);
+
                 }
 
             } catch (SQLException e) {
+
                 System.out.println("Errore nella ricerca degli strumenti tramite sede e descrizione");
                 e.printStackTrace();
+
             }
-
-
-
 
         }
 
         else if(!nomeSede.isEmpty()) {
+
             SedeDAO sedeDAO = new SedeDAO(currController);
             PostazioneDAO postazioneDAO = new PostazioneDAO(currController);
 
             try {
+
                 String query = "SELECT * FROM strumento WHERE codsede_fk = ?";
                 PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
                 preparedStatement.setInt(1, sedeDAO.codificaSedeDAO(nomeSede));
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 while (resultSet.next()) {
+
                     int codStrumento = resultSet.getInt("codstrumento");
                     String caratteristiche_tecniche = resultSet.getString("caratteristiche_tecniche");
                     String descrizione = resultSet.getString("descrizione");
@@ -95,21 +94,22 @@ public class StrumentoDAO {
                     Integer codSede_fk = resultSet.getInt("codsede_fk");
                     String codPostazione_fk = resultSet.getString("codpostazione_fk");
 
-
                     //Recupero della Sede tramite l'attributo codsede_fk dello strumento
                     //Recupero allo stesso modo anche la postazione tramite metodi delle proprie classi DAO
                     Sede sede = sedeDAO.recuperoSede(codSede_fk);
                     Postazione postazione = postazioneDAO.recuperoPostazione(codPostazione_fk);
 
-
                     // Creazione di un oggetto Strumento e aggiunta alla lista
                     Strumento strumento = new Strumento(codStrumento, caratteristiche_tecniche, descrizione, tempoMaxUso, postazione, sede);
                     strumenti.add(strumento);
+
                 }
 
             } catch (SQLException e) {
+
                 System.out.println("Errore nella ricerca degli strumenti tramite sede");
                 e.printStackTrace();
+
             }
 
             //Caso in cui descrizione è diverso da null
@@ -119,6 +119,7 @@ public class StrumentoDAO {
             PostazioneDAO postazioneDAO = new PostazioneDAO(currController);
 
             try {
+
                 String query = "SELECT * FROM strumento WHERE descrizione ILIKE ?";
                 PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
                 preparedStatement.setString(1, '%' + descrizioneStrumento + '%');
@@ -133,27 +134,28 @@ public class StrumentoDAO {
                     Integer codSede_fk = resultSet.getInt("codsede_fk");
                     String codPostazione_fk = resultSet.getString("codpostazione_fk");
 
-
                     //Recupero della Sede tramite l'attributo codsede_fk dello strumento
                     //Recupero allo stesso modo anche la postazione tramite metodi delle proprie classi DAO
                     Sede sede = sedeDAO.recuperoSede(codSede_fk);
                     Postazione postazione = postazioneDAO.recuperoPostazione(codPostazione_fk);
 
-
                     // Creazione di un oggetto Strumento e aggiunta alla lista
                     Strumento strumento = new Strumento(codStrumento, caratteristiche_tecniche, descrizione, tempoMaxUso, postazione, sede);
                     strumenti.add(strumento);
+
                 }
 
             } catch (SQLException e) {
+
                 System.out.println("Errore nella ricerca degli strumenti tramite descrizione");
                 e.printStackTrace();
 
             }
 
-
         }
+
         return strumenti;
+
     }
 
     //Metodo per recuperare tutti gli strumenti
@@ -165,11 +167,13 @@ public class StrumentoDAO {
         PostazioneDAO postazioneDAO = new PostazioneDAO(currController);
 
         try {
+
             String query = "SELECT * FROM strumento";
             PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
+
                 int codStrumento = resultSet.getInt("codstrumento");
                 String caratteristiche_tecniche = resultSet.getString("caratteristiche_tecniche");
                 String descrizione = resultSet.getString("descrizione");
@@ -177,21 +181,22 @@ public class StrumentoDAO {
                 Integer codSede_fk = resultSet.getInt("codsede_fk");
                 String codPostazione_fk = resultSet.getString("codpostazione_fk");
 
-
                 //Recupero della Sede tramite l'attributo codsede_fk dello strumento
                 //Recupero allo stesso modo anche la postazione tramite metodi delle proprie classi DAO
                 Sede sede = sedeDAO.recuperoSede(codSede_fk);
                 Postazione postazione = postazioneDAO.recuperoPostazione(codPostazione_fk);
 
-
                 // Creazione di un oggetto Strumento e aggiunta alla lista
                 Strumento strumento = new Strumento(codStrumento, caratteristiche_tecniche, descrizione, tempoMaxUso, postazione, sede);
                 allStruments.add(strumento);
+
             }
 
         } catch (SQLException e) {
+
             System.out.println("Errore nel recupero di tutti gli strumenti");
             e.printStackTrace();
+
         }
 
         return allStruments;
@@ -205,12 +210,14 @@ public class StrumentoDAO {
         PostazioneDAO postazioneDAO = new PostazioneDAO(currController);
 
         try {
+
             String query = "SELECT * FROM strumento WHERE codstrumento = ?";
             PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
             preparedStatement.setInt(1, codStrumento);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
+
                 Integer codStrumentoRec = resultSet.getInt("codstrumento");
                 String caratteristicheTecnicheRec = resultSet.getString("caratteristiche_tecniche");
                 String descrizioneRec = resultSet.getString("descrizione");
@@ -218,59 +225,37 @@ public class StrumentoDAO {
                 Integer codSede_fk = resultSet.getInt("codsede_fk");
                 String codPostazione_fk = resultSet.getString("codpostazione_fk");
 
-
                 //Recupero della Sede tramite l'attributo codsede_fk dello strumento
                 //Recupero allo stesso modo anche la postazione tramite metodi delle proprie classi DAO
                 Sede sede = sedeDAO.recuperoSede(codSede_fk);
                 Postazione postazione = postazioneDAO.recuperoPostazione(codPostazione_fk);
 
-
                 strumentoTrovato = new Strumento(codStrumentoRec, caratteristicheTecnicheRec, descrizioneRec,
                         tempoMaxUsoRec, postazione, sede);
+
             }
 
 
         } catch (SQLException e) {
+
             System.out.println("Errore nel recupero dello strumento mediante il suo codice");
             e.printStackTrace();
+
         }
 
         return  strumentoTrovato;
 
     }
 
-    public Time getStrumentHour(Strumento strumento) {
-
-        Time tempoMaxUso = null;
-
-        try {
-            String query = "SELECT tempomaxuso FROM strumento WHERE codstrumento = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
-            preparedStatement.setInt(1, strumento.getCodStrumento());
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-
-                tempoMaxUso = resultSet.getTime("tempomaxuso");
-            }
-
-        } catch (SQLException e) {
-
-            e.printStackTrace();
-        }
-
-        return tempoMaxUso;
-    }
-
-
     public String riepilogoStrumentoDAO(int codStrumento, int mese, int anno ) {
 
         String risultato = null;
-        int codStrumentoRec = codStrumento;
+        int codStrumentoRec;
         int annoScelto = anno;
         int meseScelto = mese;
 
         try {
+
             String query = "SELECT * FROM riepilogo_strumenti(?, ?, ?)";
             PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
             preparedStatement.setInt(1, codStrumento);
@@ -279,6 +264,7 @@ public class StrumentoDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
+
                 codStrumentoRec = resultSet.getInt("codstrumento");
                 annoScelto = resultSet.getInt("anno");
                 meseScelto = resultSet.getInt("mese");
@@ -293,16 +279,19 @@ public class StrumentoDAO {
             } else {
 
                 System.out.println("Non trovato");
+
             }
 
 
 
         } catch (SQLException e) {
+
             System.out.println("Errore nel recupero del riepilogo dello strumento");
             e.printStackTrace();
 
             risultato =  "Lo strumento nel periodo: " + meseScelto + "\\" + annoScelto + "\n" +
                     "non è stato prenotato.";
+
         }
 
         return  risultato;
@@ -312,10 +301,11 @@ public class StrumentoDAO {
     public String riepilogoStrumentoNoMeseDAO(int codStrumento, int anno ) {
 
         String risultato = null;
-        int codStrumentoRec = codStrumento;
+        int codStrumentoRec;
         int annoScelto = anno;
 
         try {
+
             String query = "SELECT * FROM riepilogo_strumenti_noMese(?, ?)";
             PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
             preparedStatement.setInt(1, codStrumento);
@@ -323,6 +313,7 @@ public class StrumentoDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
+
                 codStrumentoRec = resultSet.getInt("codstrumento");
                 annoScelto = resultSet.getInt("anno");
                 Time durataTotale = resultSet.getTime("durata_totale");
@@ -335,19 +326,18 @@ public class StrumentoDAO {
 
             }
 
-
-
         } catch (SQLException e) {
+
             System.out.println("Errore nel recupero del riepilogo dello strumento senza mese");
             e.printStackTrace();
 
             risultato =  "Lo strumento nell'anno: " + annoScelto + "\n" +
                     "non è stato prenotato.";
+
         }
 
         return  risultato;
 
     }
-
 
 }

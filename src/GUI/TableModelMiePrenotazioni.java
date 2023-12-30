@@ -1,19 +1,10 @@
 package GUI;
 
 import DTO.Prenotazione;
-import DTO.Strumento;
 
-import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableRowSorter;
-import java.awt.*;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-
-import static javax.swing.text.StyleConstants.setForeground;
 
 public class TableModelMiePrenotazioni extends AbstractTableModel {
 
@@ -24,10 +15,7 @@ public class TableModelMiePrenotazioni extends AbstractTableModel {
 
         this.listaPrenotazioni = listaPrenotazioni;
 
-
-
     }
-
 
     @Override
     public String getColumnName(int column) {
@@ -63,37 +51,44 @@ public class TableModelMiePrenotazioni extends AbstractTableModel {
 
             Prenotazione prenotazione = listaPrenotazioni.get(rowIndex);
 
-            switch (columnIndex) {
-                case 0:
-                    return prenotazione.getCod_prenotazione();
+            return switch (columnIndex) {
 
-                case 1:
+                case 0 -> prenotazione.getCod_prenotazione();
+                case 1 -> {
+
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                    return sdf.format(prenotazione.getData_prenotazioneS());
+                    yield sdf.format(prenotazione.getData_prenotazioneS());
 
-                case 2:
+                }
+
+                case 2 -> {
+
                     SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
-                    return sdfTime.format(prenotazione.getOra_prenotazioneS());
+                    yield sdfTime.format(prenotazione.getOra_prenotazioneS());
 
-                case 3:
+                }
+
+                case 3 -> {
+
                     SimpleDateFormat sdfTime3 = new SimpleDateFormat("HH:mm");
-                    return sdfTime3.format(prenotazione.getTempo_utilizzoS());
+                    yield sdfTime3.format(prenotazione.getTempo_utilizzoS());
 
-                case 4:
-                    return prenotazione.getUsername_fk().getUsername();
+                }
 
-                case 5:
+                case 4 -> prenotazione.getUsername_fk().getUsername();
+                case 5 -> prenotazione.getCodStrumento_fk().getCodStrumento();
 
-                    return prenotazione.getCodStrumento_fk().getCodStrumento();
+                default -> null;
 
-                default:
-                    return null;
-            }
+            };
 
         } else {
+
             System.out.println("La liste delle prenotazioni è vuota");
             return null;
+
         }
+
     }
 
     public void setData(List<Prenotazione> listaPrenotazioni) {
@@ -103,10 +98,14 @@ public class TableModelMiePrenotazioni extends AbstractTableModel {
     }
 
     public Prenotazione getPrenotazioneAtRow(int rowIndex) {
+
         if (listaPrenotazioni != null && rowIndex >= 0 && rowIndex < listaPrenotazioni.size()) {
             return listaPrenotazioni.get(rowIndex);
+
         }
+
         return null;
+
     }
 
     }

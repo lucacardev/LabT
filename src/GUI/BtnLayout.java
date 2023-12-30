@@ -10,8 +10,6 @@ import javax.swing.border.AbstractBorder;
 
 public class BtnLayout extends JButton {
 
-    public String nameButton;
-
     public BtnLayout(String nameButton) {
 
         super(nameButton);
@@ -22,4 +20,3 @@ public class BtnLayout extends JButton {
     }
 
     }
-

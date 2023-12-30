@@ -6,8 +6,6 @@ import UTILITIES.EmailSender;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -15,25 +13,13 @@ import java.io.File;
 import java.util.UUID;
 
 public class PasswordRecovery extends JPanel{
-
     private final JPanel rightPasswordRecovery;
-    private final JPanel leftPasswordRecovery;
-
     private final JPanel newPasswordPanel;
-    private final IncreaseFont emailTextRecovery;
     private final TextFieldBorderColor emailRecovery;
-    private final BtnLayout sendButtonCode;
-    private final BtnLayout backButton;
     private BufferedImage leftRecoveryBackground;
-
-    private EmailSender sendEmailVerification;
     private final TextFieldBorderColor newPassword;
     private final TextFieldBorderColor repeatNewPassword;
-
-    private final BtnLayout confirmPassword;
-
     private String emailUtente;
-
     Controller myController;
 
     public PasswordRecovery(Controller controller) {
@@ -42,11 +28,9 @@ public class PasswordRecovery extends JPanel{
 
         rightPasswordRecovery = new JPanel();
 
-        /*Utilizzo della sottoclasse di JPanel (classe anonima) per evitare di creare una nuova classe
-        * e quindi personalizziamo solo il Pannello sinistro per impostare il background altrimenti non avremmo
-        * potuto impostarlo.*/
-
-        leftPasswordRecovery = new JPanel() {
+        //Metodo per impostare l'immagine di background
+        // Disegna l'immagine di sfondo
+        JPanel leftPasswordRecovery = new JPanel() {
             @Override
             //Metodo per impostare l'immagine di background
             protected void paintComponent(Graphics g) {
@@ -61,6 +45,7 @@ public class PasswordRecovery extends JPanel{
                 }
 
             }
+
         };
 
         ///////////////////PAGINA DIVISA IN DUE PARTI UGUALI//////////////
@@ -76,7 +61,7 @@ public class PasswordRecovery extends JPanel{
 
         //Inserimento testo per recupero credenziali
 
-        emailTextRecovery = new IncreaseFont("Inserisci l'email per recuperare la password:");
+        IncreaseFont emailTextRecovery = new IncreaseFont("Inserisci l'email per recuperare la password:");
         gbcRight.gridx = 0;
         gbcRight.gridy = 0;
         gbcRight.gridwidth = 2; //occupa due colonne
@@ -101,7 +86,7 @@ public class PasswordRecovery extends JPanel{
         rightPasswordRecovery.add(emailRecovery, gbcRight);
 
         //Inserimento bottone d'invio codice
-        sendButtonCode = new BtnLayout("Recupera");
+        BtnLayout sendButtonCode = new BtnLayout("Recupera");
         gbcRight.gridx = 1;
         gbcRight.gridy = 3;
         gbcRight.gridwidth = 1;
@@ -149,7 +134,7 @@ public class PasswordRecovery extends JPanel{
         newPasswordPanel.add(repeatNewPassword, NWPgbc);
 
         //Bottone conferma nuova password
-        confirmPassword = new BtnLayout("Invia");
+        BtnLayout confirmPassword = new BtnLayout("Invia");
 
         NWPgbc.gridx = 0;
         NWPgbc.gridy = 4;
@@ -188,7 +173,9 @@ public class PasswordRecovery extends JPanel{
                     }
 
                 } else {
+
                     JOptionPane.showMessageDialog(null, "Le password inserite non corrispondono");
+
                 }
 
             }
@@ -234,7 +221,9 @@ public class PasswordRecovery extends JPanel{
                         add(newPasswordPanel);
 
                     } else if (verifiedCode != null) {
+
                         JOptionPane.showMessageDialog(null, "Il codice inserito non è corretto, richiedi un nuovo codice");
+
                     }
 
                 } else {
@@ -248,7 +237,7 @@ public class PasswordRecovery extends JPanel{
 
 
         //Inserimento bottone per tornare indietro
-        backButton = new BtnLayout("Indietro");
+        BtnLayout backButton = new BtnLayout("Indietro");
         gbcRight.gridx = 0;
         gbcRight.gridy = 3;
         gbcRight.gridwidth = 1;
@@ -283,15 +272,15 @@ public class PasswordRecovery extends JPanel{
 
 
         } catch (Exception ex) {
+
             System.out.println("Errore caricamento immagine background recovery mail page");
             ex.printStackTrace();
-        }
 
+        }
 
         add(leftPasswordRecovery);
         add(rightPasswordRecovery);
         setVisible(true);
-
 
     }
 
@@ -319,32 +308,29 @@ public class PasswordRecovery extends JPanel{
     //Metodo per verificare che le due nuove password inserite siano uguali
     public boolean passwordComparison() {
 
-        boolean equal = false;
+        return getNewPassword().equals(getRepeatNewPassword());
 
-        if(getNewPassword().equals(getRepeatNewPassword())) {
-
-            equal = true;
-        }
-
-        return equal;
     }
 
     //Metodo per generare un codice di verifica casuale
     public static String generateRandomCode() {
 
-        String randomCode = null;
+        //String randomCode = null;
 
         try {
+
             UUID uuid = UUID.randomUUID();
-            randomCode = uuid.toString().replaceAll("-", "").substring(0, 6); // Estrarre i primi sei caratteri
+
+            return uuid.toString().replaceAll("-", "").substring(0, 6);
 
         } catch (Exception ex) {
 
             System.out.println("Errore nella generazione del codice");
+
         }
 
-        return randomCode;
-    }
+        return null;
 
+    }
 
 }
