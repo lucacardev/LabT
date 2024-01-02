@@ -7,12 +7,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +29,7 @@ public class NewTeam extends JPanel {
     private final JComboBox<Integer> ntecniciComboBox;
     private Integer scelta;
     private static BufferedImage backgroundImageNew;
+    private static BufferedImage rightBackground;
     private final List<Tecnico> tecniciSelezionati = new ArrayList<>();
     Controller controller;
     Responsabile responsabileCorrente;
@@ -44,7 +40,35 @@ public class NewTeam extends JPanel {
         responsabileCorrente = responsabileLoggato;
         setLayout(new GridLayout(0,2));
 
-        JPanel rightPage = new JPanel();
+        JPanel rightPage = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+
+                // Disegna l'immagine di sfondo con interpolazione bilineare
+                if (rightBackground != null) {
+
+                    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                    g2d.drawImage(rightBackground, 0, 0, getWidth(), getHeight(), this);
+
+                }
+
+            }
+        };
+
+        //Impostazione sfondo background di destra
+
+        try {
+            rightBackground = ImageIO.read(new File("src/GUI/icon/sfondoR.png"));
+
+
+        } catch (Exception ex) {
+            System.out.println("Errore caricamento immagine nuovi team responsabile");
+            ex.printStackTrace();
+
+        }
         rightPage.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,5,5);
@@ -102,6 +126,16 @@ public class NewTeam extends JPanel {
         gbc.gridwidth = 2;
         codTeamField = new TextFieldBorderColor(15);
         TextFieldBorderColor.changeTextFieldBorderColor(codTeamField);
+        codTeamField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                codTeamField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                codTeamField.setBorder(new LineBorder(Color.BLACK));
+            }
+        });
         gbc.anchor = GridBagConstraints.CENTER;
         rightPage.add(codTeamField, gbc);
 
@@ -111,6 +145,16 @@ public class NewTeam extends JPanel {
         gbc.gridwidth = 2;
         nomeField = new TextFieldBorderColor(15);
         TextFieldBorderColor.changeTextFieldBorderColor(nomeField);
+        nomeField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                nomeField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                nomeField.setBorder(new LineBorder(Color.BLACK));
+            }
+        });
         gbc.anchor = GridBagConstraints.CENTER;
         rightPage.add(nomeField, gbc);
 
@@ -120,6 +164,16 @@ public class NewTeam extends JPanel {
         gbc.gridwidth = 2;
         descrizioneField = new TextFieldBorderColor(15);
         TextFieldBorderColor.changeTextFieldBorderColor(descrizioneField);
+        descrizioneField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                descrizioneField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                descrizioneField.setBorder(new LineBorder(Color.BLACK));
+            }
+        });
         gbc.anchor = GridBagConstraints.CENTER;
         rightPage.add(descrizioneField, gbc);
 
@@ -141,7 +195,7 @@ public class NewTeam extends JPanel {
         Integer[] scelte = {0,5,10};
         ntecniciComboBox = new JComboBox<>(scelte);
         ntecniciComboBox.setBackground(Color.white);
-        ntecniciComboBox.setBorder(new LineBorder(new Color(35,171,144),1));
+        ntecniciComboBox.setBorder(new LineBorder(new Color(246, 183, 55),1));
         gbc.anchor = GridBagConstraints.CENTER;
         rightPage.add(ntecniciComboBox, gbc);
 
@@ -172,6 +226,7 @@ public class NewTeam extends JPanel {
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         gbc.insets = new Insets(15,0,0,15);
         BtnLayout backButton = new BtnLayout("Indietro");
+        backButton.setBackground(new Color(23,65,95));
         rightPage.add(backButton, gbc);
 
         //Indirizzamento alla pagina di login
@@ -196,6 +251,7 @@ public class NewTeam extends JPanel {
         gbc.anchor = GridBagConstraints.FIRST_LINE_END;
         gbc.insets = new Insets(15,15,0,0);
         BtnLayout insertButton = new BtnLayout("Inserisci");
+        insertButton.setBackground(new Color(23,65,95));
         rightPage.add(insertButton, gbc);
 
         //Azioni dopo che il bottone registrati viene premuto

@@ -35,7 +35,9 @@ public class MyTeam extends JPanel {
 
         JButton backButton = new JButton("Indietro");
         BtnLayout addTeamButton = new BtnLayout("Aggiungi Team");
+        addTeamButton.setBackground(new Color(23,65,95));
         BtnLayout viewOrgButton = new BtnLayout("Visualizza Organigramma");
+        viewOrgButton.setBackground(new Color(23,65,95));
         BtnLayout deleteTeamButton = new BtnLayout("Elimina Team");
 
         backButton.setBackground(Color.RED);
@@ -153,18 +155,8 @@ public class MyTeam extends JPanel {
             try {
 
                 List<Team> teams = myController.recuperoTeamsDalDBC(responsabileCorrente);
-                String[] informazioni = ResponsabileDAO.nomecognomeRecovery(responsabileCorrente.getMatricola(), responsabileCorrente.getPw());
-
-                if (informazioni[0] != null && informazioni[1] != null) {
-
-                    String nome = informazioni[0];
-                    String cognome = informazioni[1];
 
                     if (!teams.isEmpty()) {
-
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(nome).append(" ").append(cognome).append(" , matricola ").append(responsabileCorrente.getMatricola()).append(" , i tuoi teams sono:\n");
-
                         Object[][] data = new Object[teams.size()][5]; // Array bidimensionale per i dati dei team
 
                         for (int i = 0; i < teams.size(); i++) {
@@ -197,10 +189,20 @@ public class MyTeam extends JPanel {
 
                         JLabel noTeamsLabel = new JLabel("Nessun team associato al responsabile");
                         add(noTeamsLabel, BorderLayout.CENTER);
+                        noTeamsLabel.setForeground(Color.RED);
+                        JPanel centerPanel = new JPanel(new GridBagLayout());
+                        GridBagConstraints gbc = new GridBagConstraints();
+                        gbc.gridx = 0;
+                        gbc.gridy = 0;
+                        gbc.weightx = 1.0;
+                        gbc.weighty = 1.0;
+                        gbc.anchor = GridBagConstraints.CENTER;
+
+                        centerPanel.add(noTeamsLabel, gbc);
+
+                        add(centerPanel, BorderLayout.CENTER);
 
                     }
-
-                }
 
             } catch (Exception e) {
 

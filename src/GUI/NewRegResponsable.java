@@ -41,7 +41,8 @@ public class NewRegResponsable extends JPanel {
     Sede sedeSelezionata;
     int codiceSede;
 
-    private static BufferedImage backgroundImageNew;
+    private static BufferedImage backgroundImageLeft;
+    private static BufferedImage backgroundImageRight;
 
 
     public NewRegResponsable(Controller controller) {
@@ -49,7 +50,36 @@ public class NewRegResponsable extends JPanel {
         myController = controller;
         setLayout(new GridLayout(0,2));
 
-        JPanel rightPage = new JPanel();
+        JPanel rightPage =  new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+
+                // Disegna l'immagine di sfondo con interpolazione bilineare
+                if (backgroundImageRight != null) {
+
+                    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                    g2d.drawImage(backgroundImageRight, 0, 0, getWidth(), getHeight(), this);
+
+                }
+
+            }
+        };
+
+        //Impostazione sfondo background di destra
+
+        try {
+            backgroundImageRight = ImageIO.read(new File("src/GUI/icon/sfondoR.png"));
+
+
+        } catch (Exception ex) {
+            System.out.println("Errore caricamento immagine background responsabile");
+            ex.printStackTrace();
+
+        }
+
         rightPage.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,5,5);
@@ -135,6 +165,64 @@ public class NewRegResponsable extends JPanel {
         gbc.anchor = GridBagConstraints.CENTER;
         rightPage.add(passwordField, gbc);
 
+        matricolaField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                matricolaField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                matricolaField.setBorder(new LineBorder(Color.BLACK));
+            }
+        });
+
+        nomeField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                nomeField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                nomeField.setBorder(new LineBorder(Color.BLACK));
+            }
+        });
+
+        cognomeField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                cognomeField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                cognomeField.setBorder(new LineBorder(Color.BLACK));
+            }
+        });
+
+        emailField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                emailField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                emailField.setBorder(new LineBorder(Color.BLACK));
+            }
+        });
+
+        passwordField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                passwordField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                passwordField.setBorder(new LineBorder(Color.BLACK));
+            }
+        });
+
+
+
+
         //Posizionamento occhio per visualizzare password
 
         JButton pwdEye = new JButton();
@@ -143,7 +231,7 @@ public class NewRegResponsable extends JPanel {
             pwdEye.setIcon(noScalingEye);
 
         } catch (Exception ex) {
-            System.out.println("Errore caricamento immagine occhio ");
+            System.out.println("Errore caricamento immagine occhio - pagina nuovo responsabile ");
         }
 
         //Nascondere il layout del pulsante (occhio password)
@@ -183,7 +271,7 @@ public class NewRegResponsable extends JPanel {
         // Crea e aggiungi il JComboBox con i nomi delle sedi
         sedeComboBox = new JComboBox<>(nomiSediArray);
         sedeComboBox.setBackground(Color.white);
-        sedeComboBox.setBorder(new LineBorder(new Color(35,171,144),1));
+        sedeComboBox.setBorder(new LineBorder(new Color(246,183,55),1));
 
         gbc.gridy = 11;
         gbc.gridx = 0;
@@ -202,6 +290,7 @@ public class NewRegResponsable extends JPanel {
         });
 
         //Bottone indietro
+        backButton.setBackground(new Color(23,65,95));
         gbc.gridy = 12;
         gbc.gridx = 0;
         gbc.gridwidth = 1;
@@ -226,6 +315,7 @@ public class NewRegResponsable extends JPanel {
         });
 
         //Bottone registrati
+        signInButton.setBackground(new Color(23,65,95));
         gbc.gridy = 12;
         gbc.gridx = 1;
         gbc.gridwidth = 1;
@@ -317,6 +407,10 @@ public class NewRegResponsable extends JPanel {
         });
 
 
+        // Dopo aver aggiunto tutti i componenti al contenitore
+        //rightPage.revalidate();
+        //rightPage.repaint();
+
         //Impostazione Background
 
         JPanel leftSignInPage = new JPanel() {
@@ -326,27 +420,41 @@ public class NewRegResponsable extends JPanel {
                 super.paintComponent(g);
 
                 // Disegna l'immagine di sfondo
-                if (backgroundImageNew != null) {
-                    g.drawImage(backgroundImageNew, 0, 0, getWidth(), getHeight(), this);
+                if (backgroundImageLeft != null) {
+                    g.drawImage(backgroundImageLeft, 0, 0, getWidth(), getHeight(), this);
                 }
 
             }
         };
 
         //Impostazione sfondo background di sinistra
-
         try {
-            backgroundImageNew = ImageIO.read(new File("src/GUI/icon/sign.png"));
+            backgroundImageLeft = ImageIO.read(new File("src/GUI/icon/sign.png"));
 
 
         } catch (Exception ex) {
-            System.out.println("Errore caricamento immagine background NewReh");
+            System.out.println("Errore caricamento immagine background NewRegleft");
+            ex.printStackTrace();
+        }
+
+        //Impostazione sfondo background di destra
+        try {
+            backgroundImageRight = ImageIO.read(new File("src/GUI/icon/SfondoR.png"));
+
+        } catch (Exception ex) {
+            System.out.println("Errore caricamento immagine background NewRegright");
             ex.printStackTrace();
         }
 
         add(leftSignInPage);
         add(rightPage);
 
+    }
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (backgroundImageLeft != null) {
+            g.drawImage(backgroundImageLeft, 0, 0, getWidth(), getHeight(), this);
+        }
     }
 
     public String getMatricolaNew() {
@@ -381,6 +489,7 @@ public class NewRegResponsable extends JPanel {
             passwordField.setEchoChar('\u2022');
         }
     }
+
 
     //Metodo per generare un codice di verifica casuale
     public static String generateRandomCode() {

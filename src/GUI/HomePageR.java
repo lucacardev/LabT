@@ -18,6 +18,7 @@ import java.io.IOException;
 
 public class HomePageR extends JPanel {
     private static BufferedImage leftHomePageBackground;
+    private static BufferedImage Rightbackground;
     Controller myController;
     Responsabile ResponsabileLoggato;
 
@@ -29,7 +30,35 @@ public class HomePageR extends JPanel {
         setLayout(new GridLayout(0,2));
 
         JPanel leftHomePage;
-        JPanel rightHomePage = new JPanel();
+        JPanel rightHomePage = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+
+                // Disegna l'immagine di sfondo con interpolazione bilineare
+                if (Rightbackground != null) {
+
+                    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                    g2d.drawImage(Rightbackground, 0, 0, getWidth(), getHeight(), this);
+
+                }
+
+            }
+        };
+
+        //Impostazione sfondo background di destra
+
+        try {
+            Rightbackground = ImageIO.read(new File("src/GUI/icon/sfondoR.png"));
+
+
+        } catch (Exception ex) {
+            System.out.println("Errore caricamento immagine homepage responsabile");
+            ex.printStackTrace();
+
+        }
 
         /////////////////////////////LEFT HOME PAGE//////////////////////////////////
 
@@ -51,7 +80,6 @@ public class HomePageR extends JPanel {
 
         //Disegno Background
         try {
-            // Carica l'immagine di sfondo dal file specificato
             leftHomePageBackground = ImageIO.read(new File("src/GUI/icon/Immagine WhatsApp 2023-12-04 ore 10.17.59_b126edae.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -74,7 +102,7 @@ public class HomePageR extends JPanel {
             int fontSize = welcomeFont.getSize() + 20;
             Font increaseFont = welcomeFont.deriveFont((float)fontSize);
             welcomeText.setFont(increaseFont);
-            welcomeText.setForeground(new Color(0, 0, 0));
+            welcomeText.setForeground(new Color(23, 65, 95));
             nc.setFont(increaseFont);
             nc.setForeground(new Color(0,0,0));
 
@@ -131,7 +159,6 @@ public class HomePageR extends JPanel {
         ////////////////////////////////RIGHT PAGE//////////////////////////////
 
         rightHomePage.setLayout(new GridBagLayout());
-        rightHomePage.setBackground(new Color(239,239,239));
 
         GridBagConstraints rightGbc = new GridBagConstraints();
 
@@ -143,6 +170,7 @@ public class HomePageR extends JPanel {
 
         //Bottone I miei Team
         BtnLayout myTeams = new BtnLayout("I miei Teams");
+        myTeams.setBackground(new Color(23,65,95));
         myTeams.setFont(new FontUIResource(font, style, sizeFont));
 
         rightGbc.gridx = 0;

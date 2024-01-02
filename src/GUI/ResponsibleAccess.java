@@ -56,7 +56,6 @@ public class ResponsibleAccess extends JPanel {
 
         }
 
-        rightRApage.setBackground(Color.WHITE);
         rightRApage.setLayout(new GridBagLayout());
         GridBagConstraints rightGbc = new GridBagConstraints();
         rightGbc.insets = new Insets(5,5,5,5);
@@ -176,7 +175,7 @@ public class ResponsibleAccess extends JPanel {
         pwdEyeGbc.gridx = 2;
         pwdEyeGbc.gridy = 4;
         pwdEyeGbc.anchor = GridBagConstraints.LINE_END;
-        pwdEyeGbc.insets = new Insets(0, 0, 0, 35);
+        pwdEyeGbc.insets = new Insets(0, 0, 0, -10);
         rightRApage.add(pwdEye,pwdEyeGbc);
 
         rightGbc.gridx = 1;

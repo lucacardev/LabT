@@ -7,6 +7,8 @@ import UTILITIES.EmailSender;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -26,6 +28,7 @@ public class SignInPage extends JPanel {
     private final TextFieldBorderColor usernameField;
     private final JPasswordField passwordField;
     private static BufferedImage backgroundImageSignin;
+    private static BufferedImage rightbackgroundSingin;
     Controller myController;
 
 
@@ -36,7 +39,33 @@ public class SignInPage extends JPanel {
 
         setLayout(new GridLayout(0,2));
 
-        JPanel rightSignInPage = new JPanel();
+        JPanel rightSignInPage = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+
+                // Disegna l'immagine di sfondo con interpolazione bilineare
+                if (rightbackgroundSingin != null) {
+
+                    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                    g2d.drawImage(rightbackgroundSingin, 0, 0, getWidth(), getHeight(), this);
+
+                }
+
+            }
+        };
+
+        //Impostazione sfondo background di destra
+
+        try {
+            rightbackgroundSingin = ImageIO.read(new File("src/GUI/icon/background.png"));
+
+        } catch (Exception ex) {
+            System.out.println("Errore caricamento immagine background singin utente destra");
+            ex.printStackTrace();
+        }
         rightSignInPage.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,5,5);
@@ -85,6 +114,35 @@ public class SignInPage extends JPanel {
         TextFieldBorderColor.changeTextFieldBorderColor(passwordField);
         gbc.anchor = GridBagConstraints.CENTER;
         rightSignInPage.add(passwordField, gbc);
+
+        //Posizionamento occhio per visualizzare password
+        JButton pwdEye = new JButton();
+        try {
+            NoScalingIcon noScalingEye = new NoScalingIcon(new ImageIcon("src/GUI/icon/hide.png"));
+            pwdEye.setIcon(noScalingEye);
+
+        } catch (Exception ex) {
+            System.out.println("Errore caricamento immagine occhio - pagina SIGNINPAGE ");
+        }
+
+        //Nascondere il layout del pulsante (occhio password)
+        pwdEye.setContentAreaFilled(false);
+        pwdEye.setBorderPainted(false);
+        GridBagConstraints pwdEyeGbc = new GridBagConstraints();
+
+        //Chiamata al metodo per mostrare/nascondere la password
+        pwdEye.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                viewPassword();
+            }
+        });
+
+        pwdEyeGbc.gridx = 1;
+        pwdEyeGbc.gridy = 5;
+        pwdEyeGbc.anchor = GridBagConstraints.LINE_END;
+        pwdEyeGbc.insets = new Insets(0,0,0,-25);
+        rightSignInPage.add(pwdEye,pwdEyeGbc);
 
         //Bottone indietro
         gbc.gridy = 6;
@@ -245,6 +303,14 @@ public class SignInPage extends JPanel {
 
         return usernameField.getText().trim();
 
+    }
+
+    private void viewPassword() {
+        if (passwordField.getEchoChar() == '\u2022') {
+            passwordField.setEchoChar((char) 0);
+        } else {
+            passwordField.setEchoChar('\u2022');
+        }
     }
 
     //Metodo per generare un codice di verifica casuale
