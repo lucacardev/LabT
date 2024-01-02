@@ -5,9 +5,9 @@ import UTILITIES.EmailSender;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.UUID;
@@ -17,8 +17,10 @@ public class PasswordRecoveryR extends JPanel {
     private final JPanel newPasswordPanel;
     private final TextFieldBorderColor emailRecovery;
     private BufferedImage leftRecoveryBackground;
+    private BufferedImage rightRecoveryBackground;
+    private BufferedImage backgroundNewPass;
     private final JPasswordField newPassword;
-    private final TextFieldBorderColor repeatNewPassword;
+    private final JPasswordField repeatNewPassword;
     private String emailResponsabile;
 
     Controller myController;
@@ -27,10 +29,36 @@ public class PasswordRecoveryR extends JPanel {
 
         myController = controller;
 
-        rightPasswordRecovery = new JPanel();
+        rightPasswordRecovery =  new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+
+                // Disegna l'immagine di sfondo con interpolazione bilineare
+                if (rightRecoveryBackground != null) {
+
+                    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                    g2d.drawImage(rightRecoveryBackground, 0, 0, getWidth(), getHeight(), this);
+
+                }
+
+            }
+        };
+
+        //Impostazione sfondo background di destra
+
+        try {
+            rightRecoveryBackground = ImageIO.read(new File("src/GUI/icon/sfondoR.png"));
+
+        } catch (Exception ex) {
+            System.out.println("Errore caricamento immagine background passwordresponsabile destra");
+            ex.printStackTrace();
+        }
 
         //Metodo per impostare l'immagine di background
-        // Disegna l'immagine di sfondo
+        // Disegna l'immagine di sfondo di sinistra
         JPanel leftPasswordRecovery = new JPanel() {
             @Override
             //Metodo per impostare l'immagine di background
@@ -56,7 +84,7 @@ public class PasswordRecoveryR extends JPanel {
 
         rightPasswordRecovery.setLayout(new GridBagLayout());
         GridBagConstraints gbcRight = new GridBagConstraints();
-        rightPasswordRecovery.setBackground(new Color(207,210,212));
+        //rightPasswordRecovery.setBackground(new Color(207,210,212));
         gbcRight.insets = new Insets(7,7,7,7);
 
         /////////////////////LATO DESTRO/////////////////////////
@@ -86,9 +114,20 @@ public class PasswordRecoveryR extends JPanel {
 
         TextFieldBorderColor.changeTextFieldBorderColor(emailRecovery);
         rightPasswordRecovery.add(emailRecovery, gbcRight);
+        emailRecovery.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                emailRecovery.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                emailRecovery.setBorder(new LineBorder(Color.BLACK));
+            }
+        });
 
         //Inserimento bottone d'invio codice
         BtnLayout sendButtonCode = new BtnLayout("Recupera");
+        sendButtonCode.setBackground(new Color(23,65,95));
         gbcRight.gridx = 1;
         gbcRight.gridy = 3;
         gbcRight.gridwidth = 1;
@@ -99,7 +138,35 @@ public class PasswordRecoveryR extends JPanel {
 
         /*Creazione Pannello per impostare la nuova Password (visibile solo dopo aver inserito il codice corretto) */
 
-        newPasswordPanel = new JPanel();
+        newPasswordPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+
+                // Disegna l'immagine di sfondo con interpolazione bilineare
+                if (backgroundNewPass != null) {
+
+                    g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                    g2d.drawImage(backgroundNewPass, 0, 0, getWidth(), getHeight(), this);
+
+                }
+
+            }
+        };
+
+        //Impostazione sfondo background di destra
+
+        try {
+            backgroundNewPass = ImageIO.read(new File("src/GUI/icon/sfondoR.png"));
+
+
+        } catch (Exception ex) {
+            System.out.println("Errore caricamento immagine recupera password responsabile");
+            ex.printStackTrace();
+
+        }
 
         newPasswordPanel.setLayout(new GridBagLayout());
         GridBagConstraints NPWgbc = new GridBagConstraints();
@@ -116,10 +183,49 @@ public class PasswordRecoveryR extends JPanel {
         newPassword = new JPasswordField(15);
 
         TextFieldBorderColor.changeTextFieldBorderColor(newPassword);
+        newPassword.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                newPassword.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                newPassword.setBorder(new LineBorder(Color.BLACK));
+            }
+        });
 
         NPWgbc.gridx = 0;
         NPWgbc.gridy = 1;
         newPasswordPanel.add(newPassword, NPWgbc);
+
+        //Posizionamento occhio per visualizzare password
+        JButton pwdEyeN = new JButton();
+        try {
+            NoScalingIcon noScalingEye = new NoScalingIcon(new ImageIcon("src/GUI/icon/hide.png"));
+            pwdEyeN.setIcon(noScalingEye);
+
+        } catch (Exception ex) {
+            System.out.println("Errore caricamento immagine occhio - pagina RECUPEROPASSWORD ");
+        }
+
+        //Nascondere il layout del pulsante (occhio password)
+        pwdEyeN.setContentAreaFilled(false);
+        pwdEyeN.setBorderPainted(false);
+        GridBagConstraints pwdEyeGbcN = new GridBagConstraints();
+
+        //Chiamata al metodo per mostrare/nascondere la password
+        pwdEyeN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                viewPasswordNew();
+            }
+        });
+
+        pwdEyeGbcN.gridx = 1;
+        pwdEyeGbcN.gridy = 1;
+        pwdEyeGbcN.anchor = GridBagConstraints.LINE_END;
+        pwdEyeGbcN.insets = new Insets(0,0,0,-20);
+        newPasswordPanel.add(pwdEyeN,pwdEyeGbcN);
 
         //Inserimento testo ripetizione nuova password
         JLabel repeatTextNewPassword = new JLabel("Ripeti la nuova password: ");
@@ -129,15 +235,55 @@ public class PasswordRecoveryR extends JPanel {
         newPasswordPanel.add(repeatTextNewPassword, NPWgbc);
 
         //Inserimento campo per ripetizione nuova password
-        repeatNewPassword = new TextFieldBorderColor(15);
+        repeatNewPassword = new JPasswordField(15);
         TextFieldBorderColor.changeTextFieldBorderColor(repeatNewPassword);
+        repeatNewPassword.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                repeatNewPassword.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                repeatNewPassword.setBorder(new LineBorder(Color.BLACK));
+            }
+        });
 
         NPWgbc.gridx = 0;
         NPWgbc.gridy = 3;
         newPasswordPanel.add(repeatNewPassword, NPWgbc);
 
+        //Posizionamento occhio per visualizzare password
+        JButton pwdEyeR = new JButton();
+        try {
+            NoScalingIcon noScalingEye = new NoScalingIcon(new ImageIcon("src/GUI/icon/hide.png"));
+            pwdEyeR.setIcon(noScalingEye);
+
+        } catch (Exception ex) {
+            System.out.println("Errore caricamento immagine occhio - pagina RECUPEROPASSWORD ");
+        }
+
+        //Nascondere il layout del pulsante (occhio password)
+        pwdEyeR.setContentAreaFilled(false);
+        pwdEyeR.setBorderPainted(false);
+        GridBagConstraints pwdEyeGbcR = new GridBagConstraints();
+
+        //Chiamata al metodo per mostrare/nascondere la password
+        pwdEyeR.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                viewPasswordRepeat();
+            }
+        });
+
+        pwdEyeGbcR.gridx = 1;
+        pwdEyeGbcR.gridy = 3;
+        pwdEyeGbcR.anchor = GridBagConstraints.LINE_END;
+        pwdEyeGbcR.insets = new Insets(0,0,0,-20);
+        newPasswordPanel.add(pwdEyeR,pwdEyeGbcR);
+
         //Bottone conferma nuova password
         BtnLayout confirmPassword = new BtnLayout("Invia");
+        confirmPassword.setBackground(new Color(23,65,95));
 
         NPWgbc.gridx = 0;
         NPWgbc.gridy = 4;
@@ -148,36 +294,40 @@ public class PasswordRecoveryR extends JPanel {
         confirmPassword.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (getNewPassword().isEmpty() || getRepeatNewPassword().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "I campi non possono essere vuoti.", "Errore", JOptionPane.ERROR_MESSAGE);
+                } else {
 
-                //Se le password coincidono
-                if(passwordComparison()) {
+                    //Se le password coincidono
+                    if (passwordComparison()) {
 
-                    //Errore nel caso si voglia inserire una nuova password già usata in passato
-                    if(myController.recuperoPasswordResponsabileC(emailResponsabile).equals(getNewPassword())) {
+                        //Errore nel caso si voglia inserire una nuova password già usata in passato
+                        if (myController.recuperoPasswordResponsabileC(emailResponsabile).equals(getNewPassword())) {
 
-                        JOptionPane.showMessageDialog(null, "Non puoi inserire una password che già usavi in passato");
+                            JOptionPane.showMessageDialog(null, "Non puoi inserire una password che già usavi in passato");
 
-                    } else {
+                        } else {
 
-                        if(myController.aggiornaPasswordResponsabileC(emailResponsabile, getNewPassword())) {
-                            JOptionPane.showMessageDialog(null, "Password aggiornata correttamente!");
+                            if (myController.aggiornaPasswordResponsabileC(emailResponsabile, getNewPassword())) {
+                                JOptionPane.showMessageDialog(null, "Password aggiornata correttamente!");
 
-                            ResponsibleAccess paginaAccesso= new ResponsibleAccess(myController);
+                                ResponsibleAccess paginaAccesso = new ResponsibleAccess(myController);
 
-                            //Ritorna alla pagina di accesso dopo aver confermato la nuova password
+                                //Ritorna alla pagina di accesso dopo aver confermato la nuova password
 
-                            MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(PasswordRecoveryR.this);
+                                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(PasswordRecoveryR.this);
 
-                            mainWindow.addCardPanel(paginaAccesso, "accesso");
+                                mainWindow.addCardPanel(paginaAccesso, "accesso");
+
+                            }
 
                         }
 
+                    } else {
+
+                        JOptionPane.showMessageDialog(null, "Le password inserite non corrispondono");
+
                     }
-
-                } else {
-
-                    JOptionPane.showMessageDialog(null, "Le password inserite non corrispondono");
-
                 }
 
             }
@@ -236,6 +386,7 @@ public class PasswordRecoveryR extends JPanel {
 
         //Inserimento bottone per tornare indietro
         BtnLayout backButton = new BtnLayout("Indietro");
+        backButton.setBackground(new Color(23,65,95));
         gbcRight.gridx = 0;
         gbcRight.gridy = 3;
         gbcRight.gridwidth = 1;
@@ -291,15 +442,34 @@ public class PasswordRecoveryR extends JPanel {
     //Metodo per recuperare la nuova password inserita
     public String getNewPassword() {
 
-        return newPassword.getText().trim();
+        char[] passwordChars = newPassword.getPassword();
+        return new String(passwordChars).trim();
+
 
     }
 
     //Metodo per recuperare la nuova password inserita
     public String getRepeatNewPassword() {
 
-        return repeatNewPassword.getText().trim();
+        char[] passwordChars = repeatNewPassword.getPassword();
+        return new String(passwordChars).trim();
 
+    }
+
+    private void viewPasswordNew() {
+        if (newPassword.getEchoChar() == '\u2022') {
+            newPassword.setEchoChar((char) 0);
+        } else {
+            newPassword.setEchoChar('\u2022');
+        }
+    }
+
+    private void viewPasswordRepeat() {
+        if (repeatNewPassword.getEchoChar() == '\u2022') {
+            repeatNewPassword.setEchoChar((char) 0);
+        } else {
+            repeatNewPassword.setEchoChar('\u2022');
+        }
     }
 
     //Metodo per verificare che le due nuove password inserite siano uguali
