@@ -14,11 +14,9 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
     Controller myController;
     Utente utenteLoggato;
     BookingFrame myBooking;
-    private static final JPanel topPanel = new JPanel();
-    private static final JPanel footerPanel = new JPanel();
-    private static final BtnLayout backButton = new BtnLayout("Indietro");
-    private static final BtnLayout modifyButton = new BtnLayout("Modifica");
-    private static final BtnLayout deleteButton = new BtnLayout("Elimina");
+    private  final JPanel topPanel = new JPanel();
+    private  final BtnLayout modifyButton = new BtnLayout("Modifica");
+    private  final BtnLayout deleteButton = new BtnLayout("Elimina");
     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(MyBooking.this);
     private Prenotazione myPrenotazioneSelez;
     private int numeroPrenotazione;
@@ -45,6 +43,7 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
         gbc.weighty = 0.20;
         gbc.weightx = 1;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
+        JPanel footerPanel = new JPanel();
         add(footerPanel, gbc);
 
         //////////////////////////////////////////TOP PANEL//////////////////////////////////////
@@ -66,7 +65,8 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
             footerPanelGbc.anchor = GridBagConstraints.LINE_START;
             footerPanelGbc.insets = new Insets(5, 15, 10, 0);
             footerPanelGbc.weightx = 0.33;
-            footerPanel.add(backButton, footerPanelGbc);
+        BtnLayout backButton = new BtnLayout("Indietro");
+        footerPanel.add(backButton, footerPanelGbc);
 
             //Azione quando il pulsante indietro viene premuto
 

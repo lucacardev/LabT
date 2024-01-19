@@ -11,23 +11,15 @@ public class LaboratorioDAO {
 
     Controller currController;
 
-    /*Passo il controller come parametro per creare un collegamento tra quest'ultimo e
-      la classe DAO*/
-
     public LaboratorioDAO(Controller controller) {
 
         currController = controller;
-
-        /*Creo la connessione tra la classe DAO e il database, dopo aver ricevuto la connessione
-          definisco lo statement per comunicare mediante le query*/
 
         connessioneDB = DB_Connection.getConnessione();
 
     }
 
     public Laboratorio recuperoLaboratorio(String codLab) {
-
-        Laboratorio laboratorio = null;
 
         try {
 
@@ -45,7 +37,7 @@ public class LaboratorioDAO {
                 int numTecnici = resultSet.getInt("num_tecnici");
                 int numPostazioni = resultSet.getInt("num_postazioni");
 
-                laboratorio = new Laboratorio(codL, descrizione, orarioApertura, orarioChiusura, numTecnici, numPostazioni);
+                return new Laboratorio(codL, descrizione, orarioApertura, orarioChiusura, numTecnici, numPostazioni);
 
             }
 
@@ -57,7 +49,7 @@ public class LaboratorioDAO {
 
         }
 
-        return  laboratorio;
+        return  null;
 
     }
 

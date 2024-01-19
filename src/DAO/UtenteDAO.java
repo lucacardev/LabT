@@ -51,8 +51,6 @@ public class UtenteDAO {
     //Metodo che verifica se la mail di un utente è presente nel database
     public boolean verificaMailUtente(String email) {
 
-        boolean emailTrovata = false;
-
         try {
 
             String query = "SELECT * FROM utente WHERE email = ?";
@@ -62,7 +60,7 @@ public class UtenteDAO {
 
             if (resultSet.next()) {
 
-                emailTrovata = true;
+                return true;
 
             }
 
@@ -72,7 +70,7 @@ public class UtenteDAO {
 
         }
 
-        return emailTrovata;
+        return false;
 
     }
 

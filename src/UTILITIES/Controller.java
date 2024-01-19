@@ -50,11 +50,8 @@ public class Controller {
 
     public boolean verificaMailUtente (String email) {
 
-        boolean emailTrovata;
+        return utenteDAO.verificaMailUtente(email);
 
-        emailTrovata = utenteDAO.verificaMailUtente(email);
-
-        return emailTrovata;
 
     }
 
