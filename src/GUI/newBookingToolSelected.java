@@ -15,11 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-/*Nonostante nel nome della classe ci sia la parola Frame quest'ultima è un JDialog dato che non vogliamo che aperta la finestra l'utente
-* possa selezionare altri strumenti nella finestra principale, causando così errori con le diverse sincronizzazioni del TablePanel, JDialog
-* ci facilita questa impedizione, necessità però di ricevere il Frame come parent*/
-
-public class BookingFrame extends JDialog{
+public class newBookingToolSelected extends JDialog{
 
     private final JPanel mainPanel = new JPanel();
     private static final JLabel dataText = new JLabel("Data: ");
@@ -163,7 +159,7 @@ public class BookingFrame extends JDialog{
                     maxUtilizationCalendar.setTime(selectedTool.getTempoMaxUso());
 
                     /*Il codice seguente serve per far si che non ci siano errori durante il confronto
-                    * quindi azzeriamo i millisecondi per i due calendari */
+                     * quindi azzeriamo i millisecondi per i due calendari */
 
                     selectedUtilizationCalendar.set(Calendar.YEAR, 0);
                     selectedUtilizationCalendar.set(Calendar.MONTH, 0);
@@ -382,46 +378,46 @@ public class BookingFrame extends JDialog{
 
                     } else {
 
-                    //Creo l'oggetto prenotazione e gli passo i dati inseriti dall'utente
+                        //Creo l'oggetto prenotazione e gli passo i dati inseriti dall'utente
 
-                    Prenotazione prenotazioneDTO = new Prenotazione(prenotazione.getCod_prenotazione(), selectedDate, selectedTime, selectedUtilizationTime, loggedUser, strumentoRecDaPren);
+                        Prenotazione prenotazioneDTO = new Prenotazione(prenotazione.getCod_prenotazione(), selectedDate, selectedTime, selectedUtilizationTime, loggedUser, strumentoRecDaPren);
 
-                    //Se l'operazione è avvenuta con successo allora mostro il messaggio di modifica avvenuta con successo
+                        //Se l'operazione è avvenuta con successo allora mostro il messaggio di modifica avvenuta con successo
                         // Prima controlliamo che la prenotazione non sia già presente con gli stessi dati
-                    if(myController.myBookingsUpdateC(prenotazioneDTO)) {
+                        if(myController.myBookingsUpdateC(prenotazioneDTO)) {
 
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
-                        dateFormat.getCalendar().set(Calendar.MILLISECOND, 0);
-                        timeFormat.getCalendar().set(Calendar.MILLISECOND,0);
+                            dateFormat.getCalendar().set(Calendar.MILLISECOND, 0);
+                            timeFormat.getCalendar().set(Calendar.MILLISECOND,0);
 
 
-                        String message = "Prenotazione Modificata Con Successo:\n" +
-                                "Data: " + dateFormat.format(prenotazioneDTO.getData_prenotazioneS()) + "\n" +
-                                "Ora: " + timeFormat.format(prenotazioneDTO.getOra_prenotazioneS()) + "\n" +
-                                "Tempo di utilizzo: " + timeFormat.format(prenotazioneDTO.getTempo_utilizzoS()) + "\n" +
-                                "Utente: " + prenotazioneDTO.getUsername_fk().getUsername() + "\n" +
-                                "Strumento: " + prenotazioneDTO.getCodStrumento_fk().getCodStrumento() + "\n" +
-                                "Sede: " + strumentoRecDaPren.getCodSede_fk().getNome();
+                            String message = "Prenotazione Modificata Con Successo:\n" +
+                                    "Data: " + dateFormat.format(prenotazioneDTO.getData_prenotazioneS()) + "\n" +
+                                    "Ora: " + timeFormat.format(prenotazioneDTO.getOra_prenotazioneS()) + "\n" +
+                                    "Tempo di utilizzo: " + timeFormat.format(prenotazioneDTO.getTempo_utilizzoS()) + "\n" +
+                                    "Utente: " + prenotazioneDTO.getUsername_fk().getUsername() + "\n" +
+                                    "Strumento: " + prenotazioneDTO.getCodStrumento_fk().getCodStrumento() + "\n" +
+                                    "Sede: " + strumentoRecDaPren.getCodSede_fk().getNome();
 
-                        JOptionPane.showMessageDialog(null, message, "Conferma Prenotazione", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(null, message, "Conferma Prenotazione", JOptionPane.INFORMATION_MESSAGE);
 
-                        String riepilogoPrenotazione =  "Data: " + dateFormat.format(prenotazioneDTO.getData_prenotazioneS()) + "\n" +
-                                "Ora: " + timeFormat.format(prenotazioneDTO.getOra_prenotazioneS()) + "\n" +
-                                "Tempo di utilizzo: " + timeFormat.format(prenotazioneDTO.getTempo_utilizzoS()) + "\n" +
-                                "Utente: " + prenotazioneDTO.getUsername_fk().getUsername() + "\n" +
-                                "Strumento: " + prenotazioneDTO.getCodStrumento_fk().getCodStrumento() + "\n" +
-                                "Sede: " + strumentoRecDaPren.getCodSede_fk().getNome() + "\n" +
-                                "Indirizzo: " + strumentoRecDaPren.getCodSede_fk().getIndirizzo();
+                            String riepilogoPrenotazione =  "Data: " + dateFormat.format(prenotazioneDTO.getData_prenotazioneS()) + "\n" +
+                                    "Ora: " + timeFormat.format(prenotazioneDTO.getOra_prenotazioneS()) + "\n" +
+                                    "Tempo di utilizzo: " + timeFormat.format(prenotazioneDTO.getTempo_utilizzoS()) + "\n" +
+                                    "Utente: " + prenotazioneDTO.getUsername_fk().getUsername() + "\n" +
+                                    "Strumento: " + prenotazioneDTO.getCodStrumento_fk().getCodStrumento() + "\n" +
+                                    "Sede: " + strumentoRecDaPren.getCodSede_fk().getNome() + "\n" +
+                                    "Indirizzo: " + strumentoRecDaPren.getCodSede_fk().getIndirizzo();
 
-                        EmailSender.sendVerificationCode(loggedUser.getEmail(), " ", "Riepilogo Prenotazione Modificata",
-                                "Prenotazione modificata con sucesso: \n" + riepilogoPrenotazione);
+                            EmailSender.sendVerificationCode(loggedUser.getEmail(), " ", "Riepilogo Prenotazione Modificata",
+                                    "Prenotazione modificata con sucesso: \n" + riepilogoPrenotazione);
 
-                        //Chiusura del JDialog
-                        dispose();
+                            //Chiusura del JDialog
+                            dispose();
 
-                    }
+                        }
 
                     }
 

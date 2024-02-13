@@ -9,20 +9,20 @@ import java.util.List;
 public class TableModelPrenStrum extends AbstractTableModel {
 
     private final String[] columnsName = {"Data", "Ora", "Tempo di utilizzo", "Codice Strumento"};
-    private final List<Prenotazione> listaPrenStrumenti;
+    private final List<Prenotazione> toolListBook;
 
-    public TableModelPrenStrum(List <Prenotazione> listaPrenStrumenti)  {
+    public TableModelPrenStrum(List <Prenotazione> toolListBook)  {
 
-        this.listaPrenStrumenti = listaPrenStrumenti;
+        this.toolListBook = toolListBook;
 
     }
 
     @Override
     public int getRowCount() {
 
-        if (listaPrenStrumenti != null) {
+        if (toolListBook != null) {
 
-            return listaPrenStrumenti.size();
+            return toolListBook.size();
 
         } else {
 
@@ -46,9 +46,9 @@ public class TableModelPrenStrum extends AbstractTableModel {
 
     public Object getValueAt(int rowIndex, int columnIndex) {
 
-        if (listaPrenStrumenti != null) {
+        if (toolListBook != null) {
 
-            Prenotazione prenotazione = listaPrenStrumenti.get(rowIndex);
+            Prenotazione prenotazione = toolListBook.get(rowIndex);
 
             return switch (columnIndex) {
 

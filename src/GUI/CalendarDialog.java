@@ -14,9 +14,9 @@ public class CalendarDialog extends JDialog {
 
         myController = controller;
 
-        //Qui devo chiamare il metododo del controller che mi recupera la lista
+        //Chiamimao il metodo del controller per recuperare la lista
 
-        TablePanel tablePanel = new TablePanel(myController.recuperoPrenStrumenti(strumento), " ");
+        TablePanel tablePanel = new TablePanel(myController.toolsBookingsRecoveryC(strumento), " ");
 
         getContentPane().add(tablePanel);
 

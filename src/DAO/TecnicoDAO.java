@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TecnicoDAO {
-    private DB_Connection connessioneDB;
+    private final DB_Connection DBConnection;
     Controller currController;
 
 
@@ -16,17 +16,17 @@ public class TecnicoDAO {
 
         currController = controller;
 
-        connessioneDB = DB_Connection.getConnessione();
+        DBConnection = DB_Connection.getConnessione();
 
     }
 
 
-    public void eliminaTecniciTeam(String codTeam) {
+    public void TecTeamDelete(String codTeam) {
 
         try {
 
             String query = "DELETE FROM tecnico WHERE codteam_fk = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
 
             preparedStatement.setString(1, codTeam);
             preparedStatement.executeUpdate();
@@ -48,7 +48,7 @@ public class TecnicoDAO {
         try {
 
             String query = "SELECT * FROM tecnico WHERE codteam_fk = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setString(1, team.getCodTeam());
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -64,8 +64,8 @@ public class TecnicoDAO {
                 String codT_fk = resultSet.getString("codteam_fk");
 
                 TeamDAO teamDAO = new TeamDAO(currController);
-                Team team1 = teamDAO.recuperoTeam(codT_fk);
-                Laboratorio laboratorioRec = currController.recuperoLaboratorioConCodC(codL_fk);
+                Team team1 = teamDAO.teamRecoveryDAO(codT_fk);
+                Laboratorio laboratorioRec = currController.labRecoveryWithCodeC(codL_fk);
 
                 Tecnico tecnico = new Tecnico(matricola, nome, cognome,codfiscale,telefono,email, laboratorioRec, team1);
                 teamMembers.add(tecnico);
@@ -90,7 +90,7 @@ public class TecnicoDAO {
         try {
 
             String query = "SELECT * FROM tecnico WHERE codteam_fk IS NULL";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -104,8 +104,8 @@ public class TecnicoDAO {
                 String codL_fk = resultSet.getString("codl_fk");
                 String codT_fk = resultSet.getString("codteam_fk");
 
-                Laboratorio laboraotorioRec = currController.recuperoLaboratorioConCodC(codL_fk);
-                Team teamRec = currController.recuperoTeamC(codT_fk);
+                Laboratorio laboraotorioRec = currController.labRecoveryWithCodeC(codL_fk);
+                Team teamRec = currController.teamRecoveryC(codT_fk);
 
                 Tecnico tecnico = new Tecnico(matricola, nome, cognome,codfiscale,telefono,email, laboraotorioRec, teamRec);
 
@@ -125,12 +125,12 @@ public class TecnicoDAO {
     }
 
     //Update dei tecnici
-    public boolean updateTecnici (Tecnico tecnico, String nuovoCodiceTeam) {
+    public boolean techniciansUpdateDAO (Tecnico tecnico, String nuovoCodiceTeam) {
 
         try {
 
             String query = "UPDATE tecnico SET codteam_fk = ? WHERE matricola = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
 
             preparedStatement.setString(1, nuovoCodiceTeam);
             preparedStatement.setString(2, tecnico.getMatricola());
@@ -152,34 +152,34 @@ public class TecnicoDAO {
     /*Metodo per aggiornare i tecnici durante la modifica dell'organigramma, la modifica avviene 1 to 1 altrimentri
      * avremmo problemi con la posizione del tecnico nel organigramma.*/
 
-    public void updateTecnico1to1C(Tecnico tecnicoDaSostituire, Tecnico tecnicoSostituto, Team team) {
+    public void technicianUpdate1To1DAO(Tecnico tecToBeReplaced, Tecnico tecReplaced, Team team) {
 
-        List<Tecnico> listaTecnici;
+        List<Tecnico> tecList;
 
         try {
 
             //Recupero della lista dei tecnici nel team
-            listaTecnici = recuperoTecniciDalDB(team);
+            tecList = recuperoTecniciDalDB(team);
 
             // Trova l'indice del tecnico da sostituire nella lista del team
-            int index = listaTecnici.indexOf(tecnicoDaSostituire);
+            int index = tecList.indexOf(tecToBeReplaced);
 
             // Rimuovi il tecnico da sostituire dalla lista del team
-            listaTecnici.remove(tecnicoDaSostituire);
+            tecList.remove(tecToBeReplaced);
 
             // Inserisci il tecnico sostituto nella posizione trovata
-            listaTecnici.add(index, tecnicoSostituto);
+            tecList.add(index, tecReplaced);
 
             // Aggiorna il valore di codteam_fk del tecnico da sostituire a null nel database
-            aggiornaCodTeam(tecnicoDaSostituire.getMatricola(), null);
+            aggiornaCodTeam(tecToBeReplaced.getMatricola(), null);
 
-            aggiornaCodTeam(tecnicoSostituto.getMatricola(), team.getCodTeam());
+            aggiornaCodTeam(tecReplaced.getMatricola(), team.getCodTeam());
 
             //Eliminiamo tutti i tecnici dal DB
-            eliminaTecniciTeam(team.getCodTeam());
+            TecTeamDelete(team.getCodTeam());
 
             // Aggiorna il team nel database o in memoria, a seconda della tua implementazione
-           insertTecniciTeam(team, listaTecnici);
+           insertTecniciTeam(team, tecList);
 
         } catch (Exception e) {
 
@@ -190,32 +190,32 @@ public class TecnicoDAO {
 
     }
 
-    public void updateTecnicoSameTeam(Tecnico tecnicoDaSostituire, Tecnico tecnicoSostituto, Team team) {
+    public void technicianUpdateSameTeamDAO(Tecnico tecToBeReplaced, Tecnico tecReplaced, Team team) {
 
-        List<Tecnico> listaTecnici;
+        List<Tecnico> tecList;
 
         try {
 
             //Recupero della lista dei tecnici nel team
-            listaTecnici = recuperoTecniciDalDB(team);
+            tecList = recuperoTecniciDalDB(team);
 
             // Trova l'indice del tecnico da sostituire nella lista del team
-            int index1 = listaTecnici.indexOf(tecnicoDaSostituire);
-            int index2 = listaTecnici.indexOf(tecnicoSostituto);
+            int index1 = tecList.indexOf(tecToBeReplaced);
+            int index2 = tecList.indexOf(tecReplaced);
 
             // Rimuovi il tecnico da sostituire dalla lista del team
-            listaTecnici.remove(tecnicoDaSostituire);
-            listaTecnici.remove(tecnicoSostituto);
+            tecList.remove(tecToBeReplaced);
+            tecList.remove(tecReplaced);
 
             // Inserisci il tecnico sostituto nella posizione trovata
-            listaTecnici.add(index1, tecnicoSostituto);
-            listaTecnici.add(index2, tecnicoDaSostituire);
+            tecList.add(index1, tecReplaced);
+            tecList.add(index2, tecToBeReplaced);
 
             //Eliminiamo tutti i tecnici dal DB
-            eliminaTecniciTeam(team.getCodTeam());
+            TecTeamDelete(team.getCodTeam());
 
             // Aggiorna il team nel database o in memoria, a seconda della tua implementazione
-            insertTecniciTeam(team, listaTecnici);
+            insertTecniciTeam(team, tecList);
 
         } catch (Exception e) {
 
@@ -232,7 +232,7 @@ public class TecnicoDAO {
         try {
 
             String query = "UPDATE tecnico SET codteam_fk = ? WHERE matricola = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setString(1, codTeam);
             preparedStatement.setString(2, matricola);
             preparedStatement.executeUpdate();
@@ -246,16 +246,16 @@ public class TecnicoDAO {
 
     }
 
-    public void insertTecniciTeam(Team team, List<Tecnico> listaTecnici) {
+    public void insertTecniciTeam(Team team, List<Tecnico> tecList) {
 
         try {
 
             String query = "INSERT INTO tecnico(matricola, nome, cognome, codfiscale, telefono, email, codl_fk, codteam_fk)" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
 
-            for (Tecnico tecnico : listaTecnici) {
+            for (Tecnico tecnico : tecList) {
 
                 preparedStatement.setString(1, tecnico.getMatricola());
                 preparedStatement.setString(2, tecnico.getNome());

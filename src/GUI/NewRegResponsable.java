@@ -19,27 +19,26 @@ import java.util.UUID;
 
 public class NewRegResponsable extends JPanel {
 
-    private final static JLabel matricolaText = new JLabel("Matricola");
-    private final static JLabel nomeText = new JLabel("Nome");
-    private final static JLabel cognomeText = new JLabel("Cognome");
+    private final static JLabel matriculationNumberText = new JLabel("Matricola");
+    private final static JLabel textName = new JLabel("Nome");
+    private final static JLabel textSurname = new JLabel("Cognome");
     private final static JLabel passwordText = new JLabel("Password");
-    private final static JLabel emailText = new JLabel("Email");
-    private final static JLabel sedeText = new JLabel("Sede di appartenenza");
+    private final static JLabel textMail = new JLabel("Email");
+    private final static JLabel headQuartersText = new JLabel("Sede di appartenenza");
 
 
     private final static BtnLayout backButton = new BtnLayout("Indietro");
     private final static BtnLayout signInButton = new BtnLayout("Registrati");
 
-    private TextFieldBorderColor matricolaField;
-    private TextFieldBorderColor nomeField;
-    private TextFieldBorderColor cognomeField;
-    private TextFieldBorderColor emailField;
-    private JPasswordField passwordField;
-    private JComboBox sedeComboBox; // Dichiarazione della JComboBox per le sedi
+    private final TextFieldBorderColor matriculationNumberField;
+    private final TextFieldBorderColor nameField;
+    private final TextFieldBorderColor surnameField;
+    private final TextFieldBorderColor emailField;
+    private final JPasswordField passwordField;
 
     Controller myController;
-    Sede sedeSelezionata;
-    int codiceSede;
+    Sede selectedHeadquarter;
+    int headQuarterCode;
 
     private static BufferedImage backgroundImageLeft;
     private static BufferedImage backgroundImageRight;
@@ -88,25 +87,25 @@ public class NewRegResponsable extends JPanel {
         gbc.gridy = 0;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        rightPage.add(matricolaText, gbc);
+        rightPage.add(matriculationNumberText, gbc);
 
         //Testo nome
         gbc.gridy = 2;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        rightPage.add(nomeText, gbc);
+        rightPage.add(textName, gbc);
 
         //Testo cognome
         gbc.gridy = 4;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        rightPage.add(cognomeText, gbc);
+        rightPage.add(textSurname, gbc);
 
         //Testo email
         gbc.gridy = 6;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        rightPage.add(emailText, gbc);
+        rightPage.add(textMail, gbc);
 
         //Testo password
         gbc.gridy = 8;
@@ -118,34 +117,34 @@ public class NewRegResponsable extends JPanel {
         gbc.gridy = 10;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        rightPage.add(sedeText, gbc);
+        rightPage.add(headQuartersText, gbc);
 
         //Campo matricola
         gbc.gridy = 1;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        matricolaField = new TextFieldBorderColor(15);
-        TextFieldBorderColor.changeTextFieldBorderColor(matricolaField);
+        matriculationNumberField = new TextFieldBorderColor(15);
+        TextFieldBorderColor.changeTextFieldBorderColor(matriculationNumberField);
         gbc.anchor = GridBagConstraints.CENTER;
-        rightPage.add(matricolaField, gbc);
+        rightPage.add(matriculationNumberField, gbc);
 
         //Campo nome
         gbc.gridy = 3;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        nomeField = new TextFieldBorderColor(15);
-        TextFieldBorderColor.changeTextFieldBorderColor(nomeField);
+        nameField = new TextFieldBorderColor(15);
+        TextFieldBorderColor.changeTextFieldBorderColor(nameField);
         gbc.anchor = GridBagConstraints.CENTER;
-        rightPage.add(nomeField, gbc);
+        rightPage.add(nameField, gbc);
 
         //Campo cognome
         gbc.gridy = 5;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        cognomeField = new TextFieldBorderColor(15);
-        TextFieldBorderColor.changeTextFieldBorderColor(cognomeField);
+        surnameField = new TextFieldBorderColor(15);
+        TextFieldBorderColor.changeTextFieldBorderColor(surnameField);
         gbc.anchor = GridBagConstraints.CENTER;
-        rightPage.add(cognomeField, gbc);
+        rightPage.add(surnameField, gbc);
 
         //Campo email
         gbc.gridy = 7;
@@ -165,36 +164,36 @@ public class NewRegResponsable extends JPanel {
         gbc.anchor = GridBagConstraints.CENTER;
         rightPage.add(passwordField, gbc);
 
-        matricolaField.addFocusListener(new FocusListener() {
+        matriculationNumberField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                matricolaField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+                matriculationNumberField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                matricolaField.setBorder(new LineBorder(Color.BLACK));
+                matriculationNumberField.setBorder(new LineBorder(Color.BLACK));
             }
         });
 
-        nomeField.addFocusListener(new FocusListener() {
+        nameField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                nomeField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+                nameField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                nomeField.setBorder(new LineBorder(Color.BLACK));
+                nameField.setBorder(new LineBorder(Color.BLACK));
             }
         });
 
-        cognomeField.addFocusListener(new FocusListener() {
+        surnameField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                cognomeField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+                surnameField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                cognomeField.setBorder(new LineBorder(Color.BLACK));
+                surnameField.setBorder(new LineBorder(Color.BLACK));
             }
         });
 
@@ -258,20 +257,20 @@ public class NewRegResponsable extends JPanel {
         List<Sede> sedi = sedeDAO.recuperaListaSediDalDB();
 
         // Crea una lista per i nomi delle sedi
-        List<String> nomiSedi = new ArrayList<>();
+        List<String> headQuartersNames = new ArrayList<>();
 
         // Estrai i nomi delle sedi dalla lista di oggetti Sede
         for (Sede sede : sedi) {
-            nomiSedi.add(sede.getNome());
+            headQuartersNames.add(sede.getNome());
         }
 
         // Converte la lista di nomi delle sedi in un array per il JComboBox
-        String[] nomiSediArray = nomiSedi.toArray(new String[nomiSedi.size()]);
+        String[] arrayHeadquartersNames = headQuartersNames.toArray(new String[headQuartersNames.size()]);
 
         // Crea e aggiungi il JComboBox con i nomi delle sedi
-        sedeComboBox = new JComboBox<>(nomiSediArray);
+        // Dichiarazione della JComboBox per le sedi
+        JComboBox sedeComboBox = new JComboBox<>(arrayHeadquartersNames);
         sedeComboBox.setBackground(Color.white);
-        sedeComboBox.setBorder(new LineBorder(new Color(246,183,55),1));
 
         gbc.gridy = 11;
         gbc.gridx = 0;
@@ -282,9 +281,9 @@ public class NewRegResponsable extends JPanel {
         sedeComboBox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent event) {
                 if (event.getStateChange() == ItemEvent.SELECTED) {
-                    String nomeSedeSelezionata = (String) event.getItem();
-                    codiceSede = sedeDAO.codificaSedeDAO(nomeSedeSelezionata); // Ottieni il codice della sede selezionata dal database
-                    sedeSelezionata = new Sede(codiceSede, nomeSedeSelezionata, null);
+                    String nameSelectedHeadquarter = (String) event.getItem();
+                    headQuarterCode = sedeDAO.codificaSedeDAO(nameSelectedHeadquarter); // Ottieni il codice della sede selezionata dal database
+                    selectedHeadquarter = new Sede(headQuarterCode, nameSelectedHeadquarter, null);
                 }
             }
         });
@@ -305,11 +304,11 @@ public class NewRegResponsable extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                ResponsibleAccess paginaAccesso = new ResponsibleAccess(myController);
+                ResponsibleAccess loginPage = new ResponsibleAccess(myController);
 
                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(NewRegResponsable.this);
 
-                mainWindow.addCardPanel(paginaAccesso, "accesso");
+                mainWindow.addCardPanel(loginPage, "accesso");
 
             }
         });
@@ -349,8 +348,8 @@ public class NewRegResponsable extends JPanel {
 
                 else {
 
-                    //Chiamo la classe DTO che incapsula le informazioni del nuovo responsabile
-                    Responsabile nuovoResponsabile = new Responsabile(getMatricolaNew(),getNomeNew(), getCognomeNew(),null,null,getEmailNew(),getPasswordNew(),sedeSelezionata);
+                    //Chiamo la classe DTO che incapsula le informations del nuovo responsabile
+                    Responsabile newManager = new Responsabile(getMatricolaNew(),getNomeNew(), getCognomeNew(),null,null,getEmailNew(),getPasswordNew(),selectedHeadquarter);
 
                     String registerCode;
                     String verificationRegisterCode;
@@ -359,7 +358,7 @@ public class NewRegResponsable extends JPanel {
                     Responsabile matricolaR = new Responsabile(getMatricolaNew(),null,null,null,null, getEmailNew(), null,null);
 
                     //Controlliamo prima che matricola e email non siano presenti e poi inviamo mail
-                    if (!myController.verifyMatricolaMailResponsabileC(matricolaR)) {
+                    if (!myController.mailManagerMatriculationVerifyC(matricolaR)) {
 
                         registerCode = generateRandomCode();
 
@@ -375,17 +374,17 @@ public class NewRegResponsable extends JPanel {
 
                         if (verificationRegisterCode != null && verificationRegisterCode.equals(registerCode)) {
 
-                            boolean complete = myController.newRespRegister(nuovoResponsabile);
+                            boolean complete = myController.newRespRegister(newManager);
 
                             if (complete) {
 
                                 JOptionPane.showMessageDialog(null, "La tua registrazione è avvenuta correttamente!");
 
-                                ResponsibleAccess paginaAccesso = new ResponsibleAccess(myController);
+                                ResponsibleAccess loginPage = new ResponsibleAccess(myController);
 
                                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(NewRegResponsable.this);
 
-                                mainWindow.addCardPanel(paginaAccesso, "accesso");
+                                mainWindow.addCardPanel(loginPage, "accesso");
 
                             }
 
@@ -406,10 +405,6 @@ public class NewRegResponsable extends JPanel {
             }
         });
 
-
-        // Dopo aver aggiunto tutti i componenti al contenitore
-        //rightPage.revalidate();
-        //rightPage.repaint();
 
         //Impostazione Background
 
@@ -459,17 +454,17 @@ public class NewRegResponsable extends JPanel {
 
     public String getMatricolaNew() {
 
-        return matricolaField.getText().trim();
+        return matriculationNumberField.getText().trim();
     }
 
     public String getNomeNew() {
 
-        return nomeField.getText().trim();
+        return nameField.getText().trim();
     }
 
     public String getCognomeNew() {
 
-        return cognomeField.getText().trim();
+        return surnameField.getText().trim();
     }
 
     public String getEmailNew() {
@@ -490,24 +485,21 @@ public class NewRegResponsable extends JPanel {
         }
     }
 
-
     //Metodo per generare un codice di verifica casuale
     public static String generateRandomCode() {
 
-        String randomCode = null;
-
         try {
             UUID uuid = UUID.randomUUID();
-            randomCode = uuid.toString().replaceAll("-", "").substring(0, 6); // Estrarre i primi sei caratteri
+            return uuid.toString().replaceAll("-", "").substring(0, 6); // Estrarre i primi sei caratteri
 
         } catch (Exception ex) {
 
             System.out.println("Errore nella generazione del codice");
-            System.out.println(randomCode);
 
         }
 
-        return randomCode;
+        return null;
+
     }
 
 }

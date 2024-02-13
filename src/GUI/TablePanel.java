@@ -42,30 +42,30 @@ public class TablePanel extends JPanel {
                     int selectedRow = tableStrumenti.getSelectedRow();
                     if (selectedRow != -1) {
 
-                        Strumento selectedStrumento = tableModelStrumento.getStrumentoAtRow(selectedRow);
+                        Strumento selectedStrumento = tableModelStrumento.getToolAtRow(selectedRow);
 
-                            codStrumentoAttuale = selectedStrumento.getCodStrumento();
+                        codStrumentoAttuale = selectedStrumento.getCodStrumento();
 
-                            //Con questo metodo passiamo lo strumento selezionato all'oggetto CalendarDialog
-                            newBooking.setStrumSelezCalend(selectedStrumento);
+                        //Con questo metodo passiamo lo strumento selezionato all'oggetto CalendarDialog
+                        newBooking.setStrumSelezCalend(selectedStrumento);
 
-                            //Passiamo lo Strumento alla classe BookingFrame quando l'utente prenota uno strumento
-                            if(bookingFrame != null) {
+                        //Passiamo lo Strumento alla classe BookingFrame quando l'utente prenota uno strumento
+                        if(bookingFrame != null) {
 
-                                bookingFrame.setStrumentoAttuale(selectedStrumento);
+                            bookingFrame.setStrumentoAttuale(selectedStrumento);
 
-                            }
+                        }
 
-                            newBooking.setCodStrumentoBookingFrame(codStrumentoAttuale.toString());
-                            newBooking.bookingButtonAvailability();
-                            newBooking.bookingButtonCalendar();
-                            newBooking.setRiepilogoButton();
+                        newBooking.setCodStrumentoBookingFrame(codStrumentoAttuale.toString());
+                        newBooking.bookingButtonAvailability();
+                        newBooking.bookingButtonCalendar();
+                        newBooking.setSummaryButton();
 
                     } else {
 
                         newBooking.removeBookingButton();
                         newBooking.removeCalendarButton();
-                        newBooking.removeRiepilogoButton();
+                        newBooking.removeSummaryButton();
 
                     }
 
@@ -104,9 +104,9 @@ public class TablePanel extends JPanel {
                         //Prendiamo la prenotazione della riga tramite il metodo di tableModelMiePrenotazioni
                         Prenotazione miaPrenotazSelez = tableModelMiePrenotazioni.getPrenotazioneAtRow(selectedRow);
 
-                            //Chiamiamo il metodo dell'interfaccia e allo stesso tempo definiamo il valore della variabile
-                            //presente in MyBooking così da inviare a quest'ultima le informazioni sulla prenotazione selezionata
-                            prenotazioneSelectionListener.prenotazioneSelected(miaPrenotazSelez);
+                        //Chiamiamo il metodo dell'interfaccia e allo stesso tempo definiamo il valore della variabile
+                        //presente in MyBooking così da inviare a quest'ultima le informazioni sulla prenotazione selezionata
+                        prenotazioneSelectionListener.prenotazioneSelected(miaPrenotazSelez);
 
                     }
 
@@ -151,7 +151,7 @@ public class TablePanel extends JPanel {
 
     }
 
-    public void setDataMiePrenotazioni(List<Prenotazione> listaPrenotazioni) {
+    public void setDataMyBooking(List<Prenotazione> listaPrenotazioni) {
 
         tableModelMiePrenotazioni.setData(listaPrenotazioni);
         tableModelMiePrenotazioni.fireTableDataChanged();

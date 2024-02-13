@@ -9,7 +9,7 @@ import java.sql.*;
 
 public class PostazioneDAO {
 
-    private final DB_Connection connessioneDB;
+    private final DB_Connection DBConnection;
     Controller currController;
 
 
@@ -17,37 +17,37 @@ public class PostazioneDAO {
 
         currController = controller;
 
-        connessioneDB = DB_Connection.getConnessione();
+        DBConnection = DB_Connection.getConnessione();
 
     }
 
-    public Postazione recuperoPostazione(String codPostazione_fk) {
-
-        Postazione postazione = null;
-        String codPostazione = null;
+    public Postazione workstationRecovery(String codPostazione_fk) {
 
         try {
 
             String query = "SELECT * FROM postazione WHERE codpostazione = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setString(1, codPostazione_fk);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
 
-                codPostazione = resultSet.getString("codpostazione");
-                postazione = new Postazione(codPostazione, null, null);
+                String stationsCode = resultSet.getString("codpostazione");
+                int seatNumbers = resultSet.getInt("num_posti");
+                String laboratoryCodeFk = resultSet.getString("codl_fk");
+
+                return new Postazione(stationsCode, seatNumbers, currController.labRecoveryWithCodeC(laboratoryCodeFk));
 
             }
 
         } catch (SQLException e) {
 
-            System.out.println("Errore nella ricerca della postazione");
+            System.out.println("Error while searching for the workstation");
             e.printStackTrace();
 
         }
 
-        return  postazione;
+        return  null;
 
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class StrumentoDAO {
 
-    private DB_Connection connessioneDB;
+    private DB_Connection DBConnection;
     Controller currController;
 
 
@@ -19,13 +19,13 @@ public class StrumentoDAO {
 
         currController = controller;
 
-        connessioneDB = DB_Connection.getConnessione();
+        DBConnection = DB_Connection.getConnessione();
 
     }
 
     //Metodo per recuperare gli strumenti in base al nome della sede
 
-    public List<Strumento> recuperoStrumenti (String nomeSede, String descrizioneStrumento) {
+    public List<Strumento> toolsRecovery (String nomeSede, String descrizioneStrumento) {
 
         List<Strumento> strumenti = new ArrayList<>();
 
@@ -39,7 +39,7 @@ public class StrumentoDAO {
             try {
 
                 String query = "SELECT * FROM strumento JOIN sede ON cods = codsede_fk WHERE descrizione ILIKE ? AND codsede_fk = ?";
-                PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+                PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
                 preparedStatement.setString(1, '%' + descrizioneStrumento + '%');
                 preparedStatement.setInt(2, sedeDAO.codificaSedeDAO(nomeSede));
                 ResultSet resultSet = preparedStatement.executeQuery();
@@ -56,7 +56,7 @@ public class StrumentoDAO {
                     //Recupero della Sede tramite l'attributo codsede_fk dello strumento
                     //Recupero allo stesso modo anche la postazione tramite metodi delle proprie classi DAO
                     Sede sede = sedeDAO.recuperoSede(codSede_fk);
-                    Postazione postazione = postazioneDAO.recuperoPostazione(codPostazione_fk);
+                    Postazione postazione = postazioneDAO.workstationRecovery(codPostazione_fk);
 
                     // Creazione di un oggetto Strumento e aggiunta alla lista
                     Strumento strumento = new Strumento(codStrumento, caratteristiche_tecniche, descrizione, tempoMaxUso, postazione, sede);
@@ -81,7 +81,7 @@ public class StrumentoDAO {
             try {
 
                 String query = "SELECT * FROM strumento WHERE codsede_fk = ?";
-                PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+                PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
                 preparedStatement.setInt(1, sedeDAO.codificaSedeDAO(nomeSede));
                 ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -97,7 +97,7 @@ public class StrumentoDAO {
                     //Recupero della Sede tramite l'attributo codsede_fk dello strumento
                     //Recupero allo stesso modo anche la postazione tramite metodi delle proprie classi DAO
                     Sede sede = sedeDAO.recuperoSede(codSede_fk);
-                    Postazione postazione = postazioneDAO.recuperoPostazione(codPostazione_fk);
+                    Postazione postazione = postazioneDAO.workstationRecovery(codPostazione_fk);
 
                     // Creazione di un oggetto Strumento e aggiunta alla lista
                     Strumento strumento = new Strumento(codStrumento, caratteristiche_tecniche, descrizione, tempoMaxUso, postazione, sede);
@@ -121,7 +121,7 @@ public class StrumentoDAO {
             try {
 
                 String query = "SELECT * FROM strumento WHERE descrizione ILIKE ?";
-                PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+                PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
                 preparedStatement.setString(1, '%' + descrizioneStrumento + '%');
                 ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -137,7 +137,7 @@ public class StrumentoDAO {
                     //Recupero della Sede tramite l'attributo codsede_fk dello strumento
                     //Recupero allo stesso modo anche la postazione tramite metodi delle proprie classi DAO
                     Sede sede = sedeDAO.recuperoSede(codSede_fk);
-                    Postazione postazione = postazioneDAO.recuperoPostazione(codPostazione_fk);
+                    Postazione postazione = postazioneDAO.workstationRecovery(codPostazione_fk);
 
                     // Creazione di un oggetto Strumento e aggiunta alla lista
                     Strumento strumento = new Strumento(codStrumento, caratteristiche_tecniche, descrizione, tempoMaxUso, postazione, sede);
@@ -160,7 +160,7 @@ public class StrumentoDAO {
 
     //Metodo per recuperare tutti gli strumenti
 
-    public List<Strumento> recuperoTuttiStrumenti () {
+    public List<Strumento> allToolsRecoveryDAO () {
 
         List<Strumento> allStruments = new ArrayList<>();
         SedeDAO sedeDAO = new SedeDAO(currController);
@@ -169,7 +169,7 @@ public class StrumentoDAO {
         try {
 
             String query = "SELECT * FROM strumento";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -184,7 +184,7 @@ public class StrumentoDAO {
                 //Recupero della Sede tramite l'attributo codsede_fk dello strumento
                 //Recupero allo stesso modo anche la postazione tramite metodi delle proprie classi DAO
                 Sede sede = sedeDAO.recuperoSede(codSede_fk);
-                Postazione postazione = postazioneDAO.recuperoPostazione(codPostazione_fk);
+                Postazione postazione = postazioneDAO.workstationRecovery(codPostazione_fk);
 
                 // Creazione di un oggetto Strumento e aggiunta alla lista
                 Strumento strumento = new Strumento(codStrumento, caratteristiche_tecniche, descrizione, tempoMaxUso, postazione, sede);
@@ -203,7 +203,7 @@ public class StrumentoDAO {
 
     }
 
-    public Strumento recuperoStrumento(Integer codStrumento) {
+    public Strumento toolRecovery(Integer codStrumento) {
 
         Strumento strumentoTrovato = null;
         SedeDAO sedeDAO = new SedeDAO(currController);
@@ -212,7 +212,7 @@ public class StrumentoDAO {
         try {
 
             String query = "SELECT * FROM strumento WHERE codstrumento = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setInt(1, codStrumento);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -228,7 +228,7 @@ public class StrumentoDAO {
                 //Recupero della Sede tramite l'attributo codsede_fk dello strumento
                 //Recupero allo stesso modo anche la postazione tramite metodi delle proprie classi DAO
                 Sede sede = sedeDAO.recuperoSede(codSede_fk);
-                Postazione postazione = postazioneDAO.recuperoPostazione(codPostazione_fk);
+                Postazione postazione = postazioneDAO.workstationRecovery(codPostazione_fk);
 
                 strumentoTrovato = new Strumento(codStrumentoRec, caratteristicheTecnicheRec, descrizioneRec,
                         tempoMaxUsoRec, postazione, sede);
@@ -247,7 +247,7 @@ public class StrumentoDAO {
 
     }
 
-    public String riepilogoStrumentoDAO(int codStrumento, int mese, int anno ) {
+    public String toolSummaryDAO(int codStrumento, int mese, int anno ) {
 
         String risultato = null;
         int codStrumentoRec;
@@ -257,7 +257,7 @@ public class StrumentoDAO {
         try {
 
             String query = "SELECT * FROM riepilogo_strumenti(?, ?, ?)";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setInt(1, codStrumento);
             preparedStatement.setInt(2, mese);
             preparedStatement.setInt(3, anno);
@@ -298,7 +298,7 @@ public class StrumentoDAO {
 
     }
 
-    public String riepilogoStrumentoNoMeseDAO(int codStrumento, int anno ) {
+    public String noMonthToolSummaryDAO(int codStrumento, int anno ) {
 
         String risultato = null;
         int codStrumentoRec;
@@ -307,7 +307,7 @@ public class StrumentoDAO {
         try {
 
             String query = "SELECT * FROM riepilogo_strumenti_noMese(?, ?)";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setInt(1, codStrumento);
             preparedStatement.setInt(2, anno);
             ResultSet resultSet = preparedStatement.executeQuery();

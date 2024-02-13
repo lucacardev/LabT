@@ -13,14 +13,16 @@ import java.awt.image.BufferedImage;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 public class RightLoginAccess extends JPanel {
 
-    private final JTextField campoEmail;
-    private final JPasswordField campoPassword;
+    private final JTextField emailField;
+    private final JPasswordField passwordField;
     private BufferedImage rightLoginBackground;
     Controller myController;
-    private Utente utenteCorrente;
+    private Utente currentUser;
 
     public RightLoginAccess(Controller controller) {
 
@@ -47,36 +49,36 @@ public class RightLoginAccess extends JPanel {
         }
 
         //Testo email
-        JLabel emailText = new JLabel("Email: ");
-        Font fontEmailText = emailText.getFont();
-        int sizeEmailText = fontEmailText.getSize() + 3;
-        Font increaseEmailText = fontEmailText.deriveFont((float) sizeEmailText);
-        emailText.setFont(increaseEmailText);
-        emailText.setForeground(Color.BLACK);
+        JLabel textMail = new JLabel("Email: ");
+        Font fonttextMail = textMail.getFont();
+        int sizetextMail = fonttextMail.getSize() + 3;
+        Font increasetextMail = fonttextMail.deriveFont((float) sizetextMail);
+        textMail.setFont(increasetextMail);
+        textMail.setForeground(Color.BLACK);
 
-        add(emailText);
+        add(textMail);
 
         //Campo email
-        campoEmail = new TextFieldBorderColor(15);
+        emailField = new TextFieldBorderColor(15);
 
         //Risalto colore dei bordi del campo email quando cliccato
-        TextFieldBorderColor.changeTextFieldBorderColor(campoEmail);
+        TextFieldBorderColor.changeTextFieldBorderColor(emailField);
 
         //Testo password
         JLabel pwdText = new JLabel("Password: ");
-        pwdText.setFont(increaseEmailText);
+        pwdText.setFont(increasetextMail);
         pwdText.setForeground(Color.BLACK);
 
         //Posizionamento testo mail
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.LINE_START;
-        add(emailText, gbc);
+        add(textMail, gbc);
 
         //Posizionamento campo mail
         gbc.gridx = 0;
         gbc.gridy = 2;
-        add(campoEmail, gbc);
+        add(emailField, gbc);
 
         //Posizionamento testo password
         gbc.gridx = 0;
@@ -84,25 +86,25 @@ public class RightLoginAccess extends JPanel {
         add(pwdText, gbc);
 
         //Posizionamento campo password
-        campoPassword = new JPasswordField(15);
-        campoPassword.setBorder(new LineBorder(Color.BLACK, 1));
-        campoPassword.setEchoChar('•');
+        passwordField = new JPasswordField(15);
+        passwordField.setBorder(new LineBorder(Color.BLACK, 1));
+        passwordField.setEchoChar('•');
         gbc.gridx = 0;
         gbc.gridy = 4;
-        add(campoPassword, gbc);
+        add(passwordField, gbc);
 
         //Risalto colore dei bordi del campo password quando cliccato
-        campoPassword.addFocusListener(new FocusListener() {
+        passwordField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
 
-                campoPassword.setBorder(new LineBorder(new Color(35, 171, 144), 2));
+                passwordField.setBorder(new LineBorder(new Color(35, 171, 144), 2));
 
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                campoPassword.setBorder(new LineBorder(Color.BLACK));
+                passwordField.setBorder(new LineBorder(Color.BLACK));
             }
 
         });
@@ -121,6 +123,21 @@ public class RightLoginAccess extends JPanel {
 
         }
 
+        //Modo per cambiare il focus del cursore da emailField a passwordField
+        Set<AWTKeyStroke> forwardKeys;
+        forwardKeys = new HashSet<>(emailField.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+        forwardKeys.remove(KeyStroke.getKeyStroke("TAB"));
+        emailField.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
+
+        emailField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_TAB) {
+                    passwordField.requestFocus();
+                    evt.consume(); // Consuma l'evento Tab per evitare il comportamento predefinito
+                }
+            }
+        });
+
         //Nascondere il layout del pulsante (occhio password)
         pwdEye.setContentAreaFilled(false);
         pwdEye.setBorderPainted(false);
@@ -137,12 +154,12 @@ public class RightLoginAccess extends JPanel {
         add(pwdEye, pwdEyeGbc);
 
         //Posizionamento password dimenticata
-        LinkMouseOn passwordDimenticata = new LinkMouseOn("Hai dimenticato la password?");
+        LinkMouseOn forgottenPassword = new LinkMouseOn("Hai dimenticato la password?");
         gbc.gridx = 0;
         gbc.gridy = 6;
 
         //Azione se il testo password dimenticata viene cliccato
-        passwordDimenticata.addMouseListener(new MouseAdapter() {
+        forgottenPassword.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
@@ -161,9 +178,9 @@ public class RightLoginAccess extends JPanel {
             }
         });
 
-        passwordDimenticata.ActiveLinkMouseOn(new Color(35, 171, 144), Color.black);
+        forgottenPassword.ActiveLinkMouseOn(new Color(35, 171, 144), Color.black);
 
-        add(passwordDimenticata, gbc);
+        add(forgottenPassword, gbc);
 
         //Inserimento bottone di accesso
         BtnLayout loginButton = new BtnLayout("Accedi");
@@ -174,13 +191,13 @@ public class RightLoginAccess extends JPanel {
         add(loginButton, gbc);
 
         //Posizionamento registrazione nuovo utente
-        LinkMouseOn regUtente = new LinkMouseOn("Sei Nuovo? Registrati");
+        LinkMouseOn userReg = new LinkMouseOn("Sei Nuovo? Registrati");
         gbc.gridx = 0;
         gbc.gridy = 7;
-        add(regUtente, gbc);
+        add(userReg, gbc);
 
         //Indirizzamento pagina per la registrazione
-        regUtente.addMouseListener(new MouseAdapter() {
+        userReg.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
@@ -193,16 +210,16 @@ public class RightLoginAccess extends JPanel {
         });
 
         //Cambio colore al passaggio del mouse
-        regUtente.ActiveLinkMouseOn(new Color(35, 171, 144), Color.BLACK);
+        userReg.ActiveLinkMouseOn(new Color(35, 171, 144), Color.BLACK);
 
         //Posizionamento accesso responsabile
-        LinkMouseOn accResponsabile = new LinkMouseOn("Sei un responsabile? Clicca qui");
+        LinkMouseOn managerLogin = new LinkMouseOn("Sei un responsabile? Clicca qui");
         gbc.gridx = 0;
         gbc.gridy = 9;
-        add(accResponsabile, gbc);
+        add(managerLogin, gbc);
 
         //Indirizzamento pagina per la registrazione
-        accResponsabile.addMouseListener(new MouseAdapter() {
+        managerLogin.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
@@ -215,7 +232,7 @@ public class RightLoginAccess extends JPanel {
         });
 
         //Cambio colore al passaggio del mouse
-        accResponsabile.ActiveLinkMouseOn(new Color(35, 171, 144), Color.black);
+        managerLogin.ActiveLinkMouseOn(new Color(35, 171, 144), Color.black);
 
 
         //Verifica credenziali quando il pulsante di accesso viene premuto
@@ -224,8 +241,8 @@ public class RightLoginAccess extends JPanel {
 
             int msgError;
 
-            msgError = verificaCredenziali();
-            mostraErrore(msgError);
+            msgError = credentialsVerification();
+            showError(msgError);
 
         });
 
@@ -243,24 +260,24 @@ public class RightLoginAccess extends JPanel {
     }
 
     //Visualizzazione messaggio di errore
-    public void mostraErrore(int messaggioErrore) {
+    public void showError(int errorMassage) {
 
-        if(messaggioErrore == 1) {
+        if(errorMassage == 1) {
 
-        JOptionPane.showMessageDialog(campoEmail, "I campi email e " +
+        JOptionPane.showMessageDialog(emailField, "I campi email e " +
                 "password non possono essere vuoti");
 
         }
 
-        else if (messaggioErrore == 2) {
+        else if (errorMassage == 2) {
 
-        JOptionPane.showMessageDialog(campoEmail, "Credenziali errate" +
+        JOptionPane.showMessageDialog(emailField, "Credenziali errate" +
                 " riprova o registrati");
 
     }
-        else if(messaggioErrore == 3) {
+        else if(errorMassage == 3) {
 
-            HomePage homePage = new HomePage(myController, utenteCorrente);
+            HomePage homePage = new HomePage(myController, currentUser);
 
             MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(RightLoginAccess.this);
 
@@ -273,13 +290,13 @@ public class RightLoginAccess extends JPanel {
     //Metodo per visualizzare e nascondere la password
     private void viewPassword() {
 
-        if (campoPassword.getEchoChar() == '•') {
+        if (passwordField.getEchoChar() == '•') {
 
-            campoPassword.setEchoChar((char) 0);
+            passwordField.setEchoChar((char) 0);
 
         } else {
 
-            campoPassword.setEchoChar('•');
+            passwordField.setEchoChar('•');
 
         }
 
@@ -287,38 +304,38 @@ public class RightLoginAccess extends JPanel {
 
     public String getLoginEmail() {
 
-        return this.campoEmail.getText().trim();
+        return this.emailField.getText().trim();
 
     }
 
     public char[] getLoginPassword() {
 
-        return this.campoPassword.getPassword();
+        return this.passwordField.getPassword();
 
     }
 
 
     //Verifica delle credenziali quando il bottone viene premuto
-    public int verificaCredenziali() {
+    public int credentialsVerification() {
 
-        final boolean[] utenteTrovato = new boolean[1];
+        final boolean[] userFound = new boolean[1];
 
-        if (this.campoEmail.getText().isEmpty() || this.campoPassword.getPassword().length == 0) {
+        if (this.emailField.getText().isEmpty() || this.passwordField.getPassword().length == 0) {
 
             return 1;
 
-        } else if (!this.campoEmail.getText().isEmpty() && this.campoPassword.getPassword().length > 0) {
+        } else if (!this.emailField.getText().isEmpty() && this.passwordField.getPassword().length > 0) {
 
-            utenteCorrente = new Utente(null, getLoginEmail(), getLoginPassword());
+            currentUser = new Utente(null, getLoginEmail(), getLoginPassword());
 
-            String usernameRecuperato = myController.usernameRecovery(utenteCorrente);
+            String usernameRecovered = myController.usernameRecovery(currentUser);
 
-            utenteCorrente = new Utente(usernameRecuperato, getLoginEmail(), getLoginPassword());
+            currentUser = new Utente(usernameRecovered, getLoginEmail(), getLoginPassword());
 
 
-            utenteTrovato[0] = myController.verificaUtente(utenteCorrente);
+            userFound[0] = myController.userVerification(currentUser);
 
-            if (utenteTrovato[0]) {
+            if (userFound[0]) {
 
                 return 3;
 

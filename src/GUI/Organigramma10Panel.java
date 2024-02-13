@@ -18,16 +18,16 @@ public class Organigramma10Panel extends JPanel {
 
     Controller myController;
     Responsabile responsabile;
-    private final List<Tecnico> listaTecnici;
+    private final List<Tecnico> tecList;
     private BufferedImage backgroundImage;
     private final Team team;
     private ModOrganigramma modOrganigramma;
 
-    public Organigramma10Panel (Controller controller,Responsabile responsabileLoggato,List<Tecnico> tecnici, Team t) {
+    public Organigramma10Panel (Controller controller,Responsabile loggedInManager,List<Tecnico> tecnici, Team t) {
 
         myController = controller;
-        responsabile = responsabileLoggato;
-        listaTecnici = tecnici;
+        responsabile = loggedInManager;
+        tecList = tecnici;
         this.team = t;
 
         JLabel teamLabel = new JLabel("Organigramma del " + team.getNome());
@@ -49,12 +49,12 @@ public class Organigramma10Panel extends JPanel {
 
 
         //Trova il leader nella lista e posizionalo come primo elemento
-        Tecnico leader = trovaLeader(listaTecnici, t);
+        Tecnico leader = leaderSearch(tecList, t);
 
         if (leader != null) {
 
-            listaTecnici.remove(leader);
-            listaTecnici.add(0, leader); // Inserisci il leader come primo elemento
+            tecList.remove(leader);
+            tecList.add(0, leader); // Inserisci il leader come primo elemento
 
         }
 
@@ -65,7 +65,7 @@ public class Organigramma10Panel extends JPanel {
             public void mouseClicked(MouseEvent e) {
 
                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(Organigramma10Panel.this);
-                modOrganigramma = new ModOrganigramma(mainWindow, myController, responsabile, listaTecnici, team);
+                modOrganigramma = new ModOrganigramma(mainWindow, myController, responsabile, tecList, team);
                 modOrganigramma.setVisible(true);
 
             }
@@ -107,9 +107,9 @@ public class Organigramma10Panel extends JPanel {
 
     }
 
-    private Tecnico trovaLeader(List<Tecnico> listaTecnici, Team team) {
+    private Tecnico leaderSearch(List<Tecnico> tecList, Team team) {
 
-        for (Tecnico tecnico : listaTecnici) {
+        for (Tecnico tecnico : tecList) {
 
             if (tecnico.getMatricola().equals(team.getMatricolaL())) {
 
@@ -156,16 +156,16 @@ public class Organigramma10Panel extends JPanel {
         int responsabile7X = getWidth() / 2 + 300;
 
         // Disegna i nodi rettangolari e mostra i nomi dei tecnici
-        disegnaNodo(g2d, leaderX, leaderY, listaTecnici.get(0));
-        disegnaNodo(g2d, coordinatoreX1, coordinatoreY, listaTecnici.get(1));
-        disegnaNodo(g2d, coordinatoreX2, coordinatoreY, listaTecnici.get(2));
-        disegnaNodo(g2d, responsabile1X, responsabileY1, listaTecnici.get(3));
-        disegnaNodo(g2d, responsabile2X, responsabileY1, listaTecnici.get(4));
-        disegnaNodo(g2d, responsabile3X, responsabileY1, listaTecnici.get(5));
-        disegnaNodo(g2d, responsabile4X, responsabileY1, listaTecnici.get(6));
-        disegnaNodo(g2d, responsabile5X, responsabileY2, listaTecnici.get(7));
-        disegnaNodo(g2d, responsabile6X, responsabileY2, listaTecnici.get(8));
-        disegnaNodo(g2d, responsabile7X, responsabileY2, listaTecnici.get(9));
+        drawsNode(g2d, leaderX, leaderY, tecList.get(0));
+        drawsNode(g2d, coordinatoreX1, coordinatoreY, tecList.get(1));
+        drawsNode(g2d, coordinatoreX2, coordinatoreY, tecList.get(2));
+        drawsNode(g2d, responsabile1X, responsabileY1, tecList.get(3));
+        drawsNode(g2d, responsabile2X, responsabileY1, tecList.get(4));
+        drawsNode(g2d, responsabile3X, responsabileY1, tecList.get(5));
+        drawsNode(g2d, responsabile4X, responsabileY1, tecList.get(6));
+        drawsNode(g2d, responsabile5X, responsabileY2, tecList.get(7));
+        drawsNode(g2d, responsabile6X, responsabileY2, tecList.get(8));
+        drawsNode(g2d, responsabile7X, responsabileY2, tecList.get(9));
 
         // Disegna i collegamenti tra i nodi
         disegnaCollegamento(g2d, leaderX, leaderY + 20, coordinatoreX1, coordinatoreY - 20);
@@ -181,7 +181,7 @@ public class Organigramma10Panel extends JPanel {
     }
 
 
-    private void disegnaNodo(Graphics2D g2d, int x, int y, Tecnico tecnico) {
+    private void drawsNode(Graphics2D g2d, int x, int y, Tecnico tecnico) {
 
         g2d.setColor(Color.WHITE);
         g2d.fillRect(x - 50, y - 20, 100, 40);
@@ -191,10 +191,10 @@ public class Organigramma10Panel extends JPanel {
         g2d.drawRect(x - 50, y - 20, 100, 40);
 
         FontMetrics fm = g2d.getFontMetrics();
-        String testoTecnico = tecnico.getNome() + " " + tecnico.getCognome();
+        String tecText = tecnico.getNome() + " " + tecnico.getCognome();
         String matricola = tecnico.getMatricola();
 
-        int larghezzaTesto = fm.stringWidth(testoTecnico);
+        int larghezzaTesto = fm.stringWidth(tecText);
         int larghezzaMatricola = fm.stringWidth(matricola);
 
         // Calcola la posizione per centrare il testo nel rettangolo
@@ -206,7 +206,7 @@ public class Organigramma10Panel extends JPanel {
         g2d.setColor(Color.black);
 
         // Disegna il testo del tecnico
-        g2d.drawString(testoTecnico, xTesto, y);
+        g2d.drawString(tecText, xTesto, y);
 
         // Disegna la matricola sotto il testo
         g2d.drawString(matricola, xMatricola, yMatricola);

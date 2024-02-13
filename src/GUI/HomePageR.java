@@ -20,12 +20,12 @@ public class HomePageR extends JPanel {
     private static BufferedImage leftHomePageBackground;
     private static BufferedImage Rightbackground;
     Controller myController;
-    Responsabile ResponsabileLoggato;
+    Responsabile loggedInManager;
 
-    public HomePageR(Controller controller, Responsabile responsabileCorrente) {
+    public HomePageR(Controller controller, Responsabile currentManager) {
 
         myController = controller;
-        ResponsabileLoggato = responsabileCorrente;
+        loggedInManager = currentManager;
 
         setLayout(new GridLayout(0,2));
 
@@ -89,15 +89,15 @@ public class HomePageR extends JPanel {
         GridBagConstraints leftGbc = new GridBagConstraints();
         leftGbc.insets = new Insets(5,5,5,5);
 
-        String[] informazioni = ResponsabileDAO.nomecognomeRecovery(responsabileCorrente.getMatricola(),responsabileCorrente.getPw());
+        String[] informations = ResponsabileDAO.nameSurnameRecovery(currentManager.getMatricola(),currentManager.getPw());
 
-        if (informazioni[0] != null && informazioni[1] != null) {
-            String nome = informazioni[0];
-            String cognome = informazioni[1];
+        if (informations[0] != null && informations[1] != null) {
+            String name = informations[0];
+            String surname = informations[1];
 
-            // Testo di benvenuto con nome e cognome
+            // Testo di benvenuto con name e surname
             IncreaseFont welcomeText = new IncreaseFont("Benvenuto/a \n");
-            IncreaseFont nc = new IncreaseFont(nome + " " + cognome);
+            IncreaseFont nc = new IncreaseFont(name + " " + surname);
             Font welcomeFont = welcomeText.getFont();
             int fontSize = welcomeFont.getSize() + 20;
             Font increaseFont = welcomeFont.deriveFont((float)fontSize);
@@ -112,7 +112,7 @@ public class HomePageR extends JPanel {
             leftGbc.insets = new Insets(20,0,0,0);
             leftHomePage.add(welcomeText, leftGbc);
 
-            //Aggiunta del nome e cognome del responsabile
+            //Aggiunta del name e surname del responsabile
             GridBagConstraints ncGbc = new GridBagConstraints();
             ncGbc.gridx = 0;
             ncGbc.gridy = 1;
@@ -182,7 +182,7 @@ public class HomePageR extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                MyTeam myteampage = new MyTeam(myController, ResponsabileLoggato);
+                MyTeam myteampage = new MyTeam(myController, loggedInManager);
 
                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(HomePageR.this);
 

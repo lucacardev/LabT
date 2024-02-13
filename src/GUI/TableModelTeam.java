@@ -8,11 +8,11 @@ import java.util.List;
 public class TableModelTeam extends AbstractTableModel {
 
     private String columnsName = "Tecnici da sostituire: ";
-    private final List<Tecnico> listaTecniciTeam;
+    private final List<Tecnico> teamTecList;
 
-    public TableModelTeam(List<Tecnico> tecniciTeam) {
+    public TableModelTeam(List<Tecnico> techniciansTeams) {
 
-        listaTecniciTeam = tecniciTeam;
+        teamTecList = techniciansTeams;
 
     }
 
@@ -26,9 +26,9 @@ public class TableModelTeam extends AbstractTableModel {
     @Override
     public int getRowCount() {
 
-        if(listaTecniciTeam != null) {
+        if(teamTecList != null) {
 
-            return listaTecniciTeam.size();
+            return teamTecList.size();
 
         } else {
 
@@ -46,9 +46,9 @@ public class TableModelTeam extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
 
-        if (listaTecniciTeam != null) {
+        if (teamTecList != null) {
 
-            Tecnico tecnico = listaTecniciTeam.get(rowIndex);
+            Tecnico tecnico = teamTecList.get(rowIndex);
 
             if (columnIndex == 0) {
 
@@ -66,11 +66,11 @@ public class TableModelTeam extends AbstractTableModel {
 
     }
 
-    public Tecnico getTecnicoAtRow(int rowIndex) {
+    public Tecnico getTechnicianAtRow(int rowIndex) {
 
-        if (listaTecniciTeam != null && rowIndex >= 0 && rowIndex < listaTecniciTeam.size()) {
+        if (teamTecList != null && rowIndex >= 0 && rowIndex < teamTecList.size()) {
 
-            return listaTecniciTeam.get(rowIndex);
+            return teamTecList.get(rowIndex);
 
         }
 
@@ -78,7 +78,7 @@ public class TableModelTeam extends AbstractTableModel {
 
     }
 
-    void modificaNomeColonne() {
+    void editColumnsName() {
 
         columnsName = "Possibili sostituti: ";
 

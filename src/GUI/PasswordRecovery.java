@@ -23,7 +23,7 @@ public class PasswordRecovery extends JPanel{
     private BufferedImage newPasswordBackground;
     private final JPasswordField newPassword;
     private final JPasswordField repeatNewPassword;
-    private String emailUtente;
+    private String userEmail;
     Controller myController;
 
     public PasswordRecovery(Controller controller) {
@@ -91,16 +91,16 @@ public class PasswordRecovery extends JPanel{
 
         //Inserimento testo per recupero credenziali
 
-        IncreaseFont emailTextRecovery = new IncreaseFont("Inserisci l'email per recuperare la password:");
+        IncreaseFont textMailRecovery = new IncreaseFont("Inserisci l'email per recuperare la password:");
         gbcRight.gridx = 0;
         gbcRight.gridy = 0;
         gbcRight.gridwidth = 2; //occupa due colonne
         gbcRight.weighty = 0;
         gbcRight.weightx = 0;
-        emailTextRecovery.increaseFont(emailTextRecovery, 1);
+        textMailRecovery.increaseFont(textMailRecovery, 1);
         gbcRight.anchor = GridBagConstraints.CENTER;
 
-        rightPasswordRecovery.add(emailTextRecovery, gbcRight);
+        rightPasswordRecovery.add(textMailRecovery, gbcRight);
 
         //Inserimento campo email per recupero credenziali
 
@@ -269,22 +269,22 @@ public class PasswordRecovery extends JPanel{
                     if (passwordComparison()) {
 
                         //Errore nel caso si voglia inserire una nuova password già usata in passato
-                        if (myController.recuperoPasswordUtenteC(emailUtente).equals(getNewPassword())) {
+                        if (myController.userPasswordRecoveryC(userEmail).equals(getNewPassword())) {
 
                             JOptionPane.showMessageDialog(null, "Non puoi inserire una password che già usavi in passato");
 
                         } else {
 
-                            if (myController.aggiornaPasswordUtenteC(emailUtente, getNewPassword())) {
+                            if (myController.userPasswordUpdateC(userEmail, getNewPassword())) {
                                 JOptionPane.showMessageDialog(null, "Password aggiornata correttamente!");
 
-                                PaginaLogin paginaLogin = new PaginaLogin(myController);
+                                PaginaLogin loginPage = new PaginaLogin(myController);
 
                                 //Ritorna alla pagina di login dopo aver confermato la nuova password
 
                                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(PasswordRecovery.this);
 
-                                mainWindow.addCardPanel(paginaLogin, "login");
+                                mainWindow.addCardPanel(loginPage, "login");
 
 
                             }
@@ -301,24 +301,23 @@ public class PasswordRecovery extends JPanel{
             }
         });
 
-
         //Bottone recupera quando viene premuto
 
         sendButtonCode.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                boolean mailPresente;
+                boolean mailFound;
                 String verifiedCode;
                 String randomCode2;
 
-                emailUtente = getEmailRecovery();
+                userEmail = getEmailRecovery();
 
 
-                mailPresente = myController.verificaMailUtente(getEmailRecovery());
+                mailFound = myController.userMailVerifyC(getEmailRecovery());
 
 
-                if(mailPresente) {
+                if(mailFound) {
 
                     //Metodo generazione codice casuale
 
@@ -373,11 +372,11 @@ public class PasswordRecovery extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                PaginaLogin paginaLogin = new PaginaLogin(myController);
+                PaginaLogin loginPage = new PaginaLogin(myController);
 
                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(PasswordRecovery.this);
 
-                mainWindow.addCardPanel(paginaLogin, "login");
+                mainWindow.addCardPanel(loginPage, "login");
 
             }
         });
@@ -389,7 +388,6 @@ public class PasswordRecovery extends JPanel{
         try {
 
             leftRecoveryBackground = ImageIO.read(new File("src/GUI/icon/mailbackground.png"));
-
 
         } catch (Exception ex) {
 
@@ -435,18 +433,18 @@ public class PasswordRecovery extends JPanel{
     }
 
     private void viewPasswordNew() {
-        if (newPassword.getEchoChar() == '\u2022') {
+        if (newPassword.getEchoChar() == '•') {
             newPassword.setEchoChar((char) 0);
         } else {
-            newPassword.setEchoChar('\u2022');
+            newPassword.setEchoChar('•');
         }
     }
 
     private void viewPasswordRepeat() {
-        if (repeatNewPassword.getEchoChar() == '\u2022') {
+        if (repeatNewPassword.getEchoChar() == '•') {
             repeatNewPassword.setEchoChar((char) 0);
         } else {
-            repeatNewPassword.setEchoChar('\u2022');
+            repeatNewPassword.setEchoChar('•');
         }
     }
 

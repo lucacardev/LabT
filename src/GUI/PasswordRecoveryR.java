@@ -21,7 +21,7 @@ public class PasswordRecoveryR extends JPanel {
     private BufferedImage backgroundNewPass;
     private final JPasswordField newPassword;
     private final JPasswordField repeatNewPassword;
-    private String emailResponsabile;
+    private String managerEmail;
 
     Controller myController;
 
@@ -91,16 +91,16 @@ public class PasswordRecoveryR extends JPanel {
 
         //Inserimento testo per recupero credenziali
 
-        IncreaseFont emailTextRecovery = new IncreaseFont("Inserisci l'email per recuperare la password:");
+        IncreaseFont textMailRecovery = new IncreaseFont("Inserisci l'email per recuperare la password:");
         gbcRight.gridx = 0;
         gbcRight.gridy = 0;
         gbcRight.gridwidth = 2; //occupa due colonne
         gbcRight.weighty = 0;
         gbcRight.weightx = 0;
-        emailTextRecovery.increaseFont(emailTextRecovery, 1);
+        textMailRecovery.increaseFont(textMailRecovery, 1);
         gbcRight.anchor = GridBagConstraints.CENTER;
 
-        rightPasswordRecovery.add(emailTextRecovery, gbcRight);
+        rightPasswordRecovery.add(textMailRecovery, gbcRight);
 
         //Inserimento campo email per recupero credenziali
 
@@ -254,12 +254,16 @@ public class PasswordRecoveryR extends JPanel {
 
         //Posizionamento occhio per visualizzare password
         JButton pwdEyeR = new JButton();
+        
         try {
+            
             NoScalingIcon noScalingEye = new NoScalingIcon(new ImageIcon("src/GUI/icon/hide.png"));
             pwdEyeR.setIcon(noScalingEye);
 
         } catch (Exception ex) {
+            
             System.out.println("Errore caricamento immagine occhio - pagina RECUPEROPASSWORD ");
+            
         }
 
         //Nascondere il layout del pulsante (occhio password)
@@ -269,10 +273,14 @@ public class PasswordRecoveryR extends JPanel {
 
         //Chiamata al metodo per mostrare/nascondere la password
         pwdEyeR.addActionListener(new ActionListener() {
+            
             @Override
             public void actionPerformed(ActionEvent e) {
+                
                 viewPasswordRepeat();
+                
             }
+            
         });
 
         pwdEyeGbcR.gridx = 1;
@@ -302,22 +310,22 @@ public class PasswordRecoveryR extends JPanel {
                     if (passwordComparison()) {
 
                         //Errore nel caso si voglia inserire una nuova password già usata in passato
-                        if (myController.recuperoPasswordResponsabileC(emailResponsabile).equals(getNewPassword())) {
+                        if (myController.managerPasswordRecoveryC(managerEmail).equals(getNewPassword())) {
 
                             JOptionPane.showMessageDialog(null, "Non puoi inserire una password che già usavi in passato");
 
                         } else {
 
-                            if (myController.aggiornaPasswordResponsabileC(emailResponsabile, getNewPassword())) {
+                            if (myController.managerPasswordUpdateC(managerEmail, getNewPassword())) {
                                 JOptionPane.showMessageDialog(null, "Password aggiornata correttamente!");
 
-                                ResponsibleAccess paginaAccesso = new ResponsibleAccess(myController);
+                                ResponsibleAccess loginPage = new ResponsibleAccess(myController);
 
                                 //Ritorna alla pagina di accesso dopo aver confermato la nuova password
 
                                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(PasswordRecoveryR.this);
 
-                                mainWindow.addCardPanel(paginaAccesso, "accesso");
+                                mainWindow.addCardPanel(loginPage, "accesso");
 
                             }
 
@@ -339,15 +347,15 @@ public class PasswordRecoveryR extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                boolean mailPresente;
+                boolean foundMail;
                 String verifiedCode;
                 String randomCode2;
 
-                emailResponsabile = getEmailRecovery();
+                managerEmail = getEmailRecovery();
 
-                mailPresente = myController.verificaMailResponsabile(getEmailRecovery());
+                foundMail = myController.managerMailCheckDAO(getEmailRecovery());
 
-                if(mailPresente) {
+                if(foundMail) {
 
                     //Metodo generazione codice casuale
 

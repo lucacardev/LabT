@@ -14,7 +14,7 @@ import java.text.ParseException;
 
 
 public class PrenotazioneDAO {
-    private final DB_Connection connessioneDB;
+    private final DB_Connection DBConnection;
     Controller currController;
 
 
@@ -22,7 +22,7 @@ public class PrenotazioneDAO {
 
         currController = controller;
 
-        connessioneDB = DB_Connection.getConnessione();
+        DBConnection = DB_Connection.getConnessione();
 
     }
 
@@ -30,17 +30,17 @@ public class PrenotazioneDAO {
 
     /*Utilizziamo TimeStamp per risolvere il problema d'incoerenza causato dal tipo di dato Date del database che è della librerira
     * java.swl.Date e il tipo di dato utilizzato nel codice appartenente alla libreria java.util.Date*/
-    public boolean newUserBooking(Timestamp dataPrenotazione, Timestamp oraPrenotazione, Timestamp tempoUtilizzo, Utente username, Strumento strumento) {
+    public boolean newUserBooking(Timestamp bookDate, Timestamp bookHours, Timestamp usageTime, Utente username, Strumento strumento) {
 
         String query = "INSERT INTO PRENOTAZIONE (data_prenotaziones, ora_prenotaziones, tempo_utilizzos, username_fk, codstrumento_fk) " +
                 "VALUES (?, ?, ?, ?, ?)";
 
         try {
 
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
-            preparedStatement.setTimestamp(1, dataPrenotazione);
-            preparedStatement.setTimestamp(2, oraPrenotazione);
-            preparedStatement.setTimestamp(3, tempoUtilizzo);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
+            preparedStatement.setTimestamp(1, bookDate);
+            preparedStatement.setTimestamp(2, bookHours);
+            preparedStatement.setTimestamp(3, usageTime);
             preparedStatement.setString(4, username.getUsername());
             preparedStatement.setInt(5, strumento.getCodStrumento());
 
@@ -87,18 +87,17 @@ public class PrenotazioneDAO {
         }
     }
 
-    public List<Prenotazione> recuperoMiePrenotazioni(Utente utenteLoggato) {
+    public List<Prenotazione> myBookingRecoveryDAO(Utente loggedUser) {
 
-        List<Prenotazione> miePrenotazioni = new ArrayList<>();
-        Prenotazione risultatoPrenotazioni = null;
+        List<Prenotazione> myBookings = new ArrayList<>();
 
         UtenteDAO utenteDAO = new UtenteDAO(currController);
         StrumentoDAO strumentoDAO = new StrumentoDAO(currController);
 
         try {
             String query = "SELECT * FROM prenotazione WHERE username_fk = ? ORDER BY data_prenotaziones DESC";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
-            preparedStatement.setString(1,  utenteLoggato.getUsername());
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
+            preparedStatement.setString(1,  loggedUser.getUsername());
             ResultSet resultSet = preparedStatement.executeQuery();
 
             //Se è presente una riga successiva allora continua a ciclare
@@ -106,20 +105,20 @@ public class PrenotazioneDAO {
 
             while (resultSet.next()) {
 
-                int codPrenotazione = resultSet.getInt("codprenotazione");
-                Date dataPrenotazioneS = resultSet.getDate("data_prenotaziones");
-                Time oraPrenotazioneS = resultSet.getTime("ora_prenotaziones");
-                Time tempoUtilizzoS = resultSet.getTime("tempo_utilizzos");
+                int bookingCode = resultSet.getInt("codprenotazione");
+                Date bookDateS = resultSet.getDate("data_prenotaziones");
+                Time bookHoursS = resultSet.getTime("ora_prenotaziones");
+                Time usageTimeS = resultSet.getTime("tempo_utilizzos");
                 String usernameFk = resultSet.getString("username_fk");
-                Integer codStrumntoFk = resultSet.getInt("codstrumento_fk");
+                Integer toolCodeFk = resultSet.getInt("codstrumento_fk");
 
                 //Recupero di Utente e Strumento
-                Utente utente = utenteDAO.recuperoUtente(usernameFk);
-                Strumento strumento = strumentoDAO.recuperoStrumento(codStrumntoFk);
+                Utente user = utenteDAO.recuperoUtente(usernameFk);
+                Strumento tool = strumentoDAO.toolRecovery(toolCodeFk);
 
                 //Creazione di un oggetto prneotazione da aggiungere alla lista
-                 risultatoPrenotazioni = new Prenotazione(codPrenotazione, dataPrenotazioneS, oraPrenotazioneS, tempoUtilizzoS, utente, strumento);
-                 miePrenotazioni.add(risultatoPrenotazioni);
+                 new Prenotazione(bookingCode, bookDateS, bookHoursS, usageTimeS, user, tool);
+                myBookings.add(new Prenotazione(bookingCode, bookDateS, bookHoursS, usageTimeS, user, tool));
 
             }
 
@@ -128,22 +127,19 @@ public class PrenotazioneDAO {
             e.printStackTrace();
         }
 
-        return miePrenotazioni;
+        return myBookings;
 
     }
 
     //Metodo per recuperare le prenotazioni in base allo strumento per calendario
-    public List<Prenotazione> recuperoPrenStrumenti(Strumento strumento) {
+    public List<Prenotazione> toolsBookingsRecoveryC(Strumento tool) {
 
-        List<Prenotazione> prenStrumenti = new ArrayList<>();
-        Prenotazione risultatoPrenotazioni = null;
-
-        StrumentoDAO strumentoDAO = new StrumentoDAO(currController);
+        List<Prenotazione> toolBookings = new ArrayList<>();
 
         try {
             String query = "SELECT * FROM prenotazione WHERE codstrumento_fk = ? ORDER BY data_prenotaziones DESC;";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
-            preparedStatement.setInt(1,  strumento.getCodStrumento());
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
+            preparedStatement.setInt(1,  tool.getCodStrumento());
             ResultSet resultSet = preparedStatement.executeQuery();
 
 
@@ -152,13 +148,13 @@ public class PrenotazioneDAO {
 
             while (resultSet.next()) {
 
-                Date dataPrenotazioneS = resultSet.getDate("data_prenotaziones");
-                Time oraPrenotazioneS = resultSet.getTime("ora_prenotaziones");
-                Time tempoUtilizzoS = resultSet.getTime("tempo_utilizzos");
+                Date bookDateS = resultSet.getDate("data_prenotaziones");
+                Time bookHoursS = resultSet.getTime("ora_prenotaziones");
+                Time usageTimeS = resultSet.getTime("tempo_utilizzos");
 
                 //Creazione di un oggetto prneotazione da aggiungere alla lista
-                risultatoPrenotazioni = new Prenotazione(dataPrenotazioneS, oraPrenotazioneS, tempoUtilizzoS, strumento);
-                prenStrumenti.add(risultatoPrenotazioni);
+
+                toolBookings.add(new Prenotazione(bookDateS, bookHoursS, usageTimeS, tool));
 
             }
 
@@ -167,16 +163,16 @@ public class PrenotazioneDAO {
             e.printStackTrace();
         }
 
-        return prenStrumenti;
+        return toolBookings;
 
     }
 
-    public void eliminaPrenotazioneDAO(int codPrenotazione) {
+    public void bookingDeleteDAO(int toolCode) {
 
         try {
             String query = "DELETE FROM prenotazione WHERE codprenotazione = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
-            preparedStatement.setInt(1,  codPrenotazione);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
+            preparedStatement.setInt(1,  toolCode);
             preparedStatement.executeUpdate();
 
 
@@ -189,7 +185,7 @@ public class PrenotazioneDAO {
 
     }
 
-    public boolean modificaMiaPrenotazioneDAO (int codPrenotazione, Timestamp dataNuova, Timestamp oraNuova, Timestamp tempoUtilizzoNuovo) {
+    public boolean changeMyBookingDAO (int bookingCode, Timestamp newDate, Timestamp newHour, Timestamp newUsageTime) {
 
         try {
 
@@ -199,11 +195,11 @@ public class PrenotazioneDAO {
                     "tempo_utilizzos = ? " +
                     "WHERE codprenotazione = ?";
 
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
-            preparedStatement.setTimestamp(1, dataNuova);
-            preparedStatement.setTimestamp(2,  oraNuova);
-            preparedStatement.setTimestamp(3,  tempoUtilizzoNuovo);
-            preparedStatement.setInt(4,  codPrenotazione);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
+            preparedStatement.setTimestamp(1, newDate);
+            preparedStatement.setTimestamp(2,  newHour);
+            preparedStatement.setTimestamp(3,  newUsageTime);
+            preparedStatement.setInt(4,  bookingCode);
             preparedStatement.executeUpdate();
 
             return true;

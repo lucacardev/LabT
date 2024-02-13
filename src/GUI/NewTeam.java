@@ -17,27 +17,27 @@ import java.util.List;
 public class NewTeam extends JPanel {
 
     private final static JLabel codTeamText = new JLabel("Codice team");
-    private final static JLabel nomeText = new JLabel("Nome");
-    private final static JLabel descrizioneText = new JLabel("Descrizione");
-    private final static JLabel matricolaLText = new JLabel("Matricola Leader");
-    private final static JLabel ntecniciText = new JLabel("Numero tecnici");
-    private final static JLabel respText = new JLabel("Responsabile del team");
+    private final static JLabel textName = new JLabel("Nome");
+    private final static JLabel descriptionText = new JLabel("Descrizione");
+    private final static JLabel matriculationNumberText = new JLabel("Matricola Leader");
+    private final static JLabel tecNumberText = new JLabel("Numero tecnici");
+    private final static JLabel managerText = new JLabel("Responsabile del team");
     private final TextFieldBorderColor codTeamField;
-    private final TextFieldBorderColor nomeField;
-    private final TextFieldBorderColor descrizioneField;
-    private final JComboBox matricolaLField;
-    private final JComboBox<Integer> ntecniciComboBox;
-    private Integer scelta;
-    private static BufferedImage backgroundImageNew;
+    private final TextFieldBorderColor nameField;
+    private final TextFieldBorderColor descriptionField;
+    private final JComboBox matriculationNumberField;
+    private final JComboBox<Integer> tecNumberCombobox;
+    private Integer choice;
+    private static BufferedImage newBackgroundImage;
     private static BufferedImage rightBackground;
-    private final List<Tecnico> tecniciSelezionati = new ArrayList<>();
+    private final List<Tecnico> tecSelected = new ArrayList<>();
     Controller controller;
-    Responsabile responsabileCorrente;
+    Responsabile currentManager;
 
-    public NewTeam(Controller myController, Responsabile responsabileLoggato) {
+    public NewTeam(Controller myController, Responsabile loggedInManager) {
 
         controller = myController;
-        responsabileCorrente = responsabileLoggato;
+        currentManager = loggedInManager;
         setLayout(new GridLayout(0,2));
 
         JPanel rightPage = new JPanel() {
@@ -77,7 +77,7 @@ public class NewTeam extends JPanel {
         gbc.gridy = 0;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        rightPage.add(respText, gbc);
+        rightPage.add(managerText, gbc);
 
         //Testo codtean
         gbc.gridy = 2;
@@ -90,32 +90,32 @@ public class NewTeam extends JPanel {
         gbc.gridy = 4;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        rightPage.add(nomeText, gbc);
+        rightPage.add(textName, gbc);
 
         //Testo descrizione
         gbc.gridy = 6;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        rightPage.add(descrizioneText, gbc);
+        rightPage.add(descriptionText, gbc);
 
         //Testo matricola leader
         gbc.gridy = 11;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        rightPage.add(matricolaLText, gbc);
+        rightPage.add(matriculationNumberText, gbc);
 
         //Testo ntecnici
         gbc.gridy = 8;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        rightPage.add(ntecniciText, gbc);
+        rightPage.add(tecNumberText, gbc);
 
         //Campo responsabile
         gbc.gridy = 1;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         JLabel respField = new JLabel();
-        respField.setText(responsabileCorrente.getMatricola());
+        respField.setText(currentManager.getMatricola());
         respField.setEnabled(false);
         gbc.anchor = GridBagConstraints.CENTER;
         rightPage.add(respField, gbc);
@@ -143,74 +143,74 @@ public class NewTeam extends JPanel {
         gbc.gridy = 5;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        nomeField = new TextFieldBorderColor(15);
-        TextFieldBorderColor.changeTextFieldBorderColor(nomeField);
-        nomeField.addFocusListener(new FocusListener() {
+        nameField = new TextFieldBorderColor(15);
+        TextFieldBorderColor.changeTextFieldBorderColor(nameField);
+        nameField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                nomeField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+                nameField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                nomeField.setBorder(new LineBorder(Color.BLACK));
+                nameField.setBorder(new LineBorder(Color.BLACK));
             }
         });
         gbc.anchor = GridBagConstraints.CENTER;
-        rightPage.add(nomeField, gbc);
+        rightPage.add(nameField, gbc);
 
         //Campo descrizione
         gbc.gridy = 7;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        descrizioneField = new TextFieldBorderColor(15);
-        TextFieldBorderColor.changeTextFieldBorderColor(descrizioneField);
-        descrizioneField.addFocusListener(new FocusListener() {
+        descriptionField = new TextFieldBorderColor(15);
+        TextFieldBorderColor.changeTextFieldBorderColor(descriptionField);
+        descriptionField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                descrizioneField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+                descriptionField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
             }
             @Override
             public void focusLost(FocusEvent e) {
-                descrizioneField.setBorder(new LineBorder(Color.BLACK));
+                descriptionField.setBorder(new LineBorder(Color.BLACK));
             }
         });
         gbc.anchor = GridBagConstraints.CENTER;
-        rightPage.add(descrizioneField, gbc);
+        rightPage.add(descriptionField, gbc);
 
         //Campo matricola leader
         gbc.gridy = 12;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        matricolaLField = new JComboBox<>();
+        matriculationNumberField = new JComboBox<>();
         DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
         comboBoxModel.addElement(" - ");
-        matricolaLField.setModel(comboBoxModel);
+        matriculationNumberField.setModel(comboBoxModel);
         gbc.anchor = GridBagConstraints.CENTER;
-        rightPage.add(matricolaLField, gbc);
+        rightPage.add(matriculationNumberField, gbc);
 
         //Campo ntecnici
         gbc.gridy = 10;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        Integer[] scelte = {0,5,10};
-        ntecniciComboBox = new JComboBox<>(scelte);
-        ntecniciComboBox.setBackground(Color.white);
-        ntecniciComboBox.setBorder(new LineBorder(new Color(246, 183, 55),1));
+        Integer[] choices = {0,5,10};
+        tecNumberCombobox = new JComboBox<>(choices);
+        tecNumberCombobox.setBackground(Color.white);
+        tecNumberCombobox.setBorder(new LineBorder(new Color(246, 183, 55),1));
         gbc.anchor = GridBagConstraints.CENTER;
-        rightPage.add(ntecniciComboBox, gbc);
+        rightPage.add(tecNumberCombobox, gbc);
 
-        ntecniciComboBox.addItemListener(new ItemListener() {
+        tecNumberCombobox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent event) {
                 if (event.getStateChange() == ItemEvent.SELECTED) {
-                    scelta = (Integer) event.getItem();
+                    choice = (Integer) event.getItem();
 
                     //In questo modo ogni volta che si seleziona il numero la lista si azzera
                     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
                     model.addElement(" - ");
-                    matricolaLField.setModel(model);
+                    matriculationNumberField.setModel(model);
 
-                    if (scelta == 5 || scelta == 10) {
-                        selectTecnici(scelta);
+                    if (choice == 5 || choice == 10) {
+                        selectedTec(choice);
 
                     }
                 }
@@ -235,7 +235,7 @@ public class NewTeam extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                MyTeam myTeam = new MyTeam(myController,responsabileCorrente);
+                MyTeam myTeam = new MyTeam(myController,currentManager);
                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(NewTeam.this);
                 mainWindow.addCardPanel(myTeam, "myteam");
             }
@@ -259,37 +259,37 @@ public class NewTeam extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                if(getCodTeamNew().isEmpty() || getNomeNew().isEmpty() || matricolaLField.getSelectedItem().toString().isEmpty()) {
+                if(getCodTeamNew().isEmpty() || getNomeNew().isEmpty() || matriculationNumberField.getSelectedItem().toString().isEmpty()) {
 
                     JOptionPane.showMessageDialog(null,"I campi non possono essere vuoti.");
 
                 } else if (getCodTeamNew().length() != 4 || !getCodTeamNew().startsWith("T") || !getCodTeamNew().substring(1).matches("\\d+")) {
-                    JOptionPane.showMessageDialog(null, "CodiceTeam errato. Ti ricordiamo che il codice di un team inizia con 'T' seguito da 3 numeri.", "Errore Codice Team", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "teamCode errato. Ti ricordiamo che il codice di un team inizia con 'T' seguito da 3 numeri.", "Errore Codice Team", JOptionPane.ERROR_MESSAGE);
 
                 }
                 else {
 
-                    if (controller.recuperoTeamdaCodC(getCodTeamNew())) {
+                    if (controller.teamRecoveryWithCodeC(getCodTeamNew())) {
 
                         JOptionPane.showMessageDialog(null, "Il codice del team è già presente nel database.");
 
                     } else {
 
                         //Salviamo solo la matricola
-                        String matrENome = matricolaLField.getSelectedItem().toString().substring(0, 7);
+                        String matrAndName = matriculationNumberField.getSelectedItem().toString().substring(0, 7);
 
-                        //Chiamo la classe DTO che incapsula le informazioni del nuovo team
-                        Team nuovoTeam = new Team(getCodTeamNew(), getNomeNew(), getDescrizioneNew(), matrENome, scelta, responsabileCorrente);
+                        //Chiamo la classe DTO che incapsula le informations del nuovo team
+                        Team newTeam = new Team(getCodTeamNew(), getNomeNew(), getNewDescription(), matrAndName, choice, currentManager);
 
-                        boolean complete = myController.newTeamInsert(nuovoTeam);
+                        boolean complete = myController.newTeamInsert(newTeam);
 
                         if (complete) {
 
-                            creazioneTeameAssegnamentoTecnici();
+                            teamCreationAndTechnicalAssignment();
 
                             JOptionPane.showMessageDialog(null, "L'inserimento di un nuovo team è avvenuto con successo!");
 
-                            MyTeam myteam = new MyTeam(myController, responsabileCorrente);
+                            MyTeam myteam = new MyTeam(myController, currentManager);
                             MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(NewTeam.this);
                             mainWindow.addCardPanel(myteam, "mieiteam");
 
@@ -309,10 +309,10 @@ public class NewTeam extends JPanel {
                 Graphics2D g2d = (Graphics2D) g;
 
                 // Disegna l'immagine di sfondo
-                if (backgroundImageNew != null) {
+                if (newBackgroundImage != null) {
 
                     g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-                    g.drawImage(backgroundImageNew, 0, 0, getWidth(), getHeight(), this);
+                    g.drawImage(newBackgroundImage, 0, 0, getWidth(), getHeight(), this);
 
                 }
 
@@ -323,7 +323,7 @@ public class NewTeam extends JPanel {
 
         try {
 
-            backgroundImageNew = ImageIO.read(new File("src/GUI/icon/teamwork.jpg"));
+            newBackgroundImage = ImageIO.read(new File("src/GUI/icon/teamwork.jpg"));
 
         } catch (Exception ex) {
 
@@ -342,20 +342,20 @@ public class NewTeam extends JPanel {
     }
 
     private String getNomeNew() {
-        return nomeField.getText().trim();
+        return nameField.getText().trim();
     }
 
-    private String getDescrizioneNew() {
-        return descrizioneField.getText().trim();
+    private String getNewDescription() {
+        return descriptionField.getText().trim();
     }
 
-    private void selectTecnici(int numTecniciDaSelezionare) {
+    private void selectedTec(int numberTecToBeSelected) {
 
         // Crei un'istanza di TecnicoDAO
         TecnicoDAO tecnicoDAO = new TecnicoDAO(controller);
 
         // lista completa di tecnici che non fanno parte di un team
-        List<Tecnico> listaCompletaTecnici = tecnicoDAO.recuperoTecniciNoTeam();
+        List<Tecnico> tecFullList = tecnicoDAO.recuperoTecniciNoTeam();
 
         //finestra di dialogo per la selezione dei tecnici
         JDialog dialog = new JDialog();
@@ -365,11 +365,11 @@ public class NewTeam extends JPanel {
 
         DefaultListModel<Tecnico> listModel = new DefaultListModel<>();
 
-        JList<Tecnico> tecniciList = new JList<>(listModel);
+        JList<Tecnico> tecList = new JList<>(listModel);
 
         //Ci permette di selezionare tecnici multipli senza l'uso di CTRL
 
-        tecniciList.setSelectionModel(new DefaultListSelectionModel() {
+        tecList.setSelectionModel(new DefaultListSelectionModel() {
 
             int count = 0;
             @Override
@@ -378,7 +378,7 @@ public class NewTeam extends JPanel {
                 //Impediamo di selezionare più tecnici del previsto
                 if(!super.isSelectedIndex(index0)) {
 
-                    if(count < numTecniciDaSelezionare) {
+                    if(count < numberTecToBeSelected) {
 
                         count++;
                         super.addSelectionInterval(index0, index1);
@@ -386,7 +386,7 @@ public class NewTeam extends JPanel {
                     } else {
 
                         JOptionPane.showMessageDialog(null, "Non puoi selezionare più di " +
-                                numTecniciDaSelezionare + " tecnici", "Numero tecnici superato", JOptionPane.ERROR_MESSAGE);
+                                numberTecToBeSelected + " tecnici", "Numero tecnici superato", JOptionPane.ERROR_MESSAGE);
 
                     }
 
@@ -404,24 +404,24 @@ public class NewTeam extends JPanel {
         });
 
         //Aggiungiamo alla JList i tecnici recuperati dal DB che non hanno un Team
-        for (Tecnico tecnico : listaCompletaTecnici) {
+        for (Tecnico tecnico : tecFullList) {
 
             listModel.addElement(tecnico);
 
         }
 
-        JScrollPane scrollPane = new JScrollPane(tecniciList);
+        JScrollPane scrollPane = new JScrollPane(tecList);
         dialog.add(scrollPane, BorderLayout.CENTER);
 
         JButton selectButton = new JButton("Seleziona");
         dialog.add(selectButton, BorderLayout.SOUTH);
 
-        //Reset JComboBox ntecniciComboBox quando il JDialog viene chiuso
+        //Reset JComboBox tecNumberCombobox quando il JDialog viene chiuso
         dialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
 
-                ntecniciComboBox.setSelectedIndex(0);
+                tecNumberCombobox.setSelectedIndex(0);
 
             }
         });
@@ -429,29 +429,29 @@ public class NewTeam extends JPanel {
         //Azione tasto quando i tecnici vengono selezionati per comporre il nuovo team
         selectButton.addActionListener(e -> {
 
-            List<Tecnico> selectedTecnici = tecniciList.getSelectedValuesList();
-            if (selectedTecnici.size() == numTecniciDaSelezionare) {
-                tecniciSelezionati.addAll(selectedTecnici);
+            List<Tecnico> selectedTecnici = tecList.getSelectedValuesList();
+            if (selectedTecnici.size() == numberTecToBeSelected) {
+                tecSelected.addAll(selectedTecnici);
 
                 //Ricavate le matricole le aggiungiamo al JComboBox per poi scegliere il leader
                 DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
 
-                for (Tecnico tecnico : tecniciSelezionati) {
+                for (Tecnico tecnico : tecSelected) {
                     comboBoxModel.addElement(tecnico.getMatricola().trim() + " " + tecnico.getNome().trim() + " " + tecnico.getCognome().trim());
                 }
 
-                matricolaLField.setModel(comboBoxModel);
+                matriculationNumberField.setModel(comboBoxModel);
 
                 dialog.dispose();
             } else {
-                JOptionPane.showMessageDialog(dialog, "Seleziona esattamente " + numTecniciDaSelezionare + " tecnici.", "Selezione errata", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(dialog, "Seleziona esattamente " + numberTecToBeSelected + " tecnici.", "Selezione errata", JOptionPane.WARNING_MESSAGE);
             }
         });
 
         dialog.setSize(300, 400);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setLocationRelativeTo(null);
-        SwingUtilities.invokeLater(() -> tecniciList.requestFocusInWindow());
+        SwingUtilities.invokeLater(() -> tecList.requestFocusInWindow());
         dialog.setVisible(true);
 
         try {
@@ -464,19 +464,19 @@ public class NewTeam extends JPanel {
             e.printStackTrace();
         };
 
-        SwingUtilities.invokeLater(() -> tecniciList.requestFocusInWindow());
+        SwingUtilities.invokeLater(() -> tecList.requestFocusInWindow());
 
     }
 
-    private void creazioneTeameAssegnamentoTecnici() {
+    private void teamCreationAndTechnicalAssignment() {
 
-        String codiceTeam = getCodTeamNew(); // Codice del team appena creato
-        Team teamCreato = controller.recuperoTeamC(codiceTeam);
+        String teamCode = getCodTeamNew(); // Codice del team appena creato
+        Team teamCreated = controller.teamRecoveryC(teamCode);
 
         // Assegna il codice del team ai tecnici memorizzati temporaneamente
-        for (Tecnico tecnico : tecniciSelezionati) {
-            tecnico.setTeam(teamCreato);
-            boolean updated = controller.updateTecniciC(tecnico, codiceTeam);
+        for (Tecnico tecnico : tecSelected) {
+            tecnico.setTeam(teamCreated);
+            boolean updated = controller.technicianUpdateC(tecnico, teamCode);
 
             if (!updated) {
                 System.out.println("Aggiornamento non avvenuto");

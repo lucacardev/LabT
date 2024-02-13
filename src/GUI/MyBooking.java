@@ -12,20 +12,20 @@ import java.awt.event.MouseEvent;
 public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
 
     Controller myController;
-    Utente utenteLoggato;
+    Utente loggedUser;
     BookingFrame myBooking;
     private  final JPanel topPanel = new JPanel();
     private  final BtnLayout modifyButton = new BtnLayout("Modifica");
     private  final BtnLayout deleteButton = new BtnLayout("Elimina");
     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(MyBooking.this);
     private Prenotazione myPrenotazioneSelez;
-    private int numeroPrenotazione;
+    private int bookingNumber ;
     GridBagConstraints footerPanelGbc = new GridBagConstraints();
 
     public MyBooking(Controller controller, Utente utente)  {
 
         myController = controller;
-        utenteLoggato = utente;
+        loggedUser = utente;
 
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -51,7 +51,7 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
         topPanel.setLayout(new BorderLayout());
 
         //Creo la tabella delle prenotazioni effettuate dall'utente che ha loggato
-        TablePanel tablePanel = new TablePanel(myController.recuperoMiePrenotazioniC(utenteLoggato), this );
+        TablePanel tablePanel = new TablePanel(myController.myBookingRecoveryC(loggedUser), this );
         topPanel.add(tablePanel, BorderLayout.CENTER);
 
         //////////////////////////////////////////FOOTER PANEL//////////////////////////////////////
@@ -110,11 +110,11 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
 
                 super.mouseClicked(e);
 
-                myBooking = new BookingFrame(mainWindow, myController, utenteLoggato, myPrenotazioneSelez);
+                myBooking = new BookingFrame(mainWindow, myController, loggedUser, myPrenotazioneSelez);
                 myBooking.setVisible(true);
 
                 //Aggiorniamo la tabella per far apparire le modifiche effettuate
-                tablePanel.setDataMiePrenotazioni(myController.recuperoMiePrenotazioniC(utenteLoggato));
+                tablePanel.setDataMyBooking(myController.myBookingRecoveryC(loggedUser));
 
             }
         });
@@ -125,22 +125,22 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
 
                 super.mouseClicked(e);
 
-                int scelta = JOptionPane.showConfirmDialog(MyBooking.this, "Sei sicuro di voler eliminare questa prenotazione?",
+                int choice = JOptionPane.showConfirmDialog(MyBooking.this, "Sei sicuro di voler eliminare questa prenotazione?",
                         "Conferma Eliminazione", JOptionPane.YES_NO_OPTION);
 
                 //Chiediamo all'utente se è sicuro di eliminare la prenotazione
-                if(scelta == JOptionPane.OK_OPTION) {
+                if(choice == JOptionPane.OK_OPTION) {
 
                     //Passiamo al metodo del Controller la prenotazione selezionata (ricevuta da TablePanel) che vogliamo eliminare
-                    myController.eliminaPrenotazioneC(myPrenotazioneSelez);
+                    myController.deleteBookingsC(myPrenotazioneSelez);
 
                     //Chiamiamo il metodo di TablePanel per aggiornare la lista delle prenotazioni
-                    tablePanel.setDataMiePrenotazioni(myController.recuperoMiePrenotazioniC(utenteLoggato));
+                    tablePanel.setDataMyBooking(myController.myBookingRecoveryC(loggedUser));
 
                     topPanel.revalidate();
                     topPanel.repaint();
 
-                    JOptionPane.showMessageDialog(MyBooking.this, "Prenotazione numero: " + numeroPrenotazione + " eliminata correttamente");
+                    JOptionPane.showMessageDialog(MyBooking.this, "Prenotazione numero: " + bookingNumber  + " eliminata correttamente");
 
                 }
 
@@ -151,18 +151,19 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
 
     /*Questo metodo ci permette di ottenere la prnenotazione selezionata dalla tabella che mostra le prenotazioni
     * dell'utente ed è un metodo dell'interfaccia implementata alla classe MyBooking (attuale).
-    * In questo modo possiamo passare le informazioni inerenti alle righe selezionate.*/
+    * In questo modo possiamo passare le informations inerenti alle righe selezionate.*/
+
 
     @Override
-    public void prenotazioneSelected(Prenotazione prenotazione) {
+    public void prenotazioneSelected(Prenotazione booking) {
 
-        myPrenotazioneSelez = prenotazione;
+        myPrenotazioneSelez = booking;
 
         //Per evitare errori nella stampa della prneotazione eliminata
         //Salviamo il numero della prneotazione in una variabile temporanea di classe
         if(myPrenotazioneSelez != null) {
 
-            numeroPrenotazione = myPrenotazioneSelez.getCod_prenotazione();
+            bookingNumber  = myPrenotazioneSelez.getCod_prenotazione();
 
         }
 

@@ -51,7 +51,7 @@ public class SummaryWindow extends JDialog {
         summaryGBC.gridy = 0;
         summaryGBC.weightx = 0.33;
         summaryGBC.anchor = GridBagConstraints.LINE_START;
-        add(new JLabel("Mese: "), summaryGBC);
+        add(new JLabel("month: "), summaryGBC);
 
         //Testo anno
         summaryGBC.gridx = 1;
@@ -67,14 +67,14 @@ public class SummaryWindow extends JDialog {
         summaryGBC.weightx = 0.33;
         add(new JLabel("Strumento: "), summaryGBC);
 
-        //Scelta del mese
+        //choice del mese
         summaryGBC.gridx = 0;
         summaryGBC.gridy = 1;
         summaryGBC.anchor = GridBagConstraints.LINE_START;
         summaryGBC.weightx = 0.33;
         add(monthComboBox, summaryGBC);
 
-        //Scelta dell'anno
+        //choice dell'anno
         summaryGBC.gridx = 1;
         summaryGBC.gridy = 1;
         summaryGBC.anchor = GridBagConstraints.LINE_START;
@@ -106,10 +106,10 @@ public class SummaryWindow extends JDialog {
                 int selectedYear = (int) yearComboBox.getSelectedItem();
                 String selectedMonth = (String) monthComboBox.getSelectedItem();
 
-                if (conversioneMese(selectedMonth) != 0) {
+                if (monthConverter(selectedMonth) != 0) {
 
                     JOptionPane.showMessageDialog(null,
-                            myController.riepilogoStrumentoC(strumento, conversioneMese(selectedMonth), selectedYear)
+                            myController.toolSummaryC(strumento, monthConverter(selectedMonth), selectedYear)
                             , "Riepilogo Strumento", JOptionPane.INFORMATION_MESSAGE);
 
                     // Chiudi il dialog
@@ -118,7 +118,7 @@ public class SummaryWindow extends JDialog {
                 } else {
 
                     JOptionPane.showMessageDialog(null,
-                            myController.riepilogoStrumentoNoMeseC(strumento, selectedYear),
+                            myController.noMonthToolSummaryC(strumento, selectedYear),
                             "Riepilogo Strumento", JOptionPane.INFORMATION_MESSAGE);
 
                 }
@@ -129,9 +129,9 @@ public class SummaryWindow extends JDialog {
 
     }
 
-    public int conversioneMese(String mese) {
+    public int monthConverter(String month) {
 
-        return switch (mese) {
+        return switch (month) {
 
             case " - " -> 0;
             case "Gennaio" -> 1;

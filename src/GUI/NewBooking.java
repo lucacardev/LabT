@@ -17,27 +17,27 @@ public class NewBooking extends JPanel{
 
     private BtnLayout bookingButton;
     private BtnLayout calendarButton;
-    private BtnLayout riepilogoButton;
+    private BtnLayout summaryButton;
     private BookingFrame bookingFrame;
     private CalendarDialog calendarDialog;
     private SummaryWindow summaryWindow;
-    private Strumento strumentoSelezionato;
+    private Strumento selectedTool;
     private TablePanel tablePanel;
 
-    private final TextFieldBorderColor sedeSearch;
-    private final TextFieldBorderColor descrizioneSearch;
+    private final TextFieldBorderColor headQuarters;
+    private final TextFieldBorderColor searchForDescription;
     Controller myController;
-    Utente utenteLoggato;
+    Utente loggedUser;
     GridBagConstraints footerPanelGbc = new GridBagConstraints();
-    List<Strumento> listaStrumento;
+    List<Strumento> toolList;
     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(NewBooking.this);
-    String codStrumentoUni;
+    String uniToolCode;
 
 
-    public NewBooking(Controller controller, Utente utenteCorrente) {
+    public NewBooking(Controller controller, Utente currentUser) {
 
         myController = controller;
-        utenteLoggato = utenteCorrente;
+        loggedUser = currentUser;
 
 
         setLayout(new GridBagLayout());
@@ -84,37 +84,37 @@ public class NewBooking extends JPanel{
 
         //Gli aggiungiamo la ricerca della sede
 
-        IncreaseFont textSedeSearch = new IncreaseFont("Sede: ");
-        textSedeSearch.increaseFont(textSedeSearch, 5);
-        textSedeSearch.setForeground(Color.white);
+        IncreaseFont textHeadQuarters = new IncreaseFont("Sede: ");
+        textHeadQuarters.increaseFont(textHeadQuarters, 5);
+        textHeadQuarters.setForeground(Color.white);
 
 
         searchPanelGbc.gridx = 0;
         searchPanelGbc.gridy = 0;
-        searchPanel.add(textSedeSearch, searchPanelGbc);
+        searchPanel.add(textHeadQuarters, searchPanelGbc);
 
-        sedeSearch = new TextFieldBorderColor(15);
-        TextFieldBorderColor.changeTextFieldBorderColor(sedeSearch);
+        headQuarters = new TextFieldBorderColor(15);
+        TextFieldBorderColor.changeTextFieldBorderColor(headQuarters);
 
         searchPanelGbc.gridx = 1;
         searchPanelGbc.gridy = 0;
-        searchPanel.add(sedeSearch, searchPanelGbc);
+        searchPanel.add(headQuarters, searchPanelGbc);
 
         //Gli aggiungiamo la ricerca in base alla descrizione
 
-        IncreaseFont textDescrizioneSearch = new IncreaseFont("Descrizione: ");
-        textDescrizioneSearch.setForeground(Color.white);
-        textDescrizioneSearch.increaseFont(textDescrizioneSearch,5);
+        IncreaseFont textSearchForDescription = new IncreaseFont("Descrizione: ");
+        textSearchForDescription.setForeground(Color.white);
+        textSearchForDescription.increaseFont(textSearchForDescription,5);
         searchPanelGbc.gridx = 2;
         searchPanelGbc.gridy = 0;
-        searchPanel.add(textDescrizioneSearch, searchPanelGbc);
+        searchPanel.add(textSearchForDescription, searchPanelGbc);
 
-        descrizioneSearch = new TextFieldBorderColor(15);
-        TextFieldBorderColor.changeTextFieldBorderColor(descrizioneSearch);
+        searchForDescription = new TextFieldBorderColor(15);
+        TextFieldBorderColor.changeTextFieldBorderColor(searchForDescription);
 
         searchPanelGbc.gridx = 3;
         searchPanelGbc.gridy = 0;
-        searchPanel.add(descrizioneSearch, searchPanelGbc);
+        searchPanel.add(searchForDescription, searchPanelGbc);
 
         //////////////////////////SHOW RESULT PANEL///////////////////////////////
 
@@ -122,7 +122,7 @@ public class NewBooking extends JPanel{
 
         //Recupero tutta la lista degli strumenti per aggiungerla alla tabella
 
-        tablePanel = new TablePanel(myController.recuperoTuttaListaStrumenti(), this, null);
+        tablePanel = new TablePanel(myController.allToolsListRecovery(), this, null);
         showResultPanel.add(tablePanel, BorderLayout.CENTER);
 
 
@@ -156,7 +156,7 @@ public class NewBooking extends JPanel{
 
                 } else {
 
-                    HomePage homePage = new HomePage(myController, utenteLoggato);
+                    HomePage homePage = new HomePage(myController, loggedUser);
                     mainWindow.addCardPanel(homePage, "homePage");
 
                 }
@@ -186,14 +186,14 @@ public class NewBooking extends JPanel{
                     if(!getSede().isEmpty() && !getDescrizione().isEmpty()) {
 
 
-                        listaStrumento = myController.recuperoListaStrumenti(getSede(), getDescrizione());
+                        toolList = myController.toolsListRecovery(getSede(), getDescrizione());
 
                         //Se la lista strumento è maggiore di zero significa che la sede esiste altrimenti diamo errore
 
-                        if(!listaStrumento.isEmpty()) {
+                        if(!toolList.isEmpty()) {
 
                             showResultPanel.removeAll();
-                            tablePanel = new TablePanel(listaStrumento, NewBooking.this, null);
+                            tablePanel = new TablePanel(toolList, NewBooking.this, null);
 
                             showResultPanel.add(tablePanel);
                             showResultPanel.revalidate();
@@ -213,12 +213,12 @@ public class NewBooking extends JPanel{
                                 public void mouseClicked(MouseEvent e) {
 
                                     //cercato = false;
-                                    sedeSearch.setText("");
-                                    descrizioneSearch.setText("");
+                                    headQuarters.setText("");
+                                    searchForDescription.setText("");
 
                                     //Aggiorniamo i dati della tabella
-                                    tablePanel.setData(myController.recuperoTuttaListaStrumenti());
-                                    tablePanel.setDataMiePrenotazioni(myController.recuperoMiePrenotazioniC(utenteLoggato));
+                                    tablePanel.setData(myController.allToolsListRecovery());
+                                    tablePanel.setDataMyBooking(myController.myBookingRecoveryC(loggedUser));
 
                                     searchPanel.remove(annulla);
 
@@ -243,14 +243,14 @@ public class NewBooking extends JPanel{
 
                         //cercato = true;
 
-                        listaStrumento = myController.recuperoListaStrumenti(getSede(), getDescrizione());
+                        toolList = myController.toolsListRecovery(getSede(), getDescrizione());
 
                         //Se la lista strumento è maggiore di zero significa che la sede esiste altrimenti diamo errore
 
-                        if(!listaStrumento.isEmpty()) {
+                        if(!toolList.isEmpty()) {
 
                             showResultPanel.removeAll();
-                            tablePanel = new TablePanel(listaStrumento, NewBooking.this, null);
+                            tablePanel = new TablePanel(toolList, NewBooking.this, null);
 
                             showResultPanel.add(tablePanel);
                             showResultPanel.revalidate();
@@ -270,11 +270,11 @@ public class NewBooking extends JPanel{
                                 public void mouseClicked(MouseEvent e) {
 
                                     //cercato = false;
-                                    sedeSearch.setText("");
-                                    descrizioneSearch.setText("");
+                                    headQuarters.setText("");
+                                    searchForDescription.setText("");
 
                                     //Aggiorniamo i dati della tabella
-                                    tablePanel.setData(myController.recuperoTuttaListaStrumenti());
+                                    tablePanel.setData(myController.allToolsListRecovery());
 
                                     searchPanel.remove(annulla);
 
@@ -310,13 +310,13 @@ public class NewBooking extends JPanel{
 
     public String getSede() {
 
-        return sedeSearch.getText().trim();
+        return headQuarters.getText().trim();
 
     }
 
     public String getDescrizione() {
 
-        return descrizioneSearch.getText().trim();
+        return searchForDescription.getText().trim();
     }
 
     /*Bottone di verifica disponibilità della strumento in base all'orario scelto dall'utente che non supera quello massimo d'utilizzo dello strumento*/
@@ -337,9 +337,9 @@ public class NewBooking extends JPanel{
                 @Override
                 public void mouseClicked(MouseEvent e) {
 
-                    bookingFrame = new BookingFrame(mainWindow, myController, utenteLoggato, strumentoSelezionato);
-                    bookingFrame.setCodStrumento(codStrumentoUni);
-                    bookingFrame.setStrumentoAttuale(strumentoSelezionato);
+                    bookingFrame = new BookingFrame(mainWindow, myController, loggedUser, selectedTool);
+                    bookingFrame.setCodStrumento(uniToolCode);
+                    bookingFrame.setStrumentoAttuale(selectedTool);
                     bookingFrame.setVisible(true);
 
                 }
@@ -370,7 +370,7 @@ public class NewBooking extends JPanel{
                     //Lo strumento selezionato lo ricaviamo grazie alla chiamata del metodo setStrumSelezCalend
                     //Dalla classe TablePanel viene passato lo strumento selezionato
 
-                    calendarDialog = new CalendarDialog(mainWindow, myController, strumentoSelezionato);
+                    calendarDialog = new CalendarDialog(mainWindow, myController, selectedTool);
 
                     calendarDialog.setVisible(true);
 
@@ -381,24 +381,24 @@ public class NewBooking extends JPanel{
 
     }
 
-    public void setRiepilogoButton() {
+    public void setSummaryButton() {
 
-        if (riepilogoButton == null) {
-            riepilogoButton = new BtnLayout("Riepilogo");
+        if (summaryButton == null) {
+            summaryButton = new BtnLayout("Riepilogo");
             footerPanelGbc.gridx = 3;
             footerPanelGbc.gridy = 0;
             footerPanelGbc.weightx = 0.22;
-            riepilogoButton.setBackground(Color.RED);
-            footerPanel.add(riepilogoButton, footerPanelGbc);
+            summaryButton.setBackground(Color.RED);
+            footerPanel.add(summaryButton, footerPanelGbc);
 
             footerPanel.revalidate();
             footerPanel.repaint();
 
-            riepilogoButton.addMouseListener(new MouseAdapter() {
+            summaryButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
 
-                summaryWindow = new SummaryWindow(mainWindow, myController, strumentoSelezionato);
+                summaryWindow = new SummaryWindow(mainWindow, myController, selectedTool);
                 summaryWindow.setVisible(true);
                 }
             });
@@ -407,10 +407,10 @@ public class NewBooking extends JPanel{
 
     }
 
-    public void removeRiepilogoButton() {
-        if (riepilogoButton!= null) {
-            footerPanel.remove(riepilogoButton);
-            riepilogoButton = null; // Rimuovi il riferimento al pulsante
+    public void removeSummaryButton() {
+        if (summaryButton!= null) {
+            footerPanel.remove(summaryButton);
+            summaryButton = null; // Rimuovi il riferimento al pulsante
             footerPanel.revalidate();
             footerPanel.repaint();
         }
@@ -437,15 +437,15 @@ public class NewBooking extends JPanel{
 
     }
 
-    public void setCodStrumentoBookingFrame(String codStrumentoBookingFrame) {
+    public void setCodStrumentoBookingFrame(String toolCodeBookingFrame) {
 
-        codStrumentoUni = codStrumentoBookingFrame;
+        uniToolCode = toolCodeBookingFrame;
 
     }
 
-    public void setStrumSelezCalend(Strumento strumento) {
+    public void setStrumSelezCalend(Strumento tool) {
 
-        strumentoSelezionato = strumento;
+        selectedTool = tool;
     }
 
 }

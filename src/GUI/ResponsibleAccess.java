@@ -9,15 +9,17 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ResponsibleAccess extends JPanel {
 
-    private final JTextField campoMatricola;
-    private final JPasswordField campoPassword;
+    private final JTextField matriculationNumberField  ;
+    private final JPasswordField passwordField;
     private static BufferedImage backgroundRight;
     Controller myController;
 
-    private Responsabile responsabileCorrente;
+    private Responsabile currentManager;
 
     public ResponsibleAccess(Controller controller) {
 
@@ -70,35 +72,35 @@ public class ResponsibleAccess extends JPanel {
         rightRApage.add(imageLabel, rightGbc);
 
         //Testo matricola
-        JLabel matricolaText = new JLabel("Matricola: ");
-        matricolaText.setForeground(new Color(23,65,95));
-        Font fontMatricolaText = matricolaText.getFont();
-        int sizeMatricolaText = fontMatricolaText.getSize() + 4;
-        Font increaseMatricolaText = fontMatricolaText.deriveFont((float) sizeMatricolaText);
-        matricolaText.setFont(increaseMatricolaText);
-        matricolaText.setForeground(Color.BLACK);
+        JLabel matriculationNumberText = new JLabel("Matricola: ");
+        matriculationNumberText.setForeground(new Color(23,65,95));
+        Font fontMatriculationNumberText = matriculationNumberText.getFont();
+        int sizeMatriculationNumberText = fontMatriculationNumberText.getSize() + 4;
+        Font increaseMatriculationNumberText = fontMatriculationNumberText.deriveFont((float) sizeMatriculationNumberText);
+        matriculationNumberText.setFont(increaseMatriculationNumberText);
+        matriculationNumberText.setForeground(Color.BLACK);
 
         rightGbc.gridx = 1;  // Colonna a destra
         rightGbc.gridy = 1;
         rightGbc.anchor = GridBagConstraints.LINE_START;
-        rightRApage.add(matricolaText, rightGbc);
+        rightRApage.add(matriculationNumberText, rightGbc);
 
         //Campo matricola
-        campoMatricola = new TextFieldBorderColor(15);
+        matriculationNumberField   = new TextFieldBorderColor(15);
 
         //Risalto colore dei bordi del campo matricola quando cliccato
-        campoMatricola.setBorder(new LineBorder(Color.BLACK, 1));
-        TextFieldBorderColor.changeTextFieldBorderColor(campoMatricola);
+        matriculationNumberField  .setBorder(new LineBorder(Color.BLACK, 1));
+        TextFieldBorderColor.changeTextFieldBorderColor(matriculationNumberField  );
 
         rightGbc.gridx = 1;  // Colonna a destra
         rightGbc.gridy = 2;
         rightGbc.anchor = GridBagConstraints.LINE_START;
-        rightRApage.add(campoMatricola, rightGbc);
+        rightRApage.add(matriculationNumberField  , rightGbc);
 
         //Testo password
         JLabel pwdText = new JLabel("Password: ");
         pwdText.setForeground(new Color(23,65,95));
-        pwdText.setFont(increaseMatricolaText);
+        pwdText.setFont(increaseMatriculationNumberText);
         pwdText.setForeground(Color.BLACK);
 
         rightGbc.gridx = 1;  // Colonna a destra
@@ -106,43 +108,58 @@ public class ResponsibleAccess extends JPanel {
         rightRApage.add(pwdText, rightGbc);
 
         //Posizionamento campo password
-        campoPassword = new JPasswordField(15);
-        campoPassword.setBorder(new LineBorder(Color.BLACK, 1));
-        campoPassword.setEchoChar('•');
+        passwordField = new JPasswordField(15);
+        passwordField.setBorder(new LineBorder(Color.BLACK, 1));
+        passwordField.setEchoChar('•');
         rightGbc.gridx = 1;
         rightGbc.gridy = 4;
-        rightRApage.add(campoPassword, rightGbc);
+        rightRApage.add(passwordField, rightGbc);
 
-        campoMatricola.addFocusListener(new FocusListener() {
+        //Modo per cambiare il focus del cursore da emailField a passwordField
+        Set<AWTKeyStroke> forwardKeys;
+        forwardKeys = new HashSet<>(matriculationNumberField.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+        forwardKeys.remove(KeyStroke.getKeyStroke("TAB"));
+        matriculationNumberField.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
+
+        matriculationNumberField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_TAB) {
+                    passwordField.requestFocus();
+                    evt.consume(); // Consuma l'evento Tab per evitare il comportamento predefinito
+                }
+            }
+        });
+
+        matriculationNumberField  .addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
 
-                campoMatricola.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+                matriculationNumberField  .setBorder(new LineBorder(new Color(246, 183, 55), 2));
 
             }
 
             @Override
             public void focusLost(FocusEvent e) {
 
-                campoMatricola.setBorder(new LineBorder(Color.BLACK));
+                matriculationNumberField  .setBorder(new LineBorder(Color.BLACK));
 
             }
 
         });
 
         //Risalto colore dei bordi del campo password quando cliccato
-        campoPassword.addFocusListener(new FocusListener() {
+        passwordField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
 
-                campoPassword.setBorder(new LineBorder(new Color(246, 183, 55), 2));
+                passwordField.setBorder(new LineBorder(new Color(246, 183, 55), 2));
 
             }
 
             @Override
             public void focusLost(FocusEvent e) {
 
-                campoPassword.setBorder(new LineBorder(Color.BLACK));
+                passwordField.setBorder(new LineBorder(Color.BLACK));
 
             }
 
@@ -186,13 +203,13 @@ public class ResponsibleAccess extends JPanel {
 
 
         //Posizionamento password dimenticata
-        LinkMouseOn passwordDimenticata = new LinkMouseOn("Hai dimenticato la password?");
+        LinkMouseOn forgottenPassword = new LinkMouseOn("Hai dimenticato la password?");
         rightGbc.gridx = 1;
         rightGbc.gridy = 6;
-        rightRApage.add(passwordDimenticata, rightGbc);
+        rightRApage.add(forgottenPassword, rightGbc);
 
         //Azione se il testo password dimenticata viene cliccato
-        passwordDimenticata.addMouseListener(new MouseAdapter() {
+        forgottenPassword.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
@@ -208,16 +225,16 @@ public class ResponsibleAccess extends JPanel {
         });
 
         //Cambio colore al passaggio del mouse
-        passwordDimenticata.ActiveLinkMouseOn(new Color(246, 183, 55), new Color(23,65,95));
+        forgottenPassword.ActiveLinkMouseOn(new Color(246, 183, 55), new Color(23,65,95));
 
         //Posizionamento registrazione nuovo utente
-        LinkMouseOn regResponsabile = new LinkMouseOn("Sei un nuovo responsabile? Registrati");
+        LinkMouseOn managerReg = new LinkMouseOn("Sei un nuovo responsabile? Registrati");
         rightGbc.gridx = 1;
         rightGbc.gridy = 7;
-        rightRApage.add(regResponsabile, rightGbc);
+        rightRApage.add(managerReg, rightGbc);
 
         //Indirizzamento pagina per la registrazione
-        regResponsabile.addMouseListener(new MouseAdapter() {
+        managerReg.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
@@ -231,15 +248,15 @@ public class ResponsibleAccess extends JPanel {
         });
 
         //Cambio colore al passaggio del mouse
-        regResponsabile.ActiveLinkMouseOn(new Color(246, 183, 55), new Color(23,65,95));
+        managerReg.ActiveLinkMouseOn(new Color(246, 183, 55), new Color(23,65,95));
 
         //Verifica credenziali quando il pulsante di accesso viene premuto
         loginButton.addActionListener(e -> {
 
             int msgError;
 
-            msgError = verificaCredenziali();
-            mostraErrore(msgError);
+            msgError = credentialsVerification();
+            showError(msgError);
 
         });
 
@@ -316,25 +333,25 @@ public class ResponsibleAccess extends JPanel {
 
     }
     //Visualizzazione messaggio di errore
-    public void mostraErrore(int messaggioErrore) {
+    public void showError(int errorMassage) {
 
-        if(messaggioErrore == 1) {
+        if(errorMassage == 1) {
 
-            JOptionPane.showMessageDialog(campoMatricola, "I campi matricola e " +
+            JOptionPane.showMessageDialog(matriculationNumberField  , "I campi matricola e " +
                     "password non possono essere vuoti");
 
         }
 
-        else if (messaggioErrore == 2){
+        else if (errorMassage == 2){
 
-            JOptionPane.showMessageDialog(campoMatricola, "Credenziali errate" +
+            JOptionPane.showMessageDialog(matriculationNumberField  , "Credenziali errate" +
                     " riprova o registrati");
 
         }
 
-        else if(messaggioErrore == 3) {
+        else if(errorMassage == 3) {
 
-            HomePageR homePage = new HomePageR(myController, responsabileCorrente);
+            HomePageR homePage = new HomePageR(myController, currentManager);
 
             MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(ResponsibleAccess.this);
 
@@ -347,46 +364,46 @@ public class ResponsibleAccess extends JPanel {
     //Metodo per visualizzare e nascondere la password
     private void viewPassword() {
 
-        if (campoPassword.getEchoChar() == '•') {
+        if (passwordField.getEchoChar() == '•') {
 
-            campoPassword.setEchoChar((char) 0);
+            passwordField.setEchoChar((char) 0);
 
         } else {
 
-            campoPassword.setEchoChar('•');
+            passwordField.setEchoChar('•');
 
         }
 
     }
 
     public String getLoginMatricola() {
-        return this.campoMatricola.getText().trim();
+        return this.matriculationNumberField  .getText().trim();
     }
 
     public char[] getLoginPassword() {
-        return this.campoPassword.getPassword();
+        return this.passwordField.getPassword();
     }
 
 
     //Verifica delle credenziali quando il bottone viene premuto
-    public int verificaCredenziali() {
+    public int credentialsVerification() {
 
 
-        final boolean[] responsabileTrovato = new boolean[1];
+        final boolean[] managerFound = new boolean[1];
 
 
-        if (this.campoMatricola.getText().isEmpty() || this.campoPassword.getPassword().length == 0) {
+        if (this.matriculationNumberField  .getText().isEmpty() || this.passwordField.getPassword().length == 0) {
 
             return 1; //campi vuoti
 
 
-        } else if (!this.campoMatricola.getText().isEmpty() && this.campoPassword.getPassword().length > 0) {
+        } else if (!this.matriculationNumberField  .getText().isEmpty() && this.passwordField.getPassword().length > 0) {
 
-            responsabileCorrente = new Responsabile(getLoginMatricola(), null,null,null,null,null, getLoginPassword(),null);
-            responsabileTrovato[0] = myController.verificaResponsabile(responsabileCorrente);
+            currentManager = new Responsabile(getLoginMatricola(), null,null,null,null,null, getLoginPassword(),null);
+            managerFound[0] = myController.managerVerificationC(currentManager);
 
 
-            if (responsabileTrovato[0]) {
+            if (managerFound[0]) {
 
                 return 3; //credenziali corrette
 

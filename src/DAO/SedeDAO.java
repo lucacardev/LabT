@@ -8,7 +8,7 @@ import java.util.List;
 
 public class SedeDAO {
 
-    private DB_Connection connessioneDB;
+    private DB_Connection DBConnection;
     Controller currController;
 
 
@@ -16,7 +16,7 @@ public class SedeDAO {
 
         currController = controller;
 
-        connessioneDB = DB_Connection.getConnessione();
+        DBConnection = DB_Connection.getConnessione();
 
     }
 
@@ -28,7 +28,7 @@ public class SedeDAO {
 
         try {
             String query = "SELECT * FROM sede WHERE cods = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setInt(1, codSede_fk);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -58,7 +58,7 @@ public class SedeDAO {
         try {
 
             String query = "SELECT cods FROM sede WHERE nome ILIKE ?"; //Utilizziamo ILIKE per togliere il case sensitive
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setString(1, '%' + nomeSede + '%');
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -86,7 +86,7 @@ public class SedeDAO {
         try {
 
             String query = "SELECT * FROM sede";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {

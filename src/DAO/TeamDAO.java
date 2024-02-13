@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeamDAO {
-    private DB_Connection connessioneDB;
+    private DB_Connection DBConnection;
     Controller currController;
 
 
@@ -21,18 +21,18 @@ public class TeamDAO {
 
         currController = controller;
 
-        connessioneDB = DB_Connection.getConnessione();
+        DBConnection = DB_Connection.getConnessione();
 
     }
 
-    public boolean recuperoTeamDaCodice(String codTeam) {
+    public boolean teamRecoveryWithCode(String codTeam) {
 
         boolean teamTrovato = false;
 
         try {
 
             String query = "SELECT * FROM Team WHERE codTeam = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setString(1, codTeam);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -53,7 +53,7 @@ public class TeamDAO {
 
     }
 
-    public Team recuperoTeam(String codT) {
+    public Team teamRecoveryDAO(String codT) {
 
         Team team = null;
         String codTeam;
@@ -66,7 +66,7 @@ public class TeamDAO {
         try {
 
             String query = "SELECT * FROM Team WHERE codTeam = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setString(1, codT);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -80,7 +80,7 @@ public class TeamDAO {
                 codR_fk = resultSet.getString("codR_fk");
 
                 ResponsabileDAO responsabileDAO = new ResponsabileDAO(currController);
-                Responsabile responsabile = responsabileDAO.recuperoResponsabile(codR_fk);
+                Responsabile responsabile = responsabileDAO.managerRecoveryDAO(codR_fk);
 
                 team = new Team(codTeam, nome, descrizione,matricolaL,n_tecnici,responsabile);
 
@@ -97,14 +97,14 @@ public class TeamDAO {
 
     }
 
-    public List<Team> recuperoTeamsDalDB(Responsabile responsabile) {
+    public List<Team> teamRecoverysDalDB(Responsabile responsabile) {
 
         List<Team> teams = new ArrayList<>();
 
         try {
 
             String query = "SELECT * FROM team where codR_fk = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setString(1,responsabile.getMatricola());
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -118,7 +118,7 @@ public class TeamDAO {
                 String codR_fk = resultSet.getString("codR_fk");
 
                 ResponsabileDAO responsabileDAO = new ResponsabileDAO(currController);
-                Responsabile responsabile1 = responsabileDAO.recuperoResponsabile(codR_fk);
+                Responsabile responsabile1 = responsabileDAO.managerRecoveryDAO(codR_fk);
 
                 Team team = new Team(codTeam, nomeTeam, descrizione,matricolaL,n_tecnici,responsabile1);
                 teams.add(team);
@@ -137,13 +137,13 @@ public class TeamDAO {
     }
 
     //////////////////////////////////////INSERT TEAM////////////////////////////////////////////
-    public boolean newTeamInsert(String codTeam, String nome, String descrizione, String matricolaL, Integer n_tecnici, Responsabile codR_fk) {
+    public boolean newTeamInsertDAO(String codTeam, String nome, String descrizione, String matricolaL, Integer n_tecnici, Responsabile codR_fk) {
 
         String query = "INSERT INTO TEAM (Codteam, nome, descrizione ,matricolal, n_tecnici ,codr_fk) VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
 
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setString(1, codTeam);
             preparedStatement.setString(2, nome);
             preparedStatement.setString(3, descrizione);
@@ -163,10 +163,10 @@ public class TeamDAO {
 
     }
 
-    public void deleteTeam(String codteam) {
+    public void deleteTeamDAO(String codteam) {
 
         TecnicoDAO tecnicoDAO = new TecnicoDAO(currController);
-        Team team = recuperoTeam(codteam); // Recupera il team tramite il codice
+        Team team = teamRecoveryDAO(codteam); // Recupera il team tramite il codice
 
         List<Tecnico> tecniciDelTeam = tecnicoDAO.recuperoTecniciDalDB(team);
 
@@ -174,14 +174,14 @@ public class TeamDAO {
         for (Tecnico tecnico : tecniciDelTeam) {
 
             tecnico.setTeam(null);
-            tecnicoDAO.updateTecnici(tecnico, null); // Aggiorna la chiave esterna a null nel database
+            tecnicoDAO.techniciansUpdateDAO(tecnico, null); // Aggiorna la chiave esterna a null nel database
 
         }
 
         try {
 
             String query = "DELETE FROM team WHERE codteam = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setString(1, codteam);
             preparedStatement.executeUpdate();
 
@@ -194,12 +194,12 @@ public class TeamDAO {
 
     }
 
-    public void updateTeamLeader(String codTeam, String leader) {
+    public void updateTeamLeaderDAO(String codTeam, String leader) {
 
         try {
 
             String query = "UPDATE team SET matricolal = ? WHERE codteam = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
 
             preparedStatement.setString(1, leader);
             preparedStatement.setString(2, codTeam);

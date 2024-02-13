@@ -8,13 +8,13 @@ import java.util.List;
 
 public class TableModelStrumento extends AbstractTableModel {
 
-    private List<Strumento> listaStrumenti;
+    private List<Strumento> toolsList;
 
     private final String[] columnsName = {"Codice Strumento", "Caratteristiche", "Descrizione", "Tempo Max Uso", "Cod. Postazione", "Sede"};
 
     public TableModelStrumento(List<Strumento> strumenti) {
 
-        listaStrumenti = strumenti;
+        toolsList = strumenti;
 
     }
 
@@ -29,9 +29,9 @@ public class TableModelStrumento extends AbstractTableModel {
     @Override
     public int getRowCount() {
 
-        if (listaStrumenti != null) {
+        if (toolsList != null) {
 
-            return listaStrumenti.size();
+            return toolsList.size();
 
         } else {
 
@@ -50,9 +50,9 @@ public class TableModelStrumento extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
 
 
-        if (listaStrumenti != null) {
+        if (toolsList != null) {
 
-            Strumento strumento = listaStrumenti.get(rowIndex);
+            Strumento strumento = toolsList.get(rowIndex);
 
             return switch (columnIndex) {
 
@@ -80,18 +80,18 @@ public class TableModelStrumento extends AbstractTableModel {
 
     }
 
-    public void setData(List<Strumento> strumenti) {
+    public void setData(List<Strumento> tools) {
 
-        listaStrumenti = strumenti;
+        toolsList = tools;
 
         fireTableDataChanged(); // Notifica alla tabella che i dati sono stati cambiati
 
     }
 
-    public Strumento getStrumentoAtRow(int rowIndex) {
+    public Strumento getToolAtRow(int rowIndex) {
 
-        if (listaStrumenti != null && rowIndex >= 0 && rowIndex < listaStrumenti.size()) {
-            return listaStrumenti.get(rowIndex);
+        if (toolsList != null && rowIndex >= 0 && rowIndex < toolsList.size()) {
+            return toolsList.get(rowIndex);
 
         }
 

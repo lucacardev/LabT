@@ -9,11 +9,11 @@ import java.util.List;
 public class TableModelMiePrenotazioni extends AbstractTableModel {
 
     private final String[] columnsName = {"Codice Prenotazione", "Data", "Ora", "Tempo di utilizzo", "Utente", "Codice Strumento"};
-    private List<Prenotazione> listaPrenotazioni;
+    private List<Prenotazione> bookList;
 
-    public TableModelMiePrenotazioni(List<Prenotazione> listaPrenotazioni) {
+    public TableModelMiePrenotazioni(List<Prenotazione> bookList) {
 
-        this.listaPrenotazioni = listaPrenotazioni;
+        this.bookList = bookList;
 
     }
 
@@ -27,9 +27,9 @@ public class TableModelMiePrenotazioni extends AbstractTableModel {
     @Override
     public int getRowCount() {
 
-        if(listaPrenotazioni != null) {
+        if(bookList != null) {
 
-            return listaPrenotazioni.size();
+            return bookList.size();
 
         } else {
 
@@ -47,9 +47,9 @@ public class TableModelMiePrenotazioni extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
 
-        if (listaPrenotazioni != null) {
+        if (bookList != null) {
 
-            Prenotazione prenotazione = listaPrenotazioni.get(rowIndex);
+            Prenotazione prenotazione = bookList.get(rowIndex);
 
             return switch (columnIndex) {
 
@@ -91,16 +91,16 @@ public class TableModelMiePrenotazioni extends AbstractTableModel {
 
     }
 
-    public void setData(List<Prenotazione> listaPrenotazioni) {
+    public void setData(List<Prenotazione> bookList) {
 
-        this.listaPrenotazioni = listaPrenotazioni;
+        this.bookList = bookList;
 
     }
 
     public Prenotazione getPrenotazioneAtRow(int rowIndex) {
 
-        if (listaPrenotazioni != null && rowIndex >= 0 && rowIndex < listaPrenotazioni.size()) {
-            return listaPrenotazioni.get(rowIndex);
+        if (bookList != null && rowIndex >= 0 && rowIndex < bookList.size()) {
+            return bookList.get(rowIndex);
 
         }
 

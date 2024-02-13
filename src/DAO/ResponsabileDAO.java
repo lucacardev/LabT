@@ -10,37 +10,35 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ResponsabileDAO {
-    private static DB_Connection connessioneDB;
+    private static DB_Connection DBConnection;
     Controller currController;
 
     public ResponsabileDAO(Controller controller) {
 
         currController = controller;
 
-        connessioneDB = DB_Connection.getConnessione();
+        DBConnection = DB_Connection.getConnessione();
 
     }
 
     //////////////////////////RECUPERO CREDENZIALI///////////////////
 
-    public boolean verificaCredenzialiDAO(String matricola, char[] password) {
-
-        boolean responsabileTrovato = false;
+    public boolean credentialsVerificationDAO(String matriculation, char[] password) {
 
         /*Utilizziamo la classe PreparedStatement per impedire le SQLInjection*/
 
         try {
 
             String query = "SELECT * FROM responsabile WHERE matricola= ? AND pw = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
-            preparedStatement.setString(1, matricola);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
+            preparedStatement.setString(1, matriculation);
             preparedStatement.setString(2, String.valueOf(password));
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
 
-                if (resultSet.getString("matricola").equals(matricola) && resultSet.getString("pw").equals(String.valueOf(password))) {
-                responsabileTrovato = true;
+                if (resultSet.getString("matricola").equals(matriculation) && resultSet.getString("pw").equals(String.valueOf(password))) {
+                return true;
 
                 }
 
@@ -53,25 +51,25 @@ public class ResponsabileDAO {
 
         }
 
-        return responsabileTrovato;
+        return false;
 
     }
 
-    public static String [] nomecognomeRecovery(String matricola, char[] password) {
+    public static String [] nameSurnameRecovery(String matriculation, char[] password) {
 
-        String[] informazioni = new String[2];
+        String[] information = new String[2];
 
         try {
             String query = "SELECT nome, cognome FROM responsabile WHERE matricola = ? and pw = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
-            preparedStatement.setString(1, matricola);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
+            preparedStatement.setString(1, matriculation);
             preparedStatement.setString(2,String.valueOf(password));
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
 
-                informazioni[0] = resultSet.getString("nome");
-                informazioni[1] = resultSet.getString("cognome");
+                information[0] = resultSet.getString("nome");
+                information[1] = resultSet.getString("cognome");
 
             }
 
@@ -82,24 +80,22 @@ public class ResponsabileDAO {
 
         }
 
-        return informazioni;
+        return information;
 
     }
 
-    public boolean verificaMailResponsabile(String email) {
-
-        boolean emailTrovata = false;
+    public boolean managerMailCheckDAO(String email) {
 
         try {
 
             String query = "SELECT * FROM responsabile WHERE email = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
 
-                emailTrovata = true;
+                return true;
 
             }
 
@@ -109,26 +105,24 @@ public class ResponsabileDAO {
 
         }
 
-        return emailTrovata;
+        return false;
 
     }
 
     /////////////////////////////////RECUPERO PASSWORD////////////////////////////
     //Metodo per recuperare la password dal database in base alla mail
-    public String recuperaPasswordResponsabile(String email) {
-
-        String password = null;
+    public String managerPasswordRecoveryDAO(String email) {
 
         try {
 
             String query = "SELECT pw FROM responsabile WHERE email = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
 
-                password = resultSet.getString("pw");
+                return resultSet.getString("pw");
 
             }
 
@@ -139,18 +133,18 @@ public class ResponsabileDAO {
 
         }
 
-        return password;
+        return " ";
 
     }
 
     //Metodo per aggiornare la password di un utente presente nel database
-    public boolean aggiornaPasswordResponsabile (String email, String nuovaPassword) {
+    public boolean managerPasswordUpdateDAO(String email, String newPassword) {
 
         try {
 
             String query = "UPDATE responsabile SET pw= ? WHERE email = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
-            preparedStatement.setString(1, nuovaPassword);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
+            preparedStatement.setString(1, newPassword);
             preparedStatement.setString(2, email);
 
             int rowsUpdated = preparedStatement.executeUpdate();
@@ -171,13 +165,13 @@ public class ResponsabileDAO {
     }
 
     //Metodo per verificare se mail e matricola già utilizzati
-    public boolean verifyMatricolaMailR(String matricola, String email) {
+    public boolean verifyManagerMailMatriculationDAO(String matriculation, String email) {
 
         try {
 
             String query = "SELECT * FROM responsabile WHERE matricola = ? OR email = ?" ;
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
-            preparedStatement.setString(1, matricola);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
+            preparedStatement.setString(1, matriculation);
             preparedStatement.setString(2, email);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -199,47 +193,42 @@ public class ResponsabileDAO {
 
     }
 
-    public Responsabile recuperoResponsabile (String codR_fk) {
-
-        Responsabile responsabile = null;
-        String matricola;
-        String nome;
-        String cognome;
-        String codfis;
-        String telefono;
+    public Responsabile managerRecoveryDAO(String codR_fk) {
+        
+        String matriculation;
+        String name;
+        String surname;
+        String taxCode;
+        String telephoneNumber;
         String email;
-        char[] pw = new char[0];
         int cods_fk;
 
         try {
 
             String query = "SELECT * FROM Responsabile WHERE matricola = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setString(1, codR_fk);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
 
-                matricola = resultSet.getString("matricola");
-                nome = resultSet.getString("nome");
-                cognome = resultSet.getString("cognome");
-                codfis = resultSet.getString("codfiscale");
-                telefono = resultSet.getString("telefono");
+                matriculation = resultSet.getString("matricola");
+                name = resultSet.getString("nome");
+                surname = resultSet.getString("cognome");
+                taxCode = resultSet.getString("codfiscale");
+                telephoneNumber = resultSet.getString("telefono");
                 email = resultSet.getString("email");
                 String password = resultSet.getString("pw");
 
                 if (password != null) {
 
-                    pw = password.toCharArray();
+                    cods_fk = resultSet.getInt("codS_fk");
+                    SedeDAO sedeDao = new SedeDAO(currController);
+                    Sede headquarters = sedeDao.recuperoSede(cods_fk); // Metodo per ottenere l'oggetto Sede a partire dall'ID
+
+                    return new Responsabile(matriculation, name, surname, taxCode, telephoneNumber, email, password.toCharArray(), headquarters);
 
                 }
-
-                cods_fk = resultSet.getInt("codS_fk");
-                SedeDAO sedeDao = new SedeDAO(currController);
-                Sede sede = sedeDao.recuperoSede(cods_fk); // Metodo per ottenere l'oggetto Sede a partire dall'ID
-
-
-                responsabile = new Responsabile(matricola, nome, cognome,codfis,telefono,email,pw,sede);
 
             }
 
@@ -250,24 +239,24 @@ public class ResponsabileDAO {
 
         }
 
-        return responsabile;
+        return null;
 
     }
 
     //////////////////////INSERT RESPONSABILE/////////////////////7
 
-    public boolean newResponsableRegister(String matricola, String nome, String cognome, String email, char[] password, Sede cods_fk) {
+    public boolean newManagerSignIn(String matriculation, String name, String surname, String email, char[] password, Sede headquartersFk) {
 
         String query = "INSERT INTO RESPONSABILE (matricola, nome, cognome,email, pw,cods_fk) VALUES (?, ?, ?, ?, ?,?)";
 
         try {
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
-            preparedStatement.setString(1, matricola);
-            preparedStatement.setString(2, nome);
-            preparedStatement.setString(3, cognome);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
+            preparedStatement.setString(1, matriculation);
+            preparedStatement.setString(2, name);
+            preparedStatement.setString(3, surname);
             preparedStatement.setString(4, email);
             preparedStatement.setString(5, String.valueOf(password));
-            preparedStatement.setInt(6, cods_fk.getCodS());
+            preparedStatement.setInt(6, headquartersFk.getCodS());
 
             int rowsInserted = preparedStatement.executeUpdate();
             return rowsInserted > 0;

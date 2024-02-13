@@ -16,14 +16,14 @@ import java.util.List;
 public class MyTeam extends JPanel {
 
     Controller myController;
-    Responsabile responsabileCorrente;
+    Responsabile currentManager;
     private final JTable teamTable;
     private final String[] columnNames = {"CodiceTeam", "Nome", "Descrizione", "Leader", "NumeroTecnici"};
 
-    public MyTeam(Controller controller, Responsabile responsabileLoggato) {
+    public MyTeam(Controller controller, Responsabile loggedInManager) {
 
         myController = controller;
-        responsabileCorrente = responsabileLoggato;
+        currentManager = loggedInManager;
         setLayout(new BorderLayout());
 
         // Creazione della tabella con i dati
@@ -63,7 +63,7 @@ public class MyTeam extends JPanel {
 
             else {
 
-                NewTeam newTeam = new NewTeam(myController,responsabileCorrente);
+                NewTeam newTeam = new NewTeam(myController,currentManager);
                 mainWindow.addCardPanel(newTeam, "newteam");
 
             }
@@ -82,17 +82,17 @@ public class MyTeam extends JPanel {
                 String teamMat = (String) teamTable.getValueAt(selectedRow, 3);
                 int nTec = (Integer) teamTable.getValueAt(selectedRow, 4);
 
-                Team team = new Team(teamCode, teamName, teamDes, teamMat, nTec, responsabileCorrente);
-                List<Tecnico> tecniciDelTeam = myController.recuperoTecniciC(team);
+                Team team = new Team(teamCode, teamName, teamDes, teamMat, nTec, currentManager);
+                List<Tecnico> tecniciDelTeam = myController.technicianRecoveryC(team);
 
                 if(tecniciDelTeam.size() == 5) {
-                    Organigramma5Panel organigramma5 = new Organigramma5Panel(myController,responsabileCorrente,tecniciDelTeam, team);
+                    Organigramma5Panel organigramma5 = new Organigramma5Panel(myController,currentManager,tecniciDelTeam, team);
                     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(MyTeam.this);
                     mainWindow.addCardPanel(organigramma5, "Organigramma");
 
                 } if(tecniciDelTeam.size() == 10) {
 
-                    Organigramma10Panel organigramma10 = new Organigramma10Panel(myController,responsabileCorrente,tecniciDelTeam,team);
+                    Organigramma10Panel organigramma10 = new Organigramma10Panel(myController,currentManager,tecniciDelTeam,team);
                     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(MyTeam.this);
                     mainWindow.addCardPanel(organigramma10, "Organigramma");
 
@@ -106,14 +106,14 @@ public class MyTeam extends JPanel {
 
         });
 
-        visualizzaTeamsResponsabile();
+        viewManagerTeams();
 
         //Azione per tornare indietro
         backButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                    HomePageR homepage = new HomePageR(myController, responsabileCorrente);
+                    HomePageR homepage = new HomePageR(myController, currentManager);
                     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(MyTeam.this);
                     mainWindow.addCardPanel(homepage, "HomePageR");
 
@@ -129,8 +129,8 @@ public class MyTeam extends JPanel {
                 if (choice == JOptionPane.YES_OPTION) {
 
                     // Chiamata al metodo del controller per eliminare il team dal database
-                    Team Teamselezionato = createTeamFromRow(selectedRow);
-                    myController.deleteTeamC(Teamselezionato); // Chiama il metodo deleteTeam del controller
+                    Team selectedTeam = createTeamFromRow(selectedRow);
+                    myController.deleteTeamC(selectedTeam); // Chiama il metodo deleteTeam del controller
 
                     // Rimuovi la riga dalla tabella
                     ((DefaultTableModel) teamTable.getModel()).removeRow(selectedRow);
@@ -148,13 +148,13 @@ public class MyTeam extends JPanel {
 
     }
 
-    private void visualizzaTeamsResponsabile() {
+    private void viewManagerTeams() {
 
-        if (myController != null && responsabileCorrente != null) {
+        if (myController != null && currentManager != null) {
 
             try {
 
-                List<Team> teams = myController.recuperoTeamsDalDBC(responsabileCorrente);
+                List<Team> teams = myController.dBTeamsRecovery(currentManager);
 
                     if (!teams.isEmpty()) {
                         Object[][] data = new Object[teams.size()][5]; // Array bidimensionale per i dati dei team

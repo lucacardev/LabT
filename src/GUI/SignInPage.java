@@ -19,7 +19,7 @@ public class SignInPage extends JPanel {
 
     private final static JLabel usernameText = new JLabel("Username");
     private final static JLabel passwordText = new JLabel("Password");
-    private final static JLabel emailText = new JLabel("Email");
+    private final static JLabel textMail = new JLabel("Email");
 
     private final static BtnLayout backButton = new BtnLayout("Indietro");
     private final static BtnLayout signInButton = new BtnLayout("Registrati");
@@ -27,8 +27,8 @@ public class SignInPage extends JPanel {
     private final TextFieldBorderColor emailField;
     private final TextFieldBorderColor usernameField;
     private final JPasswordField passwordField;
-    private static BufferedImage backgroundImageSignin;
-    private static BufferedImage rightbackgroundSingin;
+    private static BufferedImage backgroundImageSignIn;
+    private static BufferedImage rightBackgroundSingIn;
     Controller myController;
 
 
@@ -47,10 +47,10 @@ public class SignInPage extends JPanel {
                 Graphics2D g2d = (Graphics2D) g;
 
                 // Disegna l'immagine di sfondo con interpolazione bilineare
-                if (rightbackgroundSingin != null) {
+                if (rightBackgroundSingIn != null) {
 
                     g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-                    g2d.drawImage(rightbackgroundSingin, 0, 0, getWidth(), getHeight(), this);
+                    g2d.drawImage(rightBackgroundSingIn, 0, 0, getWidth(), getHeight(), this);
 
                 }
 
@@ -60,7 +60,7 @@ public class SignInPage extends JPanel {
         //Impostazione sfondo background di destra
 
         try {
-            rightbackgroundSingin = ImageIO.read(new File("src/GUI/icon/background.png"));
+            rightBackgroundSingIn = ImageIO.read(new File("src/GUI/icon/background.png"));
 
         } catch (Exception ex) {
             System.out.println("Errore caricamento immagine background singin utente destra");
@@ -80,7 +80,7 @@ public class SignInPage extends JPanel {
         gbc.gridy = 2;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
-        rightSignInPage.add(emailText, gbc);
+        rightSignInPage.add(textMail, gbc);
 
         //Testo password
         gbc.gridy = 4;
@@ -191,7 +191,7 @@ public class SignInPage extends JPanel {
 
                 } else {
 
-                    //Chiamo la classe DTO che incapsula le informazioni del nuovo utente
+                    //Chiamo la classe DTO che incapsula le informations del nuovo utente
                     Utente nuovoUtente = new Utente(getUsernameSignIn(), getEmailSignIn(), getPasswordSignIn());
 
                     String registerCode;
@@ -219,7 +219,7 @@ public class SignInPage extends JPanel {
 
                             if (verificationRegisterCode != null && verificationRegisterCode.equals(registerCode)) {
 
-                                boolean complete = myController.newUserRegister(nuovoUtente);
+                                boolean complete = myController.newUserRegisterC(nuovoUtente);
 
                                 if (complete) {
 
@@ -260,9 +260,9 @@ public class SignInPage extends JPanel {
                 super.paintComponent(g);
 
                 // Disegna l'immagine di sfondo
-                if (backgroundImageSignin != null) {
+                if (backgroundImageSignIn != null) {
 
-                    g.drawImage(backgroundImageSignin, 0, 0, getWidth(), getHeight(), this);
+                    g.drawImage(backgroundImageSignIn, 0, 0, getWidth(), getHeight(), this);
 
                 }
 
@@ -273,7 +273,7 @@ public class SignInPage extends JPanel {
 
         try {
 
-            backgroundImageSignin = ImageIO.read(new File("src/GUI/icon/sign.png"));
+            backgroundImageSignIn = ImageIO.read(new File("src/GUI/icon/sign.png"));
 
         } catch (Exception ex) {
 

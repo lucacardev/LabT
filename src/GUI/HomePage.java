@@ -17,12 +17,12 @@ import java.io.IOException;
 public class HomePage extends JPanel{
     private static BufferedImage leftHomePageBackground;
     Controller myController;
-    Utente utenteLoggato;
+    Utente loggedUser;
 
-    public HomePage(Controller controller, Utente utenteCorrente) {
+    public HomePage(Controller controller, Utente currentUser) {
 
         myController = controller;
-        utenteLoggato = utenteCorrente;
+        loggedUser = currentUser;
 
         setLayout(new GridLayout(0,2));
 
@@ -54,7 +54,7 @@ public class HomePage extends JPanel{
         leftGbc.insets = new Insets(5,5,5,5);
 
         //Testo di benvenuto
-        IncreaseFont welcomeText = new IncreaseFont("Benvenuto "+ utenteCorrente.getUsername());
+        IncreaseFont welcomeText = new IncreaseFont("Benvenuto "+ currentUser.getUsername());
         welcomeText.increaseFont(welcomeText, 15);
 
         leftGbc.gridx = 0;
@@ -64,7 +64,7 @@ public class HomePage extends JPanel{
         leftHomePage.add(welcomeText, leftGbc);
 
         //Email dell'utente registrato
-        IncreaseFont userEmail = new IncreaseFont(utenteCorrente.getEmail());
+        IncreaseFont userEmail = new IncreaseFont(currentUser.getEmail());
         userEmail.increaseFont(userEmail,7);
         leftGbc.gridx = 0;
         leftGbc.gridy = 1;
@@ -133,7 +133,7 @@ public class HomePage extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                NewBooking newBooking  = new NewBooking(myController, utenteLoggato);
+                NewBooking newBooking  = new NewBooking(myController, loggedUser);
 
                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(HomePage.this);
 
@@ -163,7 +163,7 @@ public class HomePage extends JPanel{
 
                 } else {
 
-                    MyBooking myBookingPage = new MyBooking(myController, utenteLoggato);
+                    MyBooking myBookingPage = new MyBooking(myController, loggedUser);
                     mainWindow.addCardPanel(myBookingPage, "myBookingPage");
                 }
             }

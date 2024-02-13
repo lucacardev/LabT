@@ -7,7 +7,7 @@ import java.time.LocalTime;
 
 
 public class LaboratorioDAO {
-    private final DB_Connection connessioneDB;
+    private final DB_Connection DBConnection;
 
     Controller currController;
 
@@ -15,36 +15,35 @@ public class LaboratorioDAO {
 
         currController = controller;
 
-        connessioneDB = DB_Connection.getConnessione();
+        DBConnection = DB_Connection.getConnessione();
 
     }
 
-    public Laboratorio recuperoLaboratorio(String codLab) {
+    public Laboratorio labRecoveryDAO(String codLab) {
 
         try {
 
             String query = "SELECT * FROM laboratorio WHERE codl = ?";
-            PreparedStatement preparedStatement = connessioneDB.getPreparedStatement(query);
+            PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
             preparedStatement.setString(1, codLab);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
 
                 String codL = resultSet.getString("codl");
-                String descrizione = resultSet.getString("descrizione");
-                LocalTime orarioApertura = resultSet.getTime("orario_apertura").toLocalTime();
-                LocalTime orarioChiusura = resultSet.getTime("orario_chiusura").toLocalTime();
-                int numTecnici = resultSet.getInt("num_tecnici");
-                int numPostazioni = resultSet.getInt("num_postazioni");
+                String description = resultSet.getString("descrizione");
+                LocalTime openingTime = resultSet.getTime("orario_apertura").toLocalTime();
+                LocalTime closingTime = resultSet.getTime("orario_chiusura").toLocalTime();
+                int techniciansNumber = resultSet.getInt("num_tecnici");
+                int stationsNumber = resultSet.getInt("num_postazioni");
 
-                return new Laboratorio(codL, descrizione, orarioApertura, orarioChiusura, numTecnici, numPostazioni);
+                return new Laboratorio(codL, description, openingTime, closingTime, techniciansNumber, stationsNumber);
 
             }
 
 
         } catch (SQLException e) {
 
-            System.out.println("Errore nella ricerca della sede");
             e.printStackTrace();
 
         }
