@@ -141,10 +141,10 @@ public class NewBookingToolSelected extends JDialog{
 
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        BtnLayout prenotaButton = new BtnLayout("Prenota");
-        mainPanel.add(prenotaButton, gbc);
+        JButton bookingButton = new JButton("Prenota");
+        mainPanel.add(bookingButton, gbc);
 
-        prenotaButton.addMouseListener(new MouseAdapter() {
+        bookingButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 selectedDate = dateChooser.getDate();
@@ -335,13 +335,16 @@ public class NewBookingToolSelected extends JDialog{
         //Bottone per confermare modifica
         gbc.gridx = 0;
         gbc.gridy = 2;
-
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        BtnLayout modificaButton = new BtnLayout("Modifica Prenotazione");
-        mainPanel.add(modificaButton, gbc);
 
-        modificaButton.addMouseListener(new MouseAdapter() {
+        JButton editButton = new JButton("Modifica Prenotazione");
+        editButton.setBackground(new Color(35,171,144));
+        editButton.setForeground(Color.white);
+
+        mainPanel.add(editButton, gbc);
+
+        editButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 

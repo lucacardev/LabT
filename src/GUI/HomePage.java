@@ -72,12 +72,14 @@ public class HomePage extends JPanel{
         leftHomePage.add(userEmail, leftGbc);
 
         //Pulsante indietro
-        BtnLayout backButton = new BtnLayout("Esci");
+        JButton backButton = new JButton("Esci");
+        backButton.setBackground(Color.RED);
+        backButton.setForeground(Color.WHITE);
+
         leftGbc.gridx = 0;
         leftGbc.gridy = 3;
         leftGbc.weightx = 0.5;
         leftGbc.weighty = 0.5;
-        backButton.setBackground(Color.RED);
         leftGbc.insets = new Insets(15,20,40,0);
         leftGbc.anchor = GridBagConstraints.NORTH;
         leftHomePage.add(backButton, leftGbc);
@@ -94,11 +96,11 @@ public class HomePage extends JPanel{
 
                 if (choice == JOptionPane.OK_OPTION) {
 
-                    PaginaLogin paginaLogin = new PaginaLogin(myController);
+                    UserLoginPage userLoginPage = new UserLoginPage(myController);
 
                     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(HomePage.this);
 
-                    mainWindow.addCardPanel(paginaLogin, "login");
+                    mainWindow.addCardPanel(userLoginPage, "login");
 
 
                 }
@@ -120,7 +122,9 @@ public class HomePage extends JPanel{
         String font = "Arial";
 
         //Bottone nuova prenotazione
-        BtnLayout newBooking = new BtnLayout("Nuova prenotazione");
+        JButton newBooking = new JButton("Nuova prenotazione");
+        newBooking.setBackground(new Color(35,171,144));
+        newBooking.setForeground(Color.WHITE);
         newBooking.setFont(new FontUIResource(font, style, sizeFont));
 
         rightGbc.gridx = 0;
@@ -143,7 +147,9 @@ public class HomePage extends JPanel{
         });
 
         //Bottone mie prenotazioni
-        BtnLayout myBooking = new BtnLayout("Le mie prenotazioni");
+        JButton myBooking = new JButton("Le mie prenotazioni");
+        myBooking.setBackground(new Color(35,171,144));
+        myBooking.setForeground(Color.white);
         myBooking.setFont(new FontUIResource(font, style, sizeFont));
 
         rightGbc.gridx = 0;

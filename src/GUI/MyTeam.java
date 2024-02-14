@@ -34,15 +34,22 @@ public class MyTeam extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); // Pannello per i pulsanti
 
         JButton backButton = new JButton("Indietro");
-        BtnLayout addTeamButton = new BtnLayout("Aggiungi Team");
-        addTeamButton.setBackground(new Color(23,65,95));
-        BtnLayout viewOrgButton = new BtnLayout("Visualizza Organigramma");
-        viewOrgButton.setBackground(new Color(23,65,95));
-        BtnLayout deleteTeamButton = new BtnLayout("Elimina Team");
-
         backButton.setBackground(Color.RED);
         backButton.setForeground(Color.WHITE);
+
+        JButton addTeamButton = new JButton("Aggiungi Team");
+        addTeamButton.setBackground(new Color(23,65,95));
+        addTeamButton.setForeground(Color.WHITE);
+
+
+        JButton viewOrgButton = new JButton("Visualizza Organigramma");
+        viewOrgButton.setBackground(new Color(23,65,95));
+        viewOrgButton.setForeground(Color.WHITE);
+
+        JButton deleteTeamButton = new JButton("Elimina Team");
         deleteTeamButton.setBackground(Color.RED);
+
+
         buttonPanel.add(backButton);
         buttonPanel.add(Box.createHorizontalStrut(50)); // Aggiungi spazio tra i pulsanti
         buttonPanel.add(addTeamButton); // Aggiungi il pulsante "Aggiungi Team"

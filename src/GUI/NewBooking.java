@@ -15,9 +15,9 @@ public class NewBooking extends JPanel{
     private final JPanel showResultPanel;
     private final JPanel footerPanel;
 
-    private BtnLayout bookingButton;
-    private BtnLayout calendarButton;
-    private BtnLayout summaryButton;
+    private JButton bookingButton;
+    private JButton calendarButton;
+    private JButton summaryButton;
     private NewBookingToolSelected newBookingToolSelected;
     private CalendarDialog calendarDialog;
     private SummaryWindow summaryWindow;
@@ -133,7 +133,9 @@ public class NewBooking extends JPanel{
 
         //Creazione bottone per tornare indietro
 
-        BtnLayout backButton = new BtnLayout("Indietro");
+        JButton backButton = new JButton("Indietro");
+        backButton.setBackground(new Color(35,171,144));
+        backButton.setForeground(Color.white);
 
         footerPanelGbc.gridx = 0;
         footerPanelGbc.gridy = 0;
@@ -167,14 +169,15 @@ public class NewBooking extends JPanel{
 
         //Creazione bottone per effettuare la ricerca
 
-        BtnLayout searchButton = new BtnLayout("Cerca");
+        JButton searchButton = new JButton("Cerca");
+        searchButton.setBackground(Color.BLUE);
+        searchButton.setForeground(Color.white);
 
         footerPanelGbc.gridx = 4;
         footerPanelGbc.gridy = 0;
         footerPanelGbc.weightx = 0.33;
         footerPanelGbc.anchor = GridBagConstraints.LINE_END;
         footerPanelGbc.insets = new Insets(5,0,10,15);
-        searchButton.setBackground(Color.BLUE);
         footerPanel.add(searchButton, footerPanelGbc);
 
         //Bottone Cerca quando viene premuto, controlla che i campi siano tutti non vuoti ed esegue la ricerca
@@ -201,14 +204,15 @@ public class NewBooking extends JPanel{
 
                             //Bottone per annullare la ricerca
 
-                            BtnLayout annulla = new BtnLayout("Annulla");
-                            annulla.setBackground(Color.RED);
-                            annulla.setForeground(Color.WHITE);
+                            JButton cancelButton = new JButton("Annulla");
+                            cancelButton.setBackground(Color.RED);
+                            cancelButton.setForeground(Color.WHITE);
+
                             searchPanelGbc.gridx = 6;
                             searchPanelGbc.gridy = 0;
-                            searchPanel.add(annulla, searchPanelGbc);
+                            searchPanel.add(cancelButton, searchPanelGbc);
 
-                            annulla.addMouseListener(new MouseAdapter() {
+                            cancelButton.addMouseListener(new MouseAdapter() {
                                 @Override
                                 public void mouseClicked(MouseEvent e) {
 
@@ -220,21 +224,22 @@ public class NewBooking extends JPanel{
                                     tablePanel.setData(myController.allToolsListRecovery());
                                     tablePanel.setDataMyBooking(myController.myBookingRecoveryC(loggedUser));
 
-                                    searchPanel.remove(annulla);
+                                    searchPanel.remove(cancelButton);
 
                                     searchPanel.revalidate();
                                     searchPanel.repaint();
 
                                 }
                             });
+
                         } else {
 
                             JOptionPane.showMessageDialog(null, "ATTENZIONE! La sede e la descrizione scelti " +
                                     "non corrispondono a nessuno strumento. ");
-                        }
 
                         }
 
+                        }
 
                     /////////////////////////////////RICERCA PER SEDE O DESCRIZIONE/////////////////////////////////////
                     //Se è stata inserita la sede allora effettuiamo la ricerca per sede altrimenti per descrizione
@@ -258,14 +263,15 @@ public class NewBooking extends JPanel{
 
                             //Bottone per annullare la ricerca
 
-                            BtnLayout annulla = new BtnLayout("Annulla");
-                            annulla.setBackground(Color.RED);
-                            annulla.setForeground(Color.WHITE);
+                            JButton cancelButton = new JButton("Annulla");
+                            cancelButton.setBackground(Color.RED);
+                            cancelButton.setForeground(Color.WHITE);
+
                             searchPanelGbc.gridx = 6;
                             searchPanelGbc.gridy = 0;
-                            searchPanel.add(annulla, searchPanelGbc);
+                            searchPanel.add(cancelButton, searchPanelGbc);
 
-                            annulla.addMouseListener(new MouseAdapter() {
+                            cancelButton.addMouseListener(new MouseAdapter() {
                                 @Override
                                 public void mouseClicked(MouseEvent e) {
 
@@ -276,7 +282,7 @@ public class NewBooking extends JPanel{
                                     //Aggiorniamo i dati della tabella
                                     tablePanel.setData(myController.allToolsListRecovery());
 
-                                    searchPanel.remove(annulla);
+                                    searchPanel.remove(cancelButton);
 
                                     searchPanel.revalidate();
                                     searchPanel.repaint();
@@ -323,11 +329,16 @@ public class NewBooking extends JPanel{
     public void bookingButtonAvailability() {
 
         if (bookingButton == null) {
-            bookingButton = new BtnLayout("Verifica Disponibilità");
+
+            bookingButton = new JButton("Prenota");
+            bookingButton.setForeground(Color.WHITE);
+            bookingButton.setBackground(new Color(35,171,144));
+
             footerPanelGbc.gridx = 1;
             footerPanelGbc.gridy = 0;
             footerPanelGbc.weightx = 0.22;
-            bookingButton.setBackground(new Color(224, 186, 6));
+            bookingButton.setBackground(new Color(35,171,144));
+            bookingButton.setForeground(Color.white);
             footerPanel.add(bookingButton, footerPanelGbc);
 
             footerPanel.revalidate();
@@ -352,7 +363,10 @@ public class NewBooking extends JPanel{
     public void bookingButtonCalendar() {
 
         if (calendarButton == null) {
-            calendarButton = new BtnLayout("Calendario Prenotazioni");
+            calendarButton = new JButton("Calendario Prenotazioni");
+            calendarButton.setBackground(Color.RED);
+            calendarButton.setForeground(Color.WHITE);
+
             footerPanelGbc.gridx = 2;
             footerPanelGbc.gridy = 0;
             footerPanelGbc.weightx = 0.22;
@@ -384,7 +398,10 @@ public class NewBooking extends JPanel{
     public void setSummaryButton() {
 
         if (summaryButton == null) {
-            summaryButton = new BtnLayout("Riepilogo");
+            summaryButton = new JButton("Riepilogo");
+            summaryButton.setBackground(Color.RED);
+            summaryButton.setForeground(Color.WHITE);
+
             footerPanelGbc.gridx = 3;
             footerPanelGbc.gridy = 0;
             footerPanelGbc.weightx = 0.22;
@@ -437,13 +454,13 @@ public class NewBooking extends JPanel{
 
     }
 
-    public void setCodStrumentoNewBookingToolSelected(String toolCodeNewBookingToolSelected) {
+    public void setToolCodeNewBookingToolSelected(String toolCodeNewBookingToolSelected) {
 
         uniToolCode = toolCodeNewBookingToolSelected;
 
     }
 
-    public void setStrumSelezCalend(Strumento tool) {
+    public void setToolSelectedInCalendar(Strumento tool) {
 
         selectedTool = tool;
     }

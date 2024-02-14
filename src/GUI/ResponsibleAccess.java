@@ -197,8 +197,9 @@ public class ResponsibleAccess extends JPanel {
 
         rightGbc.gridx = 1;
         rightGbc.gridy = 5;
-        BtnLayout loginButton = new BtnLayout("Accedi");
+        JButton loginButton = new JButton("Accedi");
         loginButton.setBackground(new Color(23,65,95));
+        loginButton.setForeground(Color.WHITE);
         rightRApage.add(loginButton, rightGbc);
 
 
@@ -277,7 +278,9 @@ public class ResponsibleAccess extends JPanel {
         IncreaseFont Text2 = new IncreaseFont("per accedere alla tua area personale");
         Text2.increaseFont(Text2,8);
 
-        BtnLayout backButton = new BtnLayout("Torna Indietro");
+        JButton backButton = new JButton("Torna Indietro");
+        backButton.setBackground(new Color(35,171,144));
+        backButton.setForeground(Color.white);
 
         JLabel logo = new JLabel(new NoScalingIcon(new ImageIcon("src/GUI/icon/LogoLabTRit.png")));
 
@@ -319,9 +322,9 @@ public class ResponsibleAccess extends JPanel {
 
                 if (choice == JOptionPane.OK_OPTION) {
 
-                    PaginaLogin paginaLogin = new PaginaLogin(myController);
+                    UserLoginPage userLoginPage = new UserLoginPage(myController);
                     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(ResponsibleAccess.this);
-                    mainWindow.addCardPanel(paginaLogin, "login");
+                    mainWindow.addCardPanel(userLoginPage, "login");
 
                 }
 

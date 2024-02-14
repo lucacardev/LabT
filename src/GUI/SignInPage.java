@@ -6,6 +6,7 @@ import UTILITIES.EmailSender;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,16 +14,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class SignInPage extends JPanel {
-
-    private final static JLabel usernameText = new JLabel("Username");
-    private final static JLabel passwordText = new JLabel("Password");
-    private final static JLabel textMail = new JLabel("Email");
-
-    private final static BtnLayout backButton = new BtnLayout("Indietro");
-    private final static BtnLayout signInButton = new BtnLayout("Registrati");
 
     private final TextFieldBorderColor emailField;
     private final TextFieldBorderColor usernameField;
@@ -30,7 +26,6 @@ public class SignInPage extends JPanel {
     private static BufferedImage backgroundImageSignIn;
     private static BufferedImage rightBackgroundSingIn;
     Controller myController;
-
 
 
     public SignInPage(Controller controller) {
@@ -74,18 +69,21 @@ public class SignInPage extends JPanel {
         gbc.gridy = 0;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
+        JLabel usernameText = new JLabel("Username");
         rightSignInPage.add(usernameText, gbc);
 
         //Testo email
         gbc.gridy = 2;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
+        JLabel textMail = new JLabel("Email");
         rightSignInPage.add(textMail, gbc);
 
         //Testo password
         gbc.gridy = 4;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
+        JLabel passwordText = new JLabel("Password");
         rightSignInPage.add(passwordText, gbc);
 
         //Campo username
@@ -114,6 +112,21 @@ public class SignInPage extends JPanel {
         TextFieldBorderColor.changeTextFieldBorderColor(passwordField);
         gbc.anchor = GridBagConstraints.CENTER;
         rightSignInPage.add(passwordField, gbc);
+
+        //Modo per cambiare il focus del cursore da emailField a passwordField
+        Set<AWTKeyStroke> forwardKeys;
+        forwardKeys = new HashSet<>(emailField.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+        forwardKeys.remove(KeyStroke.getKeyStroke("TAB"));
+        emailField.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
+
+        emailField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_TAB) {
+                    passwordField.requestFocus();
+                    evt.consume(); // Consuma l'evento Tab per evitare il comportamento predefinito
+                }
+            }
+        });
 
         //Posizionamento occhio per visualizzare password
         JButton pwdEye = new JButton();
@@ -152,6 +165,9 @@ public class SignInPage extends JPanel {
         gbc.weighty = 0;
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         gbc.insets = new Insets(15,0,0,15);
+        JButton backButton = new JButton("Indietro");
+        backButton.setBackground(Color.RED);
+        backButton.setForeground(Color.WHITE);
         rightSignInPage.add(backButton, gbc);
 
         //Indirizzamento alla pagina di login
@@ -160,11 +176,11 @@ public class SignInPage extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                PaginaLogin paginaLogin = new PaginaLogin(myController);
+                UserLoginPage userLoginPage = new UserLoginPage(myController);
 
                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(SignInPage.this);
 
-                mainWindow.addCardPanel(paginaLogin, "login");
+                mainWindow.addCardPanel(userLoginPage, "login");
 
             }
         });
@@ -177,7 +193,10 @@ public class SignInPage extends JPanel {
         gbc.weighty = 0;
         gbc.anchor = GridBagConstraints.FIRST_LINE_END;
         gbc.insets = new Insets(15,15,0,0);
+        JButton signInButton = new JButton("Registrati");
         rightSignInPage.add(signInButton, gbc);
+        signInButton.setBackground(new Color(35,171,144));
+        signInButton.setForeground(ColorUIResource.white);
 
         //Azioni dopo che il bottone registrati viene premuto
 
@@ -191,7 +210,7 @@ public class SignInPage extends JPanel {
 
                 } else {
 
-                    //Chiamo la classe DTO che incapsula le informations del nuovo utente
+                    //Chiamo la classe DTO che incapsula le informationi del nuovo utente
                     Utente nuovoUtente = new Utente(getUsernameSignIn(), getEmailSignIn(), getPasswordSignIn());
 
                     String registerCode;
@@ -225,11 +244,11 @@ public class SignInPage extends JPanel {
 
                                     JOptionPane.showMessageDialog(null, "La tua registrazione è avvenuta correttamente!");
 
-                                    PaginaLogin paginaLogin = new PaginaLogin(myController);
+                                    UserLoginPage userLoginPage = new UserLoginPage(myController);
 
                                     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(SignInPage.this);
 
-                                    mainWindow.addCardPanel(paginaLogin, "login");
+                                    mainWindow.addCardPanel(userLoginPage, "login");
 
                                 }
 

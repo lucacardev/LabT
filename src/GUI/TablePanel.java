@@ -47,7 +47,7 @@ public class TablePanel extends JPanel {
                         codStrumentoAttuale = selectedStrumento.getCodStrumento();
 
                         //Con questo metodo passiamo lo strumento selezionato all'oggetto CalendarDialog
-                        newBooking.setStrumSelezCalend(selectedStrumento);
+                        newBooking.setToolSelectedInCalendar(selectedStrumento);
 
                         //Passiamo lo Strumento alla classe BookingFrame quando l'utente prenota uno strumento
                         if(newBookingToolSelected != null) {
@@ -56,7 +56,7 @@ public class TablePanel extends JPanel {
 
                         }
 
-                        newBooking.setCodStrumentoNewBookingToolSelected(codStrumentoAttuale.toString());
+                        newBooking.setToolCodeNewBookingToolSelected(codStrumentoAttuale.toString());
                         newBooking.bookingButtonAvailability();
                         newBooking.bookingButtonCalendar();
                         newBooking.setSummaryButton();

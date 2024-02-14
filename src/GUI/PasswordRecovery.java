@@ -116,7 +116,10 @@ public class PasswordRecovery extends JPanel{
         rightPasswordRecovery.add(emailRecovery, gbcRight);
 
         //Inserimento bottone d'invio codice
-        BtnLayout sendButtonCode = new BtnLayout("Recupera");
+        JButton sendButtonCode = new JButton("Recupera");
+        sendButtonCode.setBackground(new Color(35,171,144));
+        sendButtonCode.setForeground(Color.white);
+        
         gbcRight.gridx = 1;
         gbcRight.gridy = 3;
         gbcRight.gridwidth = 1;
@@ -158,23 +161,23 @@ public class PasswordRecovery extends JPanel{
         }
 
         newPasswordPanel.setLayout(new GridBagLayout());
-        GridBagConstraints NWPgbc = new GridBagConstraints();
-        NWPgbc.insets = new Insets(5,5,5,5);
+        GridBagConstraints NewPasswordPanelGbc = new GridBagConstraints();
+        NewPasswordPanelGbc.insets = new Insets(5,5,5,5);
 
         //Inserimento testo nuova password
         JLabel textNewPassword = new JLabel("Nuova password: ");
 
-        NWPgbc.gridx = 0;
-        NWPgbc.gridy = 0;
-        newPasswordPanel.add(textNewPassword, NWPgbc);
+        NewPasswordPanelGbc.gridx = 0;
+        NewPasswordPanelGbc.gridy = 0;
+        newPasswordPanel.add(textNewPassword, NewPasswordPanelGbc);
 
         //Inserimento campo per nuova password
         newPassword = new JPasswordField(15);
         TextFieldBorderColor.changeTextFieldBorderColor(newPassword);
 
-        NWPgbc.gridx = 0;
-        NWPgbc.gridy = 1;
-        newPasswordPanel.add(newPassword, NWPgbc);
+        NewPasswordPanelGbc.gridx = 0;
+        NewPasswordPanelGbc.gridy = 1;
+        newPasswordPanel.add(newPassword, NewPasswordPanelGbc);
 
         //Posizionamento occhio per visualizzare password
         JButton pwdEyeN = new JButton();
@@ -208,17 +211,17 @@ public class PasswordRecovery extends JPanel{
         //Inserimento testo ripetizione nuova password
         JLabel repeatTextNewPassword = new JLabel("Ripeti la nuova password: ");
 
-        NWPgbc.gridx = 0;
-        NWPgbc.gridy = 2;
-        newPasswordPanel.add(repeatTextNewPassword, NWPgbc);
+        NewPasswordPanelGbc.gridx = 0;
+        NewPasswordPanelGbc.gridy = 2;
+        newPasswordPanel.add(repeatTextNewPassword, NewPasswordPanelGbc);
 
         //Inserimento campo per ripetizione nuova password
         repeatNewPassword = new JPasswordField(15);
         TextFieldBorderColor.changeTextFieldBorderColor(repeatNewPassword);
 
-        NWPgbc.gridx = 0;
-        NWPgbc.gridy = 3;
-        newPasswordPanel.add(repeatNewPassword, NWPgbc);
+        NewPasswordPanelGbc.gridx = 0;
+        NewPasswordPanelGbc.gridy = 3;
+        newPasswordPanel.add(repeatNewPassword, NewPasswordPanelGbc);
 
         //Posizionamento occhio per visualizzare password
         JButton pwdEyeR = new JButton();
@@ -250,11 +253,13 @@ public class PasswordRecovery extends JPanel{
         newPasswordPanel.add(pwdEyeR,pwdEyeGbcR);
 
         //Bottone conferma nuova password
-        BtnLayout confirmPassword = new BtnLayout("Invia");
+        JButton confirmPassword = new JButton("Invia");
+        confirmPassword.setBackground(new Color(35,171,144));
+        confirmPassword.setForeground(Color.white);
 
-        NWPgbc.gridx = 0;
-        NWPgbc.gridy = 4;
-        newPasswordPanel.add(confirmPassword, NWPgbc);
+        NewPasswordPanelGbc.gridx = 0;
+        NewPasswordPanelGbc.gridy = 4;
+        newPasswordPanel.add(confirmPassword, NewPasswordPanelGbc);
 
         //Bottone conferma nuova password quando viene premuto
 
@@ -278,7 +283,7 @@ public class PasswordRecovery extends JPanel{
                             if (myController.userPasswordUpdateC(userEmail, getNewPassword())) {
                                 JOptionPane.showMessageDialog(null, "Password aggiornata correttamente!");
 
-                                PaginaLogin loginPage = new PaginaLogin(myController);
+                                UserLoginPage loginPage = new UserLoginPage(myController);
 
                                 //Ritorna alla pagina di login dopo aver confermato la nuova password
 
@@ -356,7 +361,9 @@ public class PasswordRecovery extends JPanel{
 
 
         //Inserimento bottone per tornare indietro
-        BtnLayout backButton = new BtnLayout("Indietro");
+        JButton backButton = new JButton("Indietro");
+        backButton.setBackground(new Color(35,171,144));
+        backButton.setForeground(Color.white);
         gbcRight.gridx = 0;
         gbcRight.gridy = 3;
         gbcRight.gridwidth = 1;
@@ -372,7 +379,7 @@ public class PasswordRecovery extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                PaginaLogin loginPage = new PaginaLogin(myController);
+                UserLoginPage loginPage = new UserLoginPage(myController);
 
                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(PasswordRecovery.this);
 

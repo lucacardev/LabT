@@ -35,8 +35,8 @@ public class MainWindow extends JFrame {
         add(cardPanel);
 
         //Inserimento nel CardPanel della pagina di Login
-        PaginaLogin paginaLogin = new PaginaLogin(controller);
-        cardPanel.add(paginaLogin, "login");
+        UserLoginPage userLoginPage = new UserLoginPage(controller);
+        cardPanel.add(userLoginPage, "login");
 
         //Inserimento nel CardPanel della pagina di recupero credenziali
         JPanel passwordRecoveryPanel = new PasswordRecovery(controller);

@@ -15,10 +15,10 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
     Utente loggedUser;
     NewBookingToolSelected myBooking;
     private  final JPanel topPanel = new JPanel();
-    private  final BtnLayout modifyButton = new BtnLayout("Modifica");
-    private  final BtnLayout deleteButton = new BtnLayout("Elimina");
+    private  final JButton modifyButton = new JButton("Modifica");
+    private  final JButton deleteButton = new JButton("Elimina");
     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(MyBooking.this);
-    private Prenotazione myPrenotazioneSelez;
+    private Prenotazione myBookingSelected;
     private int bookingNumber ;
     GridBagConstraints footerPanelGbc = new GridBagConstraints();
 
@@ -65,7 +65,9 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
             footerPanelGbc.anchor = GridBagConstraints.LINE_START;
             footerPanelGbc.insets = new Insets(5, 15, 10, 0);
             footerPanelGbc.weightx = 0.33;
-        BtnLayout backButton = new BtnLayout("Indietro");
+        JButton backButton = new JButton("Indietro");
+        backButton.setBackground(new Color(35,171,144));
+        backButton.setForeground(Color.white);
         footerPanel.add(backButton, footerPanelGbc);
 
             //Azione quando il pulsante indietro viene premuto
@@ -88,6 +90,7 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
         footerPanelGbc.insets = new Insets(5, 0, 10, 0);
         footerPanelGbc.weightx = 0.33;
         modifyButton.setBackground(new Color(224, 186, 6));
+        modifyButton.setForeground(Color.white);
         footerPanel.add(modifyButton, footerPanelGbc);
 
         //Creazione bottone per eliminare la prenotazione
@@ -97,9 +100,10 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
         footerPanelGbc.insets = new Insets(5, 0, 10, 15);
         footerPanelGbc.weightx = 0.33;
         deleteButton.setBackground(Color.RED);
+        deleteButton.setForeground(Color.WHITE);
         footerPanel.add(deleteButton, footerPanelGbc);
 
-        if(myPrenotazioneSelez == null) {
+        if(myBookingSelected == null) {
             modifyButton.setVisible(false);
             deleteButton.setVisible(false);
         }
@@ -110,7 +114,7 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
 
                 super.mouseClicked(e);
 
-                myBooking = new NewBookingToolSelected(mainWindow, myController, loggedUser, myPrenotazioneSelez);
+                myBooking = new NewBookingToolSelected(mainWindow, myController, loggedUser, myBookingSelected);
                 myBooking.setVisible(true);
 
                 //Aggiorniamo la tabella per far apparire le modifiche effettuate
@@ -132,7 +136,7 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
                 if(choice == JOptionPane.OK_OPTION) {
 
                     //Passiamo al metodo del Controller la prenotazione selezionata (ricevuta da TablePanel) che vogliamo eliminare
-                    myController.deleteBookingsC(myPrenotazioneSelez);
+                    myController.deleteBookingsC(myBookingSelected);
 
                     //Chiamiamo il metodo di TablePanel per aggiornare la lista delle prenotazioni
                     tablePanel.setDataMyBooking(myController.myBookingRecoveryC(loggedUser));
@@ -157,17 +161,17 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
     @Override
     public void prenotazioneSelected(Prenotazione booking) {
 
-        myPrenotazioneSelez = booking;
+        myBookingSelected = booking;
 
         //Per evitare errori nella stampa della prneotazione eliminata
         //Salviamo il numero della prneotazione in una variabile temporanea di classe
-        if(myPrenotazioneSelez != null) {
+        if(myBookingSelected != null) {
 
-            bookingNumber  = myPrenotazioneSelez.getCod_prenotazione();
+            bookingNumber  = myBookingSelected.getCod_prenotazione();
 
         }
 
-        if (myPrenotazioneSelez != null) {
+        if (myBookingSelected != null) {
 
             // Se è stata selezionata, rendi visibili i bottoni
             modifyButton.setVisible(true);

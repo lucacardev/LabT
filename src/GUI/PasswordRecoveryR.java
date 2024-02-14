@@ -126,8 +126,9 @@ public class PasswordRecoveryR extends JPanel {
         });
 
         //Inserimento bottone d'invio codice
-        BtnLayout sendButtonCode = new BtnLayout("Recupera");
+        JButton sendButtonCode = new JButton("Recupera");
         sendButtonCode.setBackground(new Color(23,65,95));
+        sendButtonCode.setForeground(Color.WHITE);
         gbcRight.gridx = 1;
         gbcRight.gridy = 3;
         gbcRight.gridwidth = 1;
@@ -290,8 +291,9 @@ public class PasswordRecoveryR extends JPanel {
         newPasswordPanel.add(pwdEyeR,pwdEyeGbcR);
 
         //Bottone conferma nuova password
-        BtnLayout confirmPassword = new BtnLayout("Invia");
+        JButton confirmPassword = new JButton("Invia");
         confirmPassword.setBackground(new Color(23,65,95));
+        confirmPassword.setForeground(Color.WHITE);
 
         NPWgbc.gridx = 0;
         NPWgbc.gridy = 4;
@@ -393,8 +395,9 @@ public class PasswordRecoveryR extends JPanel {
         });
 
         //Inserimento bottone per tornare indietro
-        BtnLayout backButton = new BtnLayout("Indietro");
+        JButton backButton = new JButton("Indietro");
         backButton.setBackground(new Color(23,65,95));
+        backButton.setForeground(Color.WHITE);
         gbcRight.gridx = 0;
         gbcRight.gridy = 3;
         gbcRight.gridwidth = 1;

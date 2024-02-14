@@ -139,8 +139,9 @@ public class ModOrganigramma extends JDialog {
         footerPanel.setLayout(new BorderLayout());
 
         // Inserisci il pulsante "Conferma Sostituzione" nella parte inferiore
-        BtnLayout substitutionConfirm = new BtnLayout("Conferma Sostituzione");
+        JButton substitutionConfirm = new JButton("Conferma Sostituzione");
         substitutionConfirm.setBackground(new Color(23, 65, 95));
+        substitutionConfirm.setForeground(Color.WHITE);
         footerPanel.add(substitutionConfirm, BorderLayout.SOUTH);
 
         gbc.gridx = 0;

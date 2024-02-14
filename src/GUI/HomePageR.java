@@ -120,8 +120,9 @@ public class HomePageR extends JPanel {
         }
 
         //Pulsante indietro
-        BtnLayout backButton = new BtnLayout("Esci");
+        JButton backButton = new JButton("Esci");
         backButton.setBackground(Color.RED);
+        backButton.setForeground(Color.WHITE);
 
         leftGbc.gridx = 0;
         leftGbc.gridy = 3;
@@ -169,8 +170,9 @@ public class HomePageR extends JPanel {
         String font = "Arial";
 
         //Bottone I miei Team
-        BtnLayout myTeams = new BtnLayout("I miei Teams");
+        JButton myTeams = new JButton("I miei Teams");
         myTeams.setBackground(new Color(23,65,95));
+        myTeams.setForeground(Color.WHITE);
         myTeams.setFont(new FontUIResource(font, style, sizeFont));
 
         rightGbc.gridx = 0;

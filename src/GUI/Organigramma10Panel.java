@@ -58,8 +58,10 @@ public class Organigramma10Panel extends JPanel {
 
         }
 
-        BtnLayout modifyButton = new BtnLayout("Modifica Organigramma");
+        JButton modifyButton = new JButton("Modifica Organigramma");
+
         modifyButton.setBackground(new Color(23,65,95));
+        modifyButton.setForeground(Color.WHITE);
         modifyButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -71,8 +73,9 @@ public class Organigramma10Panel extends JPanel {
             }
         });
 
-        BtnLayout backButton = new BtnLayout("Indietro");
+        JButton backButton = new JButton("Indietro");
         backButton.setBackground(Color.RED);
+        backButton.setForeground(Color.WHITE);
         backButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

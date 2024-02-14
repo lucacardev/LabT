@@ -26,10 +26,6 @@ public class NewRegResponsable extends JPanel {
     private final static JLabel textMail = new JLabel("Email");
     private final static JLabel headQuartersText = new JLabel("Sede di appartenenza");
 
-
-    private final static BtnLayout backButton = new BtnLayout("Indietro");
-    private final static BtnLayout signInButton = new BtnLayout("Registrati");
-
     private final TextFieldBorderColor matriculationNumberField;
     private final TextFieldBorderColor nameField;
     private final TextFieldBorderColor surnameField;
@@ -289,7 +285,9 @@ public class NewRegResponsable extends JPanel {
         });
 
         //Bottone indietro
+        JButton backButton = new JButton("Indietro");
         backButton.setBackground(new Color(23,65,95));
+        backButton.setForeground(Color.WHITE);
         gbc.gridy = 12;
         gbc.gridx = 0;
         gbc.gridwidth = 1;
@@ -314,7 +312,10 @@ public class NewRegResponsable extends JPanel {
         });
 
         //Bottone registrati
+        JButton signInButton = new JButton("Registrati");
         signInButton.setBackground(new Color(23,65,95));
+        signInButton.setForeground(Color.WHITE);
+
         gbc.gridy = 12;
         gbc.gridx = 1;
         gbc.gridwidth = 1;

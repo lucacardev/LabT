@@ -225,8 +225,11 @@ public class NewTeam extends JPanel {
         gbc.weighty = 0;
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         gbc.insets = new Insets(15,0,0,15);
-        BtnLayout backButton = new BtnLayout("Indietro");
+
+        JButton backButton = new JButton("Indietro");
+        backButton.setForeground(Color.WHITE);
         backButton.setBackground(new Color(23,65,95));
+
         rightPage.add(backButton, gbc);
 
         //Indirizzamento alla pagina di login
@@ -250,8 +253,10 @@ public class NewTeam extends JPanel {
         gbc.weighty = 0;
         gbc.anchor = GridBagConstraints.FIRST_LINE_END;
         gbc.insets = new Insets(15,15,0,0);
-        BtnLayout insertButton = new BtnLayout("Inserisci");
+
+        JButton insertButton = new JButton("Inserisci");
         insertButton.setBackground(new Color(23,65,95));
+        insertButton.setForeground(Color.WHITE);
         rightPage.add(insertButton, gbc);
 
         //Azioni dopo che il bottone registrati viene premuto

@@ -193,7 +193,9 @@ public class UserLoginPage extends JPanel{
         rightPanel.add(forgottenPassword, rightGbc);
 
         //Inserimento bottone di accesso
-        BtnLayout loginButton = new BtnLayout("Accedi");
+        JButton loginButton = new JButton("Accedi");
+        loginButton.setBackground(new Color(35,171,144));
+        loginButton.setForeground(Color.white);
 
         //Posizionamento bottone di accesso
         rightGbc.gridx = 0;
