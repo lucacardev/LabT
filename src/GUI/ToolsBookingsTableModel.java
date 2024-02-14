@@ -6,12 +6,12 @@ import javax.swing.table.AbstractTableModel;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class TableModelPrenStrum extends AbstractTableModel {
+public class ToolsBookingsTableModel extends AbstractTableModel {
 
     private final String[] columnsName = {"Data", "Ora", "Tempo di utilizzo", "Codice Strumento"};
     private final List<Prenotazione> toolListBook;
 
-    public TableModelPrenStrum(List <Prenotazione> toolListBook)  {
+    public ToolsBookingsTableModel(List <Prenotazione> toolListBook)  {
 
         this.toolListBook = toolListBook;
 

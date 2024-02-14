@@ -29,7 +29,7 @@ public class Strumento {
 
     }
 
-    public void setCodStrumento(Integer codStrumento) {
+    public void setToolCode(Integer codStrumento) {
 
         this.CodStrumento = codStrumento;
 

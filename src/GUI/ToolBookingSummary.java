@@ -9,13 +9,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
-public class SummaryWindow extends JDialog {
+public class ToolBookingSummary extends JDialog {
 
     private final JComboBox<Integer> yearComboBox;
     private final JComboBox<String> monthComboBox;
-     Controller myController;
+    Controller myController;
 
-    public SummaryWindow(JFrame parent, Controller controller, Strumento strumento) {
+    public ToolBookingSummary(JFrame parent, Controller controller, Strumento strumento) {
 
         super(parent, "Riepilogo Strumento", true);
 
@@ -51,7 +51,7 @@ public class SummaryWindow extends JDialog {
         summaryGBC.gridy = 0;
         summaryGBC.weightx = 0.33;
         summaryGBC.anchor = GridBagConstraints.LINE_START;
-        add(new JLabel("month: "), summaryGBC);
+        add(new JLabel("Mese: "), summaryGBC);
 
         //Testo anno
         summaryGBC.gridx = 1;

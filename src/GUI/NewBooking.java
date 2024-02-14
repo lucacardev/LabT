@@ -20,7 +20,7 @@ public class NewBooking extends JPanel{
     private JButton summaryButton;
     private NewBookingToolSelected newBookingToolSelected;
     private CalendarDialog calendarDialog;
-    private SummaryWindow summaryWindow;
+    private ToolBookingSummary toolBookingSummary;
     private Strumento selectedTool;
     private TablePanel tablePanel;
 
@@ -158,8 +158,8 @@ public class NewBooking extends JPanel{
 
                 } else {
 
-                    HomePage homePage = new HomePage(myController, loggedUser);
-                    mainWindow.addCardPanel(homePage, "homePage");
+                    UserHomePage userHomePage = new UserHomePage(myController, loggedUser);
+                    mainWindow.addCardPanel(userHomePage, "homePage");
 
                 }
             }
@@ -349,8 +349,8 @@ public class NewBooking extends JPanel{
                 public void mouseClicked(MouseEvent e) {
 
                     newBookingToolSelected = new NewBookingToolSelected(mainWindow, myController, loggedUser, selectedTool);
-                    newBookingToolSelected.setCodStrumento(uniToolCode);
-                    newBookingToolSelected.setStrumentoAttuale(selectedTool);
+                    newBookingToolSelected.setToolCode(uniToolCode);
+                    newBookingToolSelected.setCurrentTool(selectedTool);
                     newBookingToolSelected.setVisible(true);
 
                 }
@@ -415,8 +415,8 @@ public class NewBooking extends JPanel{
                 @Override
                 public void mouseClicked(MouseEvent e) {
 
-                summaryWindow = new SummaryWindow(mainWindow, myController, selectedTool);
-                summaryWindow.setVisible(true);
+                toolBookingSummary = new ToolBookingSummary(mainWindow, myController, selectedTool);
+                toolBookingSummary.setVisible(true);
                 }
             });
 

@@ -10,41 +10,41 @@ import java.awt.*;
 import java.util.List;
 
 public class TablePanel extends JPanel {
-    private JTable tableStrumenti;
-    private JTable tablePrenotazioni;
-    private TableModelStrumento tableModelStrumento;
-    private TableModelMiePrenotazioni tableModelMiePrenotazioni;
-    private Integer codStrumentoAttuale = null;
+    private JTable toolsTable;
+    private JTable bookingsTable;
+    private ToolsTableModel toolsTableModel;
+    private MyBookingsTableModel myBookingsTableModel;
+    private Integer currentToolCode = null;
 
-    private PrenotazioneSelectionListener prenotazioneSelectionListener;
+    private BookingSelectionListener bookingSelectionListener;
 
     //////////////////////////////////////TABLE PANEL PER STRUMENTI////////////////////////////////
     public TablePanel(List<Strumento> strumenti, NewBooking newBooking, NewBookingToolSelected newBookingToolSelected) {
 
         //RAPPRESENTAZIONE TABELLA STRUMENTI DOPO LA RICERCA
 
-        tableModelStrumento = new TableModelStrumento(strumenti);
+        toolsTableModel = new ToolsTableModel(strumenti);
 
-        tableStrumenti = new JTable(tableModelStrumento);
+        toolsTable = new JTable(toolsTableModel);
 
         setLayout(new BorderLayout());
-        add(new JScrollPane(tableStrumenti), BorderLayout.CENTER);
+        add(new JScrollPane(toolsTable), BorderLayout.CENTER);
 
-        tableStrumenti.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        toolsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
 
                 //In questo modo impediamo all'utente di selezionare più righe alla volta evitando errori
-                ListSelectionModel selectionModel = tableStrumenti.getSelectionModel();
+                ListSelectionModel selectionModel = toolsTable.getSelectionModel();
                 selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
                 if (!e.getValueIsAdjusting()) {
-                    int selectedRow = tableStrumenti.getSelectedRow();
+                    int selectedRow = toolsTable.getSelectedRow();
                     if (selectedRow != -1) {
 
-                        Strumento selectedStrumento = tableModelStrumento.getToolAtRow(selectedRow);
+                        Strumento selectedStrumento = toolsTableModel.getToolAtRow(selectedRow);
 
-                        codStrumentoAttuale = selectedStrumento.getCodStrumento();
+                        currentToolCode = selectedStrumento.getCodStrumento();
 
                         //Con questo metodo passiamo lo strumento selezionato all'oggetto CalendarDialog
                         newBooking.setToolSelectedInCalendar(selectedStrumento);
@@ -52,11 +52,11 @@ public class TablePanel extends JPanel {
                         //Passiamo lo Strumento alla classe BookingFrame quando l'utente prenota uno strumento
                         if(newBookingToolSelected != null) {
 
-                            newBookingToolSelected.setStrumentoAttuale(selectedStrumento);
+                            newBookingToolSelected.setCurrentTool(selectedStrumento);
 
                         }
 
-                        newBooking.setToolCodeNewBookingToolSelected(codStrumentoAttuale.toString());
+                        newBooking.setToolCodeNewBookingToolSelected(currentToolCode.toString());
                         newBooking.bookingButtonAvailability();
                         newBooking.bookingButtonCalendar();
                         newBooking.setSummaryButton();
@@ -79,34 +79,34 @@ public class TablePanel extends JPanel {
 
     //////////////////////////////TABLE PANEL PER LE PRENOTAZIONI DELL'UTENTE////////////////
 
-    public TablePanel(List<Prenotazione> listaPrenotazioni, PrenotazioneSelectionListener listener) {
+    public TablePanel(List<Prenotazione> bookingList, BookingSelectionListener listener) {
 
-        this.prenotazioneSelectionListener = listener;
+        this.bookingSelectionListener = listener;
 
-        tableModelMiePrenotazioni = new TableModelMiePrenotazioni(listaPrenotazioni);
+        myBookingsTableModel = new MyBookingsTableModel(bookingList);
 
-        tablePrenotazioni = new JTable(tableModelMiePrenotazioni);
+        bookingsTable = new JTable(myBookingsTableModel);
 
-        tablePrenotazioni.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        bookingsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
 
                 //In questo modo impediamo all'utente di selezionare più righe alla volta evitando errori
-                ListSelectionModel selectionModel = tablePrenotazioni.getSelectionModel();
+                ListSelectionModel selectionModel = bookingsTable.getSelectionModel();
                 selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
                 //Prendiamo le informazioni della riga selezionata
                 if (!e.getValueIsAdjusting()) {
 
-                    int selectedRow = tablePrenotazioni.getSelectedRow();
+                    int selectedRow = bookingsTable.getSelectedRow();
                     if (selectedRow != -1) {
 
                         //Prendiamo la prenotazione della riga tramite il metodo di tableModelMiePrenotazioni
-                        Prenotazione miaPrenotazSelez = tableModelMiePrenotazioni.getPrenotazioneAtRow(selectedRow);
+                        Prenotazione myBookingSelected = myBookingsTableModel.getPrenotazioneAtRow(selectedRow);
 
                         //Chiamiamo il metodo dell'interfaccia e allo stesso tempo definiamo il valore della variabile
                         //presente in MyBooking così da inviare a quest'ultima le informazioni sulla prenotazione selezionata
-                        prenotazioneSelectionListener.prenotazioneSelected(miaPrenotazSelez);
+                        bookingSelectionListener.prenotazioneSelected(myBookingSelected);
 
                     }
 
@@ -114,7 +114,7 @@ public class TablePanel extends JPanel {
 
                         //In questo modo quando non è selezionata nessuna riga non viene salvata l'ultima prneotazione e i pulsanti
                         //non sono disponibili e quindi non permettono di modificare o eliminare
-                        prenotazioneSelectionListener.prenotazioneSelected(null);
+                        bookingSelectionListener.prenotazioneSelected(null);
 
                     }
 
@@ -125,7 +125,7 @@ public class TablePanel extends JPanel {
         });
 
         setLayout(new BorderLayout());
-        add(new JScrollPane(tablePrenotazioni), BorderLayout.CENTER);
+        add(new JScrollPane(bookingsTable), BorderLayout.CENTER);
 
     }
 
@@ -135,9 +135,9 @@ public class TablePanel extends JPanel {
     //////////////////////////////TABLE PANEL PER IL CALENDARIO DEGLI STRUMENTI////////////////
     public TablePanel(List<Prenotazione> listaPrenotazioniStrumento, String calendario) {
 
-        TableModelPrenStrum tableModelPrenStrum = new TableModelPrenStrum(listaPrenotazioniStrumento);
+        ToolsBookingsTableModel toolsBookingsTableModel = new ToolsBookingsTableModel(listaPrenotazioniStrumento);
 
-        JTable tablePrenStrumenti = new JTable(tableModelPrenStrum);
+        JTable tablePrenStrumenti = new JTable(toolsBookingsTableModel);
 
         setLayout(new BorderLayout());
         add(new JScrollPane(tablePrenStrumenti), BorderLayout.CENTER);
@@ -146,15 +146,15 @@ public class TablePanel extends JPanel {
 
     public void setData(List<Strumento> listaStrumenti) {
 
-        tableModelStrumento.setData(listaStrumenti);
-        tableModelStrumento.fireTableDataChanged();
+        toolsTableModel.setData(listaStrumenti);
+        toolsTableModel.fireTableDataChanged();
 
     }
 
     public void setDataMyBooking(List<Prenotazione> listaPrenotazioni) {
 
-        tableModelMiePrenotazioni.setData(listaPrenotazioni);
-        tableModelMiePrenotazioni.fireTableDataChanged();
+        myBookingsTableModel.setData(listaPrenotazioni);
+        myBookingsTableModel.fireTableDataChanged();
 
     }
 

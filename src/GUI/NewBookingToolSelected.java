@@ -142,6 +142,8 @@ public class NewBookingToolSelected extends JDialog{
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         JButton bookingButton = new JButton("Prenota");
+        bookingButton.setBackground(new Color(35,171,144));
+        bookingButton.setForeground(Color.white);
         mainPanel.add(bookingButton, gbc);
 
         bookingButton.addMouseListener(new MouseAdapter() {
@@ -437,13 +439,20 @@ public class NewBookingToolSelected extends JDialog{
 
     }
 
-    public void setCodStrumento(String toolCode) {
+    private static class TimeSpinnerModel extends SpinnerDateModel {
+        public TimeSpinnerModel(Date value) {
+            super(value, null, null, Calendar.HOUR_OF_DAY);
+        }
+
+    }
+
+    public void setToolCode(String toolCode) {
 
         toolCodeText.setText(toolCode);
 
     }
 
-    public void setStrumentoAttuale(Strumento instrument) {
+    public void setCurrentTool(Strumento instrument) {
 
         selectedTool = instrument;
 

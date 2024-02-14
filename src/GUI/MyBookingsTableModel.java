@@ -6,12 +6,12 @@ import javax.swing.table.AbstractTableModel;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class TableModelMiePrenotazioni extends AbstractTableModel {
+public class MyBookingsTableModel extends AbstractTableModel {
 
     private final String[] columnsName = {"Codice Prenotazione", "Data", "Ora", "Tempo di utilizzo", "Utente", "Codice Strumento"};
     private List<Prenotazione> bookList;
 
-    public TableModelMiePrenotazioni(List<Prenotazione> bookList) {
+    public MyBookingsTableModel(List<Prenotazione> bookList) {
 
         this.bookList = bookList;
 
@@ -108,4 +108,4 @@ public class TableModelMiePrenotazioni extends AbstractTableModel {
 
     }
 
-    }
+}

@@ -48,6 +48,7 @@ public class MyTeam extends JPanel {
 
         JButton deleteTeamButton = new JButton("Elimina Team");
         deleteTeamButton.setBackground(Color.RED);
+        deleteTeamButton.setForeground(Color.WHITE);
 
 
         buttonPanel.add(backButton);
@@ -90,18 +91,18 @@ public class MyTeam extends JPanel {
                 int nTec = (Integer) teamTable.getValueAt(selectedRow, 4);
 
                 Team team = new Team(teamCode, teamName, teamDes, teamMat, nTec, currentManager);
-                List<Tecnico> tecniciDelTeam = myController.technicianRecoveryC(team);
+                List<Tecnico> teamTechnicians = myController.technicianRecoveryC(team);
 
-                if(tecniciDelTeam.size() == 5) {
-                    Organigramma5Panel organigramma5 = new Organigramma5Panel(myController,currentManager,tecniciDelTeam, team);
+                if(teamTechnicians.size() == 5) {
+                    OrganigramFiveTechnicians organigram5 = new OrganigramFiveTechnicians(myController,currentManager, teamTechnicians, team);
                     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(MyTeam.this);
-                    mainWindow.addCardPanel(organigramma5, "Organigramma");
+                    mainWindow.addCardPanel(organigram5, "Organigramma");
 
-                } if(tecniciDelTeam.size() == 10) {
+                } if(teamTechnicians.size() == 10) {
 
-                    Organigramma10Panel organigramma10 = new Organigramma10Panel(myController,currentManager,tecniciDelTeam,team);
+                    OrganigramTenTechnicians organigramTenTechnicians = new OrganigramTenTechnicians(myController,currentManager,teamTechnicians,team);
                     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(MyTeam.this);
-                    mainWindow.addCardPanel(organigramma10, "Organigramma");
+                    mainWindow.addCardPanel(organigramTenTechnicians, "Organigramma");
 
                 }
 
@@ -120,9 +121,9 @@ public class MyTeam extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                    HomePageR homepage = new HomePageR(myController, currentManager);
+                ManagerHomePage managerHomePage = new ManagerHomePage(myController, currentManager);
                     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(MyTeam.this);
-                    mainWindow.addCardPanel(homepage, "HomePageR");
+                    mainWindow.addCardPanel(managerHomePage, "HomePageR");
 
             }
         });

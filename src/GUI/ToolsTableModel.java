@@ -6,15 +6,15 @@ import javax.swing.table.AbstractTableModel;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class TableModelStrumento extends AbstractTableModel {
+public class ToolsTableModel extends AbstractTableModel {
 
     private List<Strumento> toolsList;
 
     private final String[] columnsName = {"Codice Strumento", "Caratteristiche", "Descrizione", "Tempo Max Uso", "Cod. Postazione", "Sede"};
 
-    public TableModelStrumento(List<Strumento> strumenti) {
+    public ToolsTableModel(List<Strumento> tools) {
 
-        toolsList = strumenti;
+        toolsList = tools;
 
     }
 

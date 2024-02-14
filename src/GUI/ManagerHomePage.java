@@ -16,13 +16,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class HomePageR extends JPanel {
+public class ManagerHomePage extends JPanel {
     private static BufferedImage leftHomePageBackground;
-    private static BufferedImage Rightbackground;
+    private static BufferedImage RightBackground;
     Controller myController;
     Responsabile loggedInManager;
 
-    public HomePageR(Controller controller, Responsabile currentManager) {
+    public ManagerHomePage(Controller controller, Responsabile currentManager) {
 
         myController = controller;
         loggedInManager = currentManager;
@@ -38,10 +38,10 @@ public class HomePageR extends JPanel {
                 Graphics2D g2d = (Graphics2D) g;
 
                 // Disegna l'immagine di sfondo con interpolazione bilineare
-                if (Rightbackground != null) {
+                if (RightBackground != null) {
 
                     g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-                    g2d.drawImage(Rightbackground, 0, 0, getWidth(), getHeight(), this);
+                    g2d.drawImage(RightBackground, 0, 0, getWidth(), getHeight(), this);
 
                 }
 
@@ -51,7 +51,7 @@ public class HomePageR extends JPanel {
         //Impostazione sfondo background di destra
 
         try {
-            Rightbackground = ImageIO.read(new File("src/GUI/icon/sfondoR.png"));
+            RightBackground = ImageIO.read(new File("src/GUI/icon/sfondoR.png"));
 
 
         } catch (Exception ex) {
@@ -145,11 +145,11 @@ public class HomePageR extends JPanel {
 
                 if (choice == JOptionPane.OK_OPTION) {
 
-                    ResponsibleAccess paginaAccessR = new ResponsibleAccess(myController);
+                    ManagerLoginPage managerLoginPage = new ManagerLoginPage(myController);
 
-                    MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(HomePageR.this);
+                    MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(ManagerHomePage.this);
 
-                    mainWindow.addCardPanel(paginaAccessR, "AccessoR");
+                    mainWindow.addCardPanel(managerLoginPage, "AccessoR");
 
                 }
             }
@@ -186,7 +186,7 @@ public class HomePageR extends JPanel {
 
                 MyTeam myteampage = new MyTeam(myController, loggedInManager);
 
-                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(HomePageR.this);
+                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(ManagerHomePage.this);
 
                 mainWindow.addCardPanel(myteampage, "myTeamPage");
 

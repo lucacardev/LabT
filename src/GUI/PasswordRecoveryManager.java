@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.UUID;
 
-public class PasswordRecoveryR extends JPanel {
+public class PasswordRecoveryManager extends JPanel {
     private final JPanel rightPasswordRecovery;
     private final JPanel newPasswordPanel;
     private final TextFieldBorderColor emailRecovery;
@@ -25,7 +25,7 @@ public class PasswordRecoveryR extends JPanel {
 
     Controller myController;
 
-    public PasswordRecoveryR(Controller controller) {
+    public PasswordRecoveryManager(Controller controller) {
 
         myController = controller;
 
@@ -255,16 +255,16 @@ public class PasswordRecoveryR extends JPanel {
 
         //Posizionamento occhio per visualizzare password
         JButton pwdEyeR = new JButton();
-        
+
         try {
-            
+
             NoScalingIcon noScalingEye = new NoScalingIcon(new ImageIcon("src/GUI/icon/hide.png"));
             pwdEyeR.setIcon(noScalingEye);
 
         } catch (Exception ex) {
-            
+
             System.out.println("Errore caricamento immagine occhio - pagina RECUPEROPASSWORD ");
-            
+
         }
 
         //Nascondere il layout del pulsante (occhio password)
@@ -274,14 +274,14 @@ public class PasswordRecoveryR extends JPanel {
 
         //Chiamata al metodo per mostrare/nascondere la password
         pwdEyeR.addActionListener(new ActionListener() {
-            
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
                 viewPasswordRepeat();
-                
+
             }
-            
+
         });
 
         pwdEyeGbcR.gridx = 1;
@@ -321,13 +321,13 @@ public class PasswordRecoveryR extends JPanel {
                             if (myController.managerPasswordUpdateC(managerEmail, getNewPassword())) {
                                 JOptionPane.showMessageDialog(null, "Password aggiornata correttamente!");
 
-                                ResponsibleAccess loginPage = new ResponsibleAccess(myController);
+                                ManagerLoginPage managerLoginPage = new ManagerLoginPage(myController);
 
                                 //Ritorna alla pagina di accesso dopo aver confermato la nuova password
 
-                                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(PasswordRecoveryR.this);
+                                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(PasswordRecoveryManager.this);
 
-                                mainWindow.addCardPanel(loginPage, "accesso");
+                                mainWindow.addCardPanel(managerLoginPage, "accesso");
 
                             }
 
@@ -413,11 +413,11 @@ public class PasswordRecoveryR extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                ResponsibleAccess paginaAccess = new ResponsibleAccess(myController);
+                ManagerLoginPage managerLoginPage = new ManagerLoginPage(myController);
 
-                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(PasswordRecoveryR.this);
+                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(PasswordRecoveryManager.this);
 
-                mainWindow.addCardPanel(paginaAccess, "Accesso responsabile");
+                mainWindow.addCardPanel(managerLoginPage, "Accesso responsabile");
 
             }
         });

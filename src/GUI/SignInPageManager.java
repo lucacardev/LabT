@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class NewRegResponsable extends JPanel {
+public class SignInPageManager extends JPanel {
 
     private final static JLabel matriculationNumberText = new JLabel("Matricola");
     private final static JLabel textName = new JLabel("Nome");
@@ -40,7 +40,7 @@ public class NewRegResponsable extends JPanel {
     private static BufferedImage backgroundImageRight;
 
 
-    public NewRegResponsable(Controller controller) {
+    public SignInPageManager(Controller controller) {
 
         myController = controller;
         setLayout(new GridLayout(0,2));
@@ -302,11 +302,11 @@ public class NewRegResponsable extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                ResponsibleAccess loginPage = new ResponsibleAccess(myController);
+                ManagerLoginPage managerLoginPage = new ManagerLoginPage(myController);
 
-                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(NewRegResponsable.this);
+                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(SignInPageManager.this);
 
-                mainWindow.addCardPanel(loginPage, "accesso");
+                mainWindow.addCardPanel(managerLoginPage, "accesso");
 
             }
         });
@@ -343,7 +343,7 @@ public class NewRegResponsable extends JPanel {
                     d in un'espressione regolare corrisponde a una singola cifra da 0 a 9.
                     + indica che la sequenza di cifre può essere lunga uno o più caratteri.*/
 
-                    {
+                {
                     // Mostra la finestra di avviso
                     JOptionPane.showMessageDialog(null, "Matricola errata. Ti ricordiamo che la matricola dei responsabili inizia con 'R' seguito da 4 numeri.", "Errore Matricola", JOptionPane.ERROR_MESSAGE);}
 
@@ -381,11 +381,11 @@ public class NewRegResponsable extends JPanel {
 
                                 JOptionPane.showMessageDialog(null, "La tua registrazione è avvenuta correttamente!");
 
-                                ResponsibleAccess loginPage = new ResponsibleAccess(myController);
+                                ManagerLoginPage managerLoginPage = new ManagerLoginPage(myController);
 
-                                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(NewRegResponsable.this);
+                                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(SignInPageManager.this);
 
-                                mainWindow.addCardPanel(loginPage, "accesso");
+                                mainWindow.addCardPanel(managerLoginPage, "accesso");
 
                             }
 

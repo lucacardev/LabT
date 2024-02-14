@@ -235,11 +235,11 @@ public class UserLoginPage extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                ResponsibleAccess responsibleAccess = new ResponsibleAccess(myController);
+                ManagerLoginPage managerLoginPage = new ManagerLoginPage(myController);
 
                 MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(UserLoginPage.this);
 
-                mainWindow.addCardPanel(responsibleAccess, "responsableAccess");
+                mainWindow.addCardPanel(managerLoginPage, "responsableAccess");
             }
         });
 
@@ -274,11 +274,11 @@ public class UserLoginPage extends JPanel{
         }
         else if(errorMassage == 3) {
 
-            HomePage homePage = new HomePage(myController, currentUser);
+            UserHomePage userHomePage = new UserHomePage(myController, currentUser);
 
             MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(UserLoginPage.this);
 
-            mainWindow.addCardPanel(homePage, "homePage");
+            mainWindow.addCardPanel(userHomePage, "homePage");
 
         }
 

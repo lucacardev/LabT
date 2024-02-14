@@ -12,7 +12,7 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ResponsibleAccess extends JPanel {
+public class ManagerLoginPage extends JPanel {
 
     private final JTextField matriculationNumberField  ;
     private final JPasswordField passwordField;
@@ -21,7 +21,7 @@ public class ResponsibleAccess extends JPanel {
 
     private Responsabile currentManager;
 
-    public ResponsibleAccess(Controller controller) {
+    public ManagerLoginPage(Controller controller) {
 
         this.myController = controller;
 
@@ -216,11 +216,11 @@ public class ResponsibleAccess extends JPanel {
 
                 //Apri finestra d'inserimento email per recupero credenziali
 
-                PasswordRecoveryR passwordRecoveryPanel = new PasswordRecoveryR(myController);
+                PasswordRecoveryManager passwordRecoveryManager = new PasswordRecoveryManager(myController);
 
-                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(ResponsibleAccess.this);
+                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(ManagerLoginPage.this);
 
-                mainWindow.addCardPanel(passwordRecoveryPanel, "passwordRecoveryPanel");
+                mainWindow.addCardPanel(passwordRecoveryManager, "passwordRecoveryPanel");
 
             }
         });
@@ -239,11 +239,11 @@ public class ResponsibleAccess extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                NewRegResponsable newRegResponsable = new NewRegResponsable(myController);
+                SignInPageManager signInPageManager = new SignInPageManager(myController);
 
-                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(ResponsibleAccess.this);
+                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(ManagerLoginPage.this);
 
-                mainWindow.addCardPanel(newRegResponsable, "newRegResponsable");
+                mainWindow.addCardPanel(signInPageManager, "newRegResponsable");
 
             }
         });
@@ -261,7 +261,7 @@ public class ResponsibleAccess extends JPanel {
 
         });
 
-    //Impostazione Background left
+        //Impostazione Background left
         JPanel leftRApage = new JPanel();
         leftRApage.setBackground(Color.WHITE);
 
@@ -323,7 +323,7 @@ public class ResponsibleAccess extends JPanel {
                 if (choice == JOptionPane.OK_OPTION) {
 
                     UserLoginPage userLoginPage = new UserLoginPage(myController);
-                    MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(ResponsibleAccess.this);
+                    MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(ManagerLoginPage.this);
                     mainWindow.addCardPanel(userLoginPage, "login");
 
                 }
@@ -354,11 +354,11 @@ public class ResponsibleAccess extends JPanel {
 
         else if(errorMassage == 3) {
 
-            HomePageR homePage = new HomePageR(myController, currentManager);
+            ManagerHomePage managerHomePage = new ManagerHomePage(myController, currentManager);
 
-            MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(ResponsibleAccess.this);
+            MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(ManagerLoginPage.this);
 
-            mainWindow.addCardPanel(homePage, "homePage");
+            mainWindow.addCardPanel(managerHomePage, "homePage");
 
         }
 

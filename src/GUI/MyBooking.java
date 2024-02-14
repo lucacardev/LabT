@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
+public class MyBooking extends JPanel implements BookingSelectionListener {
 
     Controller myController;
     Utente loggedUser;

@@ -14,12 +14,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class HomePage extends JPanel{
+public class UserHomePage extends JPanel{
     private static BufferedImage leftHomePageBackground;
     Controller myController;
     Utente loggedUser;
 
-    public HomePage(Controller controller, Utente currentUser) {
+    public UserHomePage(Controller controller, Utente currentUser) {
 
         myController = controller;
         loggedUser = currentUser;
@@ -98,7 +98,7 @@ public class HomePage extends JPanel{
 
                     UserLoginPage userLoginPage = new UserLoginPage(myController);
 
-                    MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(HomePage.this);
+                    MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(UserHomePage.this);
 
                     mainWindow.addCardPanel(userLoginPage, "login");
 
@@ -139,7 +139,7 @@ public class HomePage extends JPanel{
 
                 NewBooking newBooking  = new NewBooking(myController, loggedUser);
 
-                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(HomePage.this);
+                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(UserHomePage.this);
 
                 mainWindow.addCardPanel(newBooking, "newBooking");
 
@@ -161,7 +161,7 @@ public class HomePage extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(HomePage.this);
+                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(UserHomePage.this);
 
                 if(mainWindow.containsCard("myBookingPage")) {
 

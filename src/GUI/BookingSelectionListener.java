@@ -2,6 +2,6 @@ package GUI;
 
 import DTO.Prenotazione;
 
-public interface  PrenotazioneSelectionListener {
+public interface BookingSelectionListener {
     void prenotazioneSelected(Prenotazione prenotazione);
 }
