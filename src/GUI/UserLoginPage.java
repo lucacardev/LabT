@@ -1,126 +1,140 @@
 package GUI;
 
-import DTO.Utente;
-import UTILITIES.Controller;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
-public class RightLoginAccess extends JPanel {
+import DTO.Utente;
+import UTILITIES.Controller;
 
+public class UserLoginPage extends JPanel{
+
+    Controller myController;
     private final JTextField emailField;
     private final JPasswordField passwordField;
     private BufferedImage rightLoginBackground;
-    Controller myController;
     private Utente currentUser;
 
-    public RightLoginAccess(Controller controller) {
+    public UserLoginPage(Controller controller)  {
 
-        this.myController = controller;
+        myController = controller;
 
-        setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
+        //Diviamo la pagina a metà (destra e sinistra)
+        setLayout(new GridLayout(0,2));
+
+        //////////////////////////////////////////////LEFT PANEL///////////////////////////////////////////
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new GridBagLayout());
+
+        JPanel upPanel = new JPanel();
+        GridBagConstraints leftGbc = new GridBagConstraints();
+
+        upPanel.setBackground(Color.WHITE);
+        JLabel logo = new JLabel(new NoScalingIcon(new ImageIcon("src/GUI/icon/LogoLabT.png")));
+
+        leftGbc.gridx = 0;
+        leftGbc.gridy = 0;
+        leftGbc.weightx = 1;
+        leftGbc.insets = new Insets(0, 0, 0, 0);
+        leftGbc.anchor = GridBagConstraints.CENTER;
+        leftGbc.fill = GridBagConstraints.NONE;
+
+        upPanel.add(logo);
+        leftPanel.add(upPanel, leftGbc);
+
+        //////////////////////////////////////////////RIGHT PANEL///////////////////////////////////////////
+
+        JPanel rightPanel = new BackgroundPanel();
+        rightPanel.setLayout(new GridBagLayout());
+        GridBagConstraints rightGbc = new GridBagConstraints();
         setBackground(new Color(229, 226, 226));
 
         //Spazio tra i componenti
-        gbc.insets = new Insets(5, 5, 5, 5);
+        rightGbc.insets = new Insets(5, 5, 5, 5);
 
         //Impostazione background
 
         try {
-
             rightLoginBackground = ImageIO.read(new File("src/GUI/icon/background.png"));
-
-
         } catch (Exception ex) {
-
             System.out.println("Errore caricamento immagine background login page");
-
+            ex.printStackTrace();
         }
 
         //Testo email
         JLabel textMail = new JLabel("Email: ");
-        Font fonttextMail = textMail.getFont();
-        int sizetextMail = fonttextMail.getSize() + 3;
-        Font increasetextMail = fonttextMail.deriveFont((float) sizetextMail);
-        textMail.setFont(increasetextMail);
+        Font fontTextMail = textMail.getFont();
+        int sizeTextMail = fontTextMail.getSize() + 3;
+        Font increaseTextMail = fontTextMail.deriveFont((float) sizeTextMail);
+        textMail.setFont(increaseTextMail);
         textMail.setForeground(Color.BLACK);
 
-        add(textMail);
+        rightPanel.add(textMail);
 
         //Campo email
-        emailField = new TextFieldBorderColor(15);
+        emailField = new JTextField(15);
 
         //Risalto colore dei bordi del campo email quando cliccato
-        TextFieldBorderColor.changeTextFieldBorderColor(emailField);
+        emailField.setBorder(new LineBorder(Color.BLACK, 1));
 
         //Testo password
         JLabel pwdText = new JLabel("Password: ");
-        pwdText.setFont(increasetextMail);
+        pwdText.setFont(increaseTextMail);
         pwdText.setForeground(Color.BLACK);
 
         //Posizionamento testo mail
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.anchor = GridBagConstraints.LINE_START;
-        add(textMail, gbc);
+        rightGbc.gridx = 0;
+        rightGbc.gridy = 1;
+        rightGbc.anchor = GridBagConstraints.LINE_START;
+        rightPanel.add(textMail, rightGbc);
 
         //Posizionamento campo mail
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        add(emailField, gbc);
+        rightGbc.gridx = 0;
+        rightGbc.gridy = 2;
+        rightPanel.add(emailField, rightGbc);
 
         //Posizionamento testo password
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        add(pwdText, gbc);
+        rightGbc.gridx = 0;
+        rightGbc.gridy = 3;
+        rightPanel.add(pwdText, rightGbc);
 
         //Posizionamento campo password
         passwordField = new JPasswordField(15);
         passwordField.setBorder(new LineBorder(Color.BLACK, 1));
         passwordField.setEchoChar('•');
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        add(passwordField, gbc);
+        rightGbc.gridx = 0;
+        rightGbc.gridy = 4;
+        rightPanel.add(passwordField, rightGbc);
 
         //Risalto colore dei bordi del campo password quando cliccato
         passwordField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-
                 passwordField.setBorder(new LineBorder(new Color(35, 171, 144), 2));
-
             }
-
             @Override
             public void focusLost(FocusEvent e) {
                 passwordField.setBorder(new LineBorder(Color.BLACK));
             }
-
         });
 
         //Posizionamento occhio per visualizzare password
         JButton pwdEye = new JButton();
 
         try {
-
             NoScalingIcon pwdEyeNoScale = new NoScalingIcon(new ImageIcon("src/GUI/icon/hide.png"));
             pwdEye.setIcon(pwdEyeNoScale);
-
         } catch (Exception ex) {
-
             System.out.println("Errore caricamento immagine occhio - pagina Login");
-
         }
 
         //Modo per cambiare il focus del cursore da emailField a passwordField
@@ -151,12 +165,12 @@ public class RightLoginAccess extends JPanel {
         pwdEyeGbc.gridx = 2;
         pwdEyeGbc.gridy = 4;
         pwdEyeGbc.anchor = GridBagConstraints.LINE_START;  // Allinea il pulsante all'inizio della colonna
-        add(pwdEye, pwdEyeGbc);
+        rightPanel.add(pwdEye, pwdEyeGbc);
 
         //Posizionamento password dimenticata
         LinkMouseOn forgottenPassword = new LinkMouseOn("Hai dimenticato la password?");
-        gbc.gridx = 0;
-        gbc.gridy = 6;
+        rightGbc.gridx = 0;
+        rightGbc.gridy = 6;
 
         //Azione se il testo password dimenticata viene cliccato
         forgottenPassword.addMouseListener(new MouseAdapter() {
@@ -167,11 +181,7 @@ public class RightLoginAccess extends JPanel {
 
                 PasswordRecovery passwordRecoveryPanel = new PasswordRecovery(myController);
 
-                /*Questo metodo ci permettere di risalire al frame padre di RightLoginAccess
-                * in questo modo quando cliccheremo sul testo non si aprirà una nuova finestra
-                * ma avremo lo stesso frame*/
-
-                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(RightLoginAccess.this);
+                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(UserLoginPage.this);
 
                 mainWindow.addCardPanel(passwordRecoveryPanel, "passwordRecoveryPanel");
 
@@ -180,21 +190,21 @@ public class RightLoginAccess extends JPanel {
 
         forgottenPassword.ActiveLinkMouseOn(new Color(35, 171, 144), Color.black);
 
-        add(forgottenPassword, gbc);
+        rightPanel.add(forgottenPassword, rightGbc);
 
         //Inserimento bottone di accesso
         BtnLayout loginButton = new BtnLayout("Accedi");
 
         //Posizionamento bottone di accesso
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        add(loginButton, gbc);
+        rightGbc.gridx = 0;
+        rightGbc.gridy = 5;
+        rightPanel.add(loginButton, rightGbc);
 
         //Posizionamento registrazione nuovo utente
         LinkMouseOn userReg = new LinkMouseOn("Sei Nuovo? Registrati");
-        gbc.gridx = 0;
-        gbc.gridy = 7;
-        add(userReg, gbc);
+        rightGbc.gridx = 0;
+        rightGbc.gridy = 7;
+        rightPanel.add(userReg, rightGbc);
 
         //Indirizzamento pagina per la registrazione
         userReg.addMouseListener(new MouseAdapter() {
@@ -203,7 +213,7 @@ public class RightLoginAccess extends JPanel {
 
                 SignInPage signInPage = new SignInPage(myController);
 
-                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(RightLoginAccess.this);
+                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(UserLoginPage.this);
 
                 mainWindow.addCardPanel(signInPage, "signInPage");
             }
@@ -214,9 +224,9 @@ public class RightLoginAccess extends JPanel {
 
         //Posizionamento accesso responsabile
         LinkMouseOn managerLogin = new LinkMouseOn("Sei un responsabile? Clicca qui");
-        gbc.gridx = 0;
-        gbc.gridy = 9;
-        add(managerLogin, gbc);
+        rightGbc.gridx = 0;
+        rightGbc.gridy = 9;
+        rightPanel.add(managerLogin, rightGbc);
 
         //Indirizzamento pagina per la registrazione
         managerLogin.addMouseListener(new MouseAdapter() {
@@ -225,7 +235,7 @@ public class RightLoginAccess extends JPanel {
 
                 ResponsibleAccess responsibleAccess = new ResponsibleAccess(myController);
 
-                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(RightLoginAccess.this);
+                MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(UserLoginPage.this);
 
                 mainWindow.addCardPanel(responsibleAccess, "responsableAccess");
             }
@@ -234,56 +244,41 @@ public class RightLoginAccess extends JPanel {
         //Cambio colore al passaggio del mouse
         managerLogin.ActiveLinkMouseOn(new Color(35, 171, 144), Color.black);
 
-
         //Verifica credenziali quando il pulsante di accesso viene premuto
-
         loginButton.addActionListener(e -> {
-
             int msgError;
-
             msgError = credentialsVerification();
             showError(msgError);
-
         });
 
+        add(leftPanel);
+        add(rightPanel);
     }
 
-    //Metodo per impostare l'immagine di background
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        // Disegna l'immagine di sfondo
-        if (rightLoginBackground != null) {
-            g.drawImage(rightLoginBackground, 0, 0, getWidth(), getHeight(), this);
-        }
-
-    }
-
-    //Visualizzazione messaggio di errore
     public void showError(int errorMassage) {
 
         if(errorMassage == 1) {
 
-        JOptionPane.showMessageDialog(emailField, "I campi email e " +
-                "password non possono essere vuoti");
+            JOptionPane.showMessageDialog(emailField, "I campi email e " +
+                    "password non possono essere vuoti");
 
         }
 
         else if (errorMassage == 2) {
 
-        JOptionPane.showMessageDialog(emailField, "Credenziali errate" +
-                " riprova o registrati");
+            JOptionPane.showMessageDialog(emailField, "Credenziali errate" +
+                    " riprova o registrati");
 
-    }
+        }
         else if(errorMassage == 3) {
 
             HomePage homePage = new HomePage(myController, currentUser);
 
-            MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(RightLoginAccess.this);
+            MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(UserLoginPage.this);
 
             mainWindow.addCardPanel(homePage, "homePage");
 
-    }
+        }
 
     }
 
@@ -347,6 +342,17 @@ public class RightLoginAccess extends JPanel {
 
         return 0;
 
+    }
+
+    private class BackgroundPanel extends JPanel {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            // Disegna l'immagine di sfondo
+            if (rightLoginBackground != null) {
+                g.drawImage(rightLoginBackground, 0, 0, getWidth(), getHeight(), this);
+            }
+        }
     }
 
 }

@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class newBookingToolSelected extends JDialog{
+public class NewBookingToolSelected extends JDialog{
 
     private final JPanel mainPanel = new JPanel();
     private static final JLabel dataText = new JLabel("Data: ");
@@ -33,7 +33,7 @@ public class newBookingToolSelected extends JDialog{
     Strumento selectedTool;
     Prenotazione toBeChangedBooking;
 
-    public  BookingFrame(JFrame parent, Controller controller , Utente currentUser, Strumento strumentoScelto) {
+    public  NewBookingToolSelected(JFrame parent, Controller controller , Utente currentUser, Strumento strumentoScelto) {
 
         super(parent, "Nuova Prenotazione", true);
 
@@ -227,7 +227,7 @@ public class newBookingToolSelected extends JDialog{
 
     ///////////////////////////////////////////BOOKING FRAME MODIFICA PRENOTAZIONE///////////////////////
 
-    public  BookingFrame(JFrame parent, Controller controller , Utente currentUser, Prenotazione prenotazione) {
+    public  NewBookingToolSelected(JFrame parent, Controller controller , Utente currentUser, Prenotazione prenotazione) {
 
         super(parent, "Modifica Prenotazione", true);
 

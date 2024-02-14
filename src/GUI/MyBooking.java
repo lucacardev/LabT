@@ -13,7 +13,7 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
 
     Controller myController;
     Utente loggedUser;
-    BookingFrame myBooking;
+    NewBookingToolSelected myBooking;
     private  final JPanel topPanel = new JPanel();
     private  final BtnLayout modifyButton = new BtnLayout("Modifica");
     private  final BtnLayout deleteButton = new BtnLayout("Elimina");
@@ -110,7 +110,7 @@ public class MyBooking extends JPanel implements PrenotazioneSelectionListener {
 
                 super.mouseClicked(e);
 
-                myBooking = new BookingFrame(mainWindow, myController, loggedUser, myPrenotazioneSelez);
+                myBooking = new NewBookingToolSelected(mainWindow, myController, loggedUser, myPrenotazioneSelez);
                 myBooking.setVisible(true);
 
                 //Aggiorniamo la tabella per far apparire le modifiche effettuate

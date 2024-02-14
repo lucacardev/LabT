@@ -54,7 +54,7 @@ public class PasswordRecovery extends JPanel{
             rightRecoveryBackground = ImageIO.read(new File("src/GUI/icon/background.png"));
 
         } catch (Exception ex) {
-            System.out.println("Errore caricamento immagine background passwordrutente destra");
+            System.out.println("Errore caricamento immagine background password utente destra");
             ex.printStackTrace();
         }
 

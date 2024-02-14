@@ -18,7 +18,7 @@ public class NewBooking extends JPanel{
     private BtnLayout bookingButton;
     private BtnLayout calendarButton;
     private BtnLayout summaryButton;
-    private BookingFrame bookingFrame;
+    private NewBookingToolSelected newBookingToolSelected;
     private CalendarDialog calendarDialog;
     private SummaryWindow summaryWindow;
     private Strumento selectedTool;
@@ -337,10 +337,10 @@ public class NewBooking extends JPanel{
                 @Override
                 public void mouseClicked(MouseEvent e) {
 
-                    bookingFrame = new BookingFrame(mainWindow, myController, loggedUser, selectedTool);
-                    bookingFrame.setCodStrumento(uniToolCode);
-                    bookingFrame.setStrumentoAttuale(selectedTool);
-                    bookingFrame.setVisible(true);
+                    newBookingToolSelected = new NewBookingToolSelected(mainWindow, myController, loggedUser, selectedTool);
+                    newBookingToolSelected.setCodStrumento(uniToolCode);
+                    newBookingToolSelected.setStrumentoAttuale(selectedTool);
+                    newBookingToolSelected.setVisible(true);
 
                 }
             });
@@ -437,9 +437,9 @@ public class NewBooking extends JPanel{
 
     }
 
-    public void setCodStrumentoBookingFrame(String toolCodeBookingFrame) {
+    public void setCodStrumentoNewBookingToolSelected(String toolCodeNewBookingToolSelected) {
 
-        uniToolCode = toolCodeBookingFrame;
+        uniToolCode = toolCodeNewBookingToolSelected;
 
     }
 

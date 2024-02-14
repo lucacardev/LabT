@@ -19,7 +19,7 @@ public class TablePanel extends JPanel {
     private PrenotazioneSelectionListener prenotazioneSelectionListener;
 
     //////////////////////////////////////TABLE PANEL PER STRUMENTI////////////////////////////////
-    public TablePanel(List<Strumento> strumenti, NewBooking newBooking, BookingFrame bookingFrame) {
+    public TablePanel(List<Strumento> strumenti, NewBooking newBooking, NewBookingToolSelected newBookingToolSelected) {
 
         //RAPPRESENTAZIONE TABELLA STRUMENTI DOPO LA RICERCA
 
@@ -50,13 +50,13 @@ public class TablePanel extends JPanel {
                         newBooking.setStrumSelezCalend(selectedStrumento);
 
                         //Passiamo lo Strumento alla classe BookingFrame quando l'utente prenota uno strumento
-                        if(bookingFrame != null) {
+                        if(newBookingToolSelected != null) {
 
-                            bookingFrame.setStrumentoAttuale(selectedStrumento);
+                            newBookingToolSelected.setStrumentoAttuale(selectedStrumento);
 
                         }
 
-                        newBooking.setCodStrumentoBookingFrame(codStrumentoAttuale.toString());
+                        newBooking.setCodStrumentoNewBookingToolSelected(codStrumentoAttuale.toString());
                         newBooking.bookingButtonAvailability();
                         newBooking.bookingButtonCalendar();
                         newBooking.setSummaryButton();
