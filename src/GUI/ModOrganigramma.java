@@ -21,6 +21,7 @@ public class ModOrganigramma extends JDialog {
     private final JTable substituteTab;
     private Tecnico tecToBeReplaced;
     private Tecnico tecReplaced;
+    private String teamName;
     private final Team currentTeam;
     private final Responsabile currentManager;
     Controller myController;
@@ -34,6 +35,7 @@ public class ModOrganigramma extends JDialog {
         myController = controller;
         currentTeam = team;
         currentManager = manager;
+        this.teamName = currentTeam.getNome();
 
         setSize(500, 350);
 
@@ -292,6 +294,9 @@ public class ModOrganigramma extends JDialog {
                         }
 
                         dispose();
+                        // Visualizza un messaggio di successo con il nome del team
+                        JOptionPane.showMessageDialog(null, "Modifica del team \"" + teamName + "\" avvenuta con successo.", "Successo", JOptionPane.INFORMATION_MESSAGE);
+
 
                     }
 
