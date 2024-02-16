@@ -211,18 +211,18 @@ public class SignInPage extends JPanel {
                 } else {
 
                     //Chiamo la classe DTO che incapsula le informationi del nuovo utente
-                    Utente nuovoUtente = new Utente(getUsernameSignIn(), getEmailSignIn(), getPasswordSignIn());
+                    Utente newUser = new Utente(getUsernameSignIn(), getEmailSignIn(), getPasswordSignIn());
 
                     String registerCode;
                     String verificationRegisterCode;
 
                     //Verifica che mail e username non siano già usati nel database
 
-                    Utente mailUsername = new Utente(getUsernameSignIn(), getEmailSignIn(), null);
+                    //Utente mailUsername = new Utente(getUsernameSignIn(), getEmailSignIn(), null);
 
                     //Controlliamo prima che email e username non siano presenti e poi inviamo mail
 
-                        if (!myController.verifyMailUsernameC(mailUsername)) {
+                        if (!myController.verifyMailUsernameC(newUser)) {
 
                             registerCode = generateRandomCode();
 
@@ -238,7 +238,7 @@ public class SignInPage extends JPanel {
 
                             if (verificationRegisterCode != null && verificationRegisterCode.equals(registerCode)) {
 
-                                boolean complete = myController.newUserRegisterC(nuovoUtente);
+                                boolean complete = myController.newUserRegisterC(newUser);
 
                                 if (complete) {
 

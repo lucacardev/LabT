@@ -153,8 +153,6 @@ public class ModOrganigramma extends JDialog {
         add(footerPanel, gbc);
         
         toBeReplacedTab.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-
             @Override
             public void valueChanged(ListSelectionEvent e) {
 

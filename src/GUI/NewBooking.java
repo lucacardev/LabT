@@ -188,7 +188,6 @@ public class NewBooking extends JPanel{
 
                     if(!getSede().isEmpty() && !getDescrizione().isEmpty()) {
 
-
                         toolList = myController.toolsListRecovery(getSede(), getDescrizione());
 
                         //Se la lista strumento è maggiore di zero significa che la sede esiste altrimenti diamo errore
@@ -245,8 +244,6 @@ public class NewBooking extends JPanel{
                     //Se è stata inserita la sede allora effettuiamo la ricerca per sede altrimenti per descrizione
 
                      else if(!getSede().isEmpty() || !getDescrizione().isEmpty()) {
-
-                        //cercato = true;
 
                         toolList = myController.toolsListRecovery(getSede(), getDescrizione());
 

@@ -197,8 +197,7 @@ public class NewBookingToolSelected extends JDialog{
                                     "Tempo di utilizzo: " + timeFormat.format(prenotazioneDTO.getTempo_utilizzoS()) + "\n" +
                                     "Utente: " + prenotazioneDTO.getUsername_fk().getUsername() + "\n" +
                                     "Strumento: " + prenotazioneDTO.getCodStrumento_fk().getCodStrumento() + "\n" +
-                                    "Sede: " + selectedTool.getCodSede_fk().getNome() + "\n" +
-                                    "Indirizzo: " + selectedTool.getCodSede_fk().getIndirizzo();
+                                    "Sede: " + selectedTool.getCodSede_fk().getNome() + "\n";
 
                             EmailSender.sendVerificationCode(loggedUser.getEmail(), " ", "Riepilogo Prenotazione",
                                     "Prenotazione avvenuta con sucesso: \n" + riepilogoPrenotazione);
@@ -413,8 +412,7 @@ public class NewBookingToolSelected extends JDialog{
                                     "Tempo di utilizzo: " + timeFormat.format(prenotazioneDTO.getTempo_utilizzoS()) + "\n" +
                                     "Utente: " + prenotazioneDTO.getUsername_fk().getUsername() + "\n" +
                                     "Strumento: " + prenotazioneDTO.getCodStrumento_fk().getCodStrumento() + "\n" +
-                                    "Sede: " + strumentoRecDaPren.getCodSede_fk().getNome() + "\n" +
-                                    "Indirizzo: " + strumentoRecDaPren.getCodSede_fk().getIndirizzo();
+                                    "Sede: " + strumentoRecDaPren.getCodSede_fk().getNome() + "\n";
 
                             EmailSender.sendVerificationCode(loggedUser.getEmail(), " ", "Riepilogo Prenotazione Modificata",
                                     "Prenotazione modificata con sucesso: \n" + riepilogoPrenotazione);
