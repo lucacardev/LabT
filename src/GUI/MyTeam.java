@@ -16,9 +16,9 @@ import java.util.List;
 public class MyTeam extends JPanel {
 
     Controller myController;
-    Responsabile currentManager;
+    private final Responsabile currentManager;
     private final JTable teamTable;
-    private final String[] columnNames = {"CodiceTeam", "Nome", "Descrizione", "Leader", "NumeroTecnici"};
+    private final String[] columnNames = {"teamCode", "Nome", "Descrizione", "Leader", "NumeroTecnici"};
 
     public MyTeam(Controller controller, Responsabile loggedInManager) {
 
@@ -226,14 +226,14 @@ public class MyTeam extends JPanel {
     private Team createTeamFromRow(int row) {
 
         DefaultTableModel model = (DefaultTableModel) teamTable.getModel();
-        String codiceTeam = (String) model.getValueAt(row, 0);
+        String teamCode = (String) model.getValueAt(row, 0);
         String nome = (String) model.getValueAt(row, 1);
-        String descrizione = (String) model.getValueAt(row, 2);
-        String matricolaLeader = (String) model.getValueAt(row, 3);
-        Integer numeroTecnici = (Integer) model.getValueAt(row, 4);
+        String description = (String) model.getValueAt(row, 2);
+        String leaderMatriculation = (String) model.getValueAt(row, 3);
+        Integer techniciansNumber = (Integer) model.getValueAt(row, 4);
 
         // Creazione dell'oggetto Team basato sui valori della riga selezionata
-        return new Team(codiceTeam, nome, descrizione, matricolaLeader, numeroTecnici, null);
+        return new Team(teamCode, nome, description, leaderMatriculation, techniciansNumber, null);
 
     }
 

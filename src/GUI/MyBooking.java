@@ -20,7 +20,6 @@ public class MyBooking extends JPanel implements BookingSelectionListener {
     MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(MyBooking.this);
     private Prenotazione myBookingSelected;
     private int bookingNumber ;
-    GridBagConstraints footerPanelGbc = new GridBagConstraints();
 
     public MyBooking(Controller controller, Utente utente)  {
 
@@ -60,7 +59,8 @@ public class MyBooking extends JPanel implements BookingSelectionListener {
 
         //Creazione bottone per tornare indietro
 
-            footerPanelGbc.gridx = 0;
+        GridBagConstraints footerPanelGbc = new GridBagConstraints();
+        footerPanelGbc.gridx = 0;
             footerPanelGbc.gridy = 0;
             footerPanelGbc.anchor = GridBagConstraints.LINE_START;
             footerPanelGbc.insets = new Insets(5, 15, 10, 0);

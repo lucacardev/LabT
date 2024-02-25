@@ -27,11 +27,11 @@ public class NewBooking extends JPanel{
     private final TextFieldBorderColor headQuarters;
     private final TextFieldBorderColor searchForDescription;
     Controller myController;
-    Utente loggedUser;
-    GridBagConstraints footerPanelGbc = new GridBagConstraints();
-    List<Strumento> toolList;
-    MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(NewBooking.this);
-    String uniToolCode;
+    private final Utente loggedUser;
+    private final GridBagConstraints footerPanelGbc = new GridBagConstraints();
+    private List<Strumento> toolList;
+    private final MainWindow mainWindow = (MainWindow) SwingUtilities.getWindowAncestor(NewBooking.this);
+    private String uniToolCode;
 
 
     public NewBooking(Controller controller, Utente currentUser) {
@@ -186,9 +186,9 @@ public class NewBooking extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                    if(!getSede().isEmpty() && !getDescrizione().isEmpty()) {
+                    if(!getHeadQuarter().isEmpty() && !getDescription().isEmpty()) {
 
-                        toolList = myController.toolsListRecovery(getSede(), getDescrizione());
+                        toolList = myController.toolsListRecovery(getHeadQuarter(), getDescription());
 
                         //Se la lista strumento è maggiore di zero significa che la sede esiste altrimenti diamo errore
 
@@ -243,9 +243,9 @@ public class NewBooking extends JPanel{
                     /////////////////////////////////RICERCA PER SEDE O DESCRIZIONE/////////////////////////////////////
                     //Se è stata inserita la sede allora effettuiamo la ricerca per sede altrimenti per descrizione
 
-                     else if(!getSede().isEmpty() || !getDescrizione().isEmpty()) {
+                     else if(!getHeadQuarter().isEmpty() || !getDescription().isEmpty()) {
 
-                        toolList = myController.toolsListRecovery(getSede(), getDescrizione());
+                        toolList = myController.toolsListRecovery(getHeadQuarter(), getDescription());
 
                         //Se la lista strumento è maggiore di zero significa che la sede esiste altrimenti diamo errore
 
@@ -298,7 +298,7 @@ public class NewBooking extends JPanel{
 
                      else {
 
-                     if(getSede().isEmpty() || getDescrizione().isEmpty()) {
+                     if(getHeadQuarter().isEmpty() || getDescription().isEmpty()) {
 
                         JOptionPane.showMessageDialog(null, "ATTENZIONE! I campi non possono essere vuoti");
 
@@ -311,13 +311,13 @@ public class NewBooking extends JPanel{
 
     }
 
-    public String getSede() {
+    public String getHeadQuarter() {
 
         return headQuarters.getText().trim();
 
     }
 
-    public String getDescrizione() {
+    public String getDescription() {
 
         return searchForDescription.getText().trim();
     }

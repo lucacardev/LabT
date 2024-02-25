@@ -17,7 +17,7 @@ import java.io.IOException;
 public class UserHomePage extends JPanel{
     private static BufferedImage leftHomePageBackground;
     Controller myController;
-    Utente loggedUser;
+    private final Utente loggedUser;
 
     public UserHomePage(Controller controller, Utente currentUser) {
 

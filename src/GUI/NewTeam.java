@@ -26,13 +26,13 @@ public class NewTeam extends JPanel {
     private final TextFieldBorderColor nameField;
     private final TextFieldBorderColor descriptionField;
     private final JComboBox matriculationNumberField;
-    private final JComboBox<Integer> tecNumberCombobox;
+    private final JComboBox<Integer> techniciansNumberComboBox;
     private Integer choice;
     private static BufferedImage newBackgroundImage;
     private static BufferedImage rightBackground;
     private final List<Tecnico> tecSelected = new ArrayList<>();
     Controller controller;
-    Responsabile currentManager;
+    private final Responsabile currentManager;
 
     public NewTeam(Controller myController, Responsabile loggedInManager) {
 
@@ -193,13 +193,13 @@ public class NewTeam extends JPanel {
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         Integer[] choices = {0,5,10};
-        tecNumberCombobox = new JComboBox<>(choices);
-        tecNumberCombobox.setBackground(Color.white);
-        tecNumberCombobox.setBorder(new LineBorder(new Color(246, 183, 55),1));
+        techniciansNumberComboBox = new JComboBox<>(choices);
+        techniciansNumberComboBox.setBackground(Color.white);
+        techniciansNumberComboBox.setBorder(new LineBorder(new Color(246, 183, 55),1));
         gbc.anchor = GridBagConstraints.CENTER;
-        rightPage.add(tecNumberCombobox, gbc);
+        rightPage.add(techniciansNumberComboBox, gbc);
 
-        tecNumberCombobox.addItemListener(new ItemListener() {
+        techniciansNumberComboBox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent event) {
                 if (event.getStateChange() == ItemEvent.SELECTED) {
                     choice = (Integer) event.getItem();
@@ -421,12 +421,12 @@ public class NewTeam extends JPanel {
         JButton selectButton = new JButton("Seleziona");
         dialog.add(selectButton, BorderLayout.SOUTH);
 
-        //Reset JComboBox tecNumberCombobox quando il JDialog viene chiuso
+        //Reset JComboBox techniciansNumberComboBox quando il JDialog viene chiuso
         dialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
 
-                tecNumberCombobox.setSelectedIndex(0);
+                techniciansNumberComboBox.setSelectedIndex(0);
 
             }
         });

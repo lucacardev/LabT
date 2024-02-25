@@ -17,9 +17,9 @@ import java.util.List;
 public class OrganigramFiveTechnicians extends JPanel {
 
     Controller myController;
-    Responsabile responsabile;
-    private List<Tecnico> tecList;
-    private Team team;
+    private final Responsabile responsabile;
+    private final List<Tecnico> tecList;
+    private final Team team;
     private ModOrganigramma modOrganigramma;
     private BufferedImage backgroundImage;
 

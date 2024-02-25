@@ -17,7 +17,7 @@ import java.util.List;
 public class OrganigramTenTechnicians extends JPanel {
 
     Controller myController;
-    Responsabile responsabile;
+    private final Responsabile responsabile;
     private final List<Tecnico> tecList;
     private BufferedImage backgroundImage;
     private final Team team;

@@ -125,14 +125,14 @@ public class TecnicoDAO {
     }
 
     //Update dei tecnici
-    public boolean techniciansUpdateDAO (Tecnico tecnico, String nuovoCodiceTeam) {
+    public boolean techniciansUpdateDAO (Tecnico tecnico, String nuovoteamCode) {
 
         try {
 
             String query = "UPDATE tecnico SET codteam_fk = ? WHERE matricola = ?";
             PreparedStatement preparedStatement = DBConnection.getPreparedStatement(query);
 
-            preparedStatement.setString(1, nuovoCodiceTeam);
+            preparedStatement.setString(1, nuovoteamCode);
             preparedStatement.setString(2, tecnico.getMatricola());
 
             int updateCount = preparedStatement.executeUpdate();

@@ -97,7 +97,7 @@ public class MyBookingsTableModel extends AbstractTableModel {
 
     }
 
-    public Prenotazione getPrenotazioneAtRow(int rowIndex) {
+    public Prenotazione getBookingAtRow(int rowIndex) {
 
         if (bookList != null && rowIndex >= 0 && rowIndex < bookList.size()) {
             return bookList.get(rowIndex);

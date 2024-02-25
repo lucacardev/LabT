@@ -102,7 +102,7 @@ public class TablePanel extends JPanel {
                     if (selectedRow != -1) {
 
                         //Prendiamo la prenotazione della riga tramite il metodo di tableModelMiePrenotazioni
-                        Prenotazione myBookingSelected = myBookingsTableModel.getPrenotazioneAtRow(selectedRow);
+                        Prenotazione myBookingSelected = myBookingsTableModel.getBookingAtRow(selectedRow);
 
                         //Chiamiamo il metodo dell'interfaccia e allo stesso tempo definiamo il valore della variabile
                         //presente in MyBooking così da inviare a quest'ultima le informazioni sulla prenotazione selezionata

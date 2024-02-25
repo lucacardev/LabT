@@ -28,10 +28,9 @@ public class NewBookingToolSelected extends JDialog{
     private Date selectedUtilizationTime;
     private JLabel toolCodeText;
     private final JDateChooser dateChooser;
-    Utente loggedUser;
+    private final Utente loggedUser;
     Controller myController;
-    Strumento selectedTool;
-    Prenotazione toBeChangedBooking;
+    private Strumento selectedTool;
 
     public  NewBookingToolSelected(JFrame parent, Controller controller , Utente currentUser, Strumento strumentoScelto) {
 
@@ -234,7 +233,6 @@ public class NewBookingToolSelected extends JDialog{
 
         myController = controller;
         loggedUser = currentUser;
-        toBeChangedBooking = prenotazione;
 
         Strumento strumentoRecDaPren;
         strumentoRecDaPren = myController.toolsRecoveryC(prenotazione.getCodStrumento_fk().getCodStrumento());
@@ -328,7 +326,7 @@ public class NewBookingToolSelected extends JDialog{
         mainPanel.add(timeSpinnerusageTime, gbc);
 
         //Codice dello strumento
-        JLabel codicePrenotazione = new JLabel(Integer.toString(toBeChangedBooking.getCod_prenotazione()));
+        JLabel codicePrenotazione = new JLabel(Integer.toString(prenotazione.getCod_prenotazione()));
         gbc.gridx = 3;
         gbc.gridy = 1;
         mainPanel.add(codicePrenotazione, gbc);
