@@ -101,6 +101,7 @@ public class Tecnico {
 
     }
 
+    //????
     public void setEmail(Laboratorio laboratorio) {
 
         this.email = email;

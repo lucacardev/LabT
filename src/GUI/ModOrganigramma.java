@@ -311,5 +311,4 @@ public class ModOrganigramma extends JDialog {
 
     }
 
-
 }

@@ -156,7 +156,7 @@ public class UserLoginPage extends JPanel{
         pwdEye.setContentAreaFilled(false);
         pwdEye.setBorderPainted(false);
         GridBagConstraints pwdEyeGbc = new GridBagConstraints();
-        pwdEyeGbc.insets = new Insets(0, -60, 0, 0);
+        pwdEyeGbc.insets = new Insets(0, -35, 0, 0);
 
         //Chiamata al metodo per mostrare/nascondere la password
 

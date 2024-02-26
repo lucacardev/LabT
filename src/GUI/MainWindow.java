@@ -77,4 +77,10 @@ public class MainWindow extends JFrame {
 
     }
 
+    public void showOrganigrammaPanel(JPanel organigrammaPanel, String keyPanel) {
+        cardPanel.add(organigrammaPanel, keyPanel);
+        cardLayout.show(cardPanel, keyPanel);
+    }
+
+
 }
