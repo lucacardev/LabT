@@ -192,7 +192,7 @@ public class ManagerLoginPage extends JPanel {
         pwdEyeGbc.gridx = 2;
         pwdEyeGbc.gridy = 4;
         pwdEyeGbc.anchor = GridBagConstraints.LINE_END;
-        pwdEyeGbc.insets = new Insets(0, 0, 0, -10);
+        pwdEyeGbc.insets = new Insets(0, 0, 0, 20);
         rightRApage.add(pwdEye,pwdEyeGbc);
 
         rightGbc.gridx = 1;

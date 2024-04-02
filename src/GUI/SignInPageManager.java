@@ -245,7 +245,7 @@ public class SignInPageManager extends JPanel {
         pwdEyeGbc.gridx = 1;
         pwdEyeGbc.gridy = 9;
         pwdEyeGbc.anchor = GridBagConstraints.LINE_END;
-        pwdEyeGbc.insets = new Insets(0,0,0,-20);
+        pwdEyeGbc.insets = new Insets(0,0,0,0);
         rightPage.add(pwdEye,pwdEyeGbc);
 
         // Recupera la lista delle sedi dal database
