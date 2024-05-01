@@ -16,7 +16,7 @@ public class EmailSender {
 
         //Credenziali mail dell'applicazione (mittente )
         String username = "labTProject@gmail.com";
-        String password = "yjlkmhuhmfufhvmc";
+        String password = "";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
